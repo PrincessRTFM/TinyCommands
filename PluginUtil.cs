@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -121,6 +122,10 @@ namespace TinyCmds {
 		}
 		public void SendChatError(string error) {
 			this.SendPrefixedChat(Colour.RED, error, Colour.NONE);
+		}
+		[Conditional("DEBUG")]
+		public void Debug(string message, params object[] args) {
+			this.SendPrefixedChat(Colour.GREY, string.Format(message, args), Colour.NONE);
 		}
 		#endregion
 
