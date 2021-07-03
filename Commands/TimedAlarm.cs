@@ -35,7 +35,7 @@ namespace TinyCmds {
 				this.Util.SendChatError("A timer's total delay cannot be more than 23:59");
 				return;
 			}
-			int futureHours = now.Hour + hours;
+			int futureHours = (now.Hour + hours) % 24;
 			string cmd = $"/alarm \"{name}\" lt {futureHours:02}{futureMinutes:02}";
 			if (flags["d"] || flags["v"]) {
 				this.Util.SendPrefixedChat(PluginUtil.Colour.TEAL, cmd, PluginUtil.Colour.NONE);
