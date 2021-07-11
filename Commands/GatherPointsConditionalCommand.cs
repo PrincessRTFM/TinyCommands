@@ -8,13 +8,14 @@ using TinyCmds.Attributes;
 namespace TinyCmds {
 	public partial class TinyCmdsPlugin: IDalamudPlugin {
 		[Command("/ifgp")]
+		[Arguments("condition flag", "GP to compare?", "command to run...?")]
+		[RawArgs]
 		[Summary("Run a chat command (or directly send a message) only if GP meets condition")]
 		[HelpMessage(
 			"Similar to /ifcmd, but specifically checks numeric inequality conditions against your GP to allow running commands based on how much you have.",
 			"There are three possible tests: at least (-g), less than (-l), and a simple at capacity (-c).",
 			"If using -g or -l, the first argument should be a number to compare against. If using -c, ALL arguments are the command to run when your GP passes the check."
 		)]
-		[RawArgs]
 		public void RunChatIfPlayerGp(string command, string[] args, FlagMap flags) {
 			string arg = args[0] ?? string.Empty;
 			PlayerCharacter player = this.Interface.ClientState.LocalPlayer;
