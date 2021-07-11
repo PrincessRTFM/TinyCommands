@@ -32,6 +32,7 @@ namespace TinyCmds {
 			public int MaxArgs { get; }
 			public bool ShowInDalamud { get; }
 			public bool ShowInListing { get; }
+			public bool WantsRawArgs { get; }
 			public PluginCommand(object instance, MethodInfo method, PluginCommandDelegate printHelp, PluginCommandInvocationErrorHandlerDelegate onError) {
 				CommandAttribute attrCommand = method.GetCustomAttribute<CommandAttribute>();
 				if (attrCommand is null) {
@@ -43,32 +44,39 @@ namespace TinyCmds {
 				this.Help = method.GetCustomAttribute<HelpMessageAttribute>()?.HelpMessage ?? "";
 				this.Usage = $"{this.Command} {args?.ArgumentDescription}".Trim();
 				this.Aliases = method.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? new string[0];
-				this.ShowInDalamud = method.GetCustomAttribute<DoNotShowInHelpAttribute>() is null;
-				this.ShowInListing = method.GetCustomAttribute<HideInCommandListingAttribute>() is null;
 				this.MinArgs = args?.RequiredArguments ?? 0;
 				this.MaxArgs = args?.MaxArguments ?? int.MaxValue;
+				this.ShowInDalamud = method.GetCustomAttribute<DoNotShowInHelpAttribute>() is null;
+				this.ShowInListing = method.GetCustomAttribute<HideInCommandListingAttribute>() is null;
+				this.WantsRawArgs = method.GetCustomAttribute<RawArgsAttribute>() is not null;
 				this.handler = Delegate.CreateDelegate(typeof(PluginCommandDelegate), instance, method) as PluginCommandDelegate;
 				this.helper = printHelp;
 				this.error = onError;
 			}
 			public void Dispatch(string command, string argline) {
 				try {
-					(FlagMap flags, string[] args) = PluginUtil.ParseArguments(argline);
+					(FlagMap flags, string rawArgs) = PluginUtil.ExtractFlags(argline);
 					if (flags["h"]) {
 						this.helper(null, new string[] { command }, flags);
 						return;
 					}
-					if (args.Length < this.MinArgs) {
-						this.error("Not enough arguments");
-						this.helper(null, new string[] { command }, flags);
-						return;
+					if (this.WantsRawArgs) {
+						this.handler(command, new string[] { rawArgs }, flags);
 					}
-					if (args.Length > this.MaxArgs) {
-						this.error("Too many arguments");
-						this.helper(null, new string[] { command }, flags);
-						return;
+					else {
+						string[] args = PluginUtil.ShellParse(rawArgs);
+						if (args.Length < this.MinArgs) {
+							this.error("Not enough arguments");
+							this.helper(null, new string[] { command }, flags);
+							return;
+						}
+						if (args.Length > this.MaxArgs) {
+							this.error("Too many arguments (did you forget to quote something?)");
+							this.helper(null, new string[] { command }, flags);
+							return;
+						}
+						this.handler(command, args, flags);
 					}
-					this.handler(command, args, flags);
 				}
 				catch (Exception e) {
 					while (e is not null) {

@@ -12,9 +12,9 @@ namespace TinyCmds {
 		[HelpMessage(
 			"If the condition indicated by the flags is met, then all of the arguments will be executed as if entered into the chatbox manually. If no command/message is given, the test will print the result to your chatlog.",
 			"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
-			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion",
-			"Remember that the plugin parses command arguments itself - if you want to use double quotes, you'll need to backslash-escape them!"
+			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion"
 		)]
+		[RawArgs]
 		public void RunChatIfCond(string command, string[] args, FlagMap flags) {
 			//PlayerCharacter player = this.Interface.ClientState.LocalPlayer;
 			//PartyList party = this.Interface.ClientState.PartyList;
@@ -54,7 +54,7 @@ namespace TinyCmds {
 				msgCol = PluginUtil.Colour.GREEN;
 			if (args.Length > 0) {
 				if (msgCol == PluginUtil.Colour.GREEN) {
-					this.Util.SendServerChat(string.Join(" ", args));
+					this.Util.SendServerChat(args[0]);
 				}
 			}
 			else {

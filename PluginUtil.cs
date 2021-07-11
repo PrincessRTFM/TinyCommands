@@ -152,11 +152,11 @@ namespace TinyCmds {
 			// No quotes, easy out
 			return string.IsNullOrWhiteSpace(input) ? (new string[0]) : input.Split();
 		}
-		public static (FlagMap, string[]) ParseArguments(string argline) {
+		public static (FlagMap, string[]) ParseArguments(in string argline) {
 			FlagMap flags = new();
 			string[] args = ShellParse(argline);
 			int i;
-			for (i = 0; i < args.Length; i++) {
+			for (i = 0; i < args.Length; ++i) {
 				string next = args[i];
 				if (!next.StartsWith("-")) {
 					// not a flag argument
@@ -176,6 +176,39 @@ namespace TinyCmds {
 			}
 			else {
 				remaining = new string[0];
+			}
+			return (flags, remaining);
+		}
+		public static (FlagMap, string) ExtractFlags(in string argline) {
+			FlagMap flags = new();
+			char[] chars = argline.ToCharArray();
+			bool inFlag = false;
+			int idx;
+			for (idx = 0; idx < chars.Length; ++idx) {
+				char next = chars[idx];
+				if (next == '-') {
+					if (inFlag) {
+						++idx;
+						break;
+					}
+					inFlag = true;
+					continue;
+				}
+				if (char.IsWhiteSpace(next)) {
+					inFlag = false;
+					continue;
+				}
+				if (inFlag)
+					flags.Set(next);
+				else
+					break;
+			}
+			string remaining;
+			try {
+				remaining = argline.Substring(idx).Trim();
+			}
+			catch (ArgumentOutOfRangeException) {
+				remaining = string.Empty;
 			}
 			return (flags, remaining);
 		}
