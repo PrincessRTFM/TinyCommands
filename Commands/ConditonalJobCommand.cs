@@ -40,7 +40,7 @@ namespace TinyCmds {
 			}
 			else if (cmd.Length < 1) {
 				this.Util.SendPrefixedChat(
-					PluginUtil.Colour.GREEN,
+					PluginUtil.Colour.ORANGE,
 					"You are currently a ",
 					PluginUtil.Colour.YELLOW,
 					currentJobName,
