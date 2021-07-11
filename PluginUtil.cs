@@ -167,7 +167,7 @@ namespace TinyCmds {
 					i++;
 					break;
 				}
-				flags.SetAll(next.TrimStart('-').ToCharArray().Select(c => c.ToString()));
+				flags.SetAll(next.TrimStart('-').ToCharArray());
 			}
 			string[] remaining;
 			if (i < args.Length) {
