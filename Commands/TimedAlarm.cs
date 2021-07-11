@@ -22,7 +22,7 @@ namespace TinyCmds {
 			string timespec = args[0];
 			string name = args[1];
 			(int hours, int minutes) = PluginUtil.ParseTimespecString(timespec);
-			if (hours == 0 && minutes == 0) {
+			if (hours < 1 && minutes < 1) {
 				this.Util.SendChatError("A timer must delay for at least one minute");
 				return;
 			}
@@ -36,7 +36,7 @@ namespace TinyCmds {
 				return;
 			}
 			int futureHours = (now.Hour + hours) % 24;
-			string cmd = $"/alarm \"{name}\" lt {futureHours:02}{futureMinutes:02}";
+			string cmd = $"/alarm \"{name}\" lt {futureHours:D2}{futureMinutes:D2}";
 			if (flags["d"] || flags["v"]) {
 				this.Util.SendPrefixedChat(PluginUtil.Colour.TEAL, cmd, PluginUtil.Colour.NONE);
 				if (flags["d"])
