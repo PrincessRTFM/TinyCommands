@@ -11,7 +11,7 @@ on:
 env:
   SOLUTION_NAME: TinyCmds
   INTERNAL_NAME: TinyCmds
-  RELEASE_DIR: TinyCommands\bin\Release\TinyCmds
+  RELEASE_DIR: bin\Release\TinyCmds
   PERSONAL_PLUGIN_REPO: PrincessRTFM/MyDalamudPlugins
 
 jobs:
