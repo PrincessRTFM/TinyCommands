@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Authors>VariableVixen</Authors>
     <Company>-</Company>
-    <Version>1.3.0</Version>
+    <Version>1.4.0</Version>
     <Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It doesn't even have a UI.</Description>
     <Copyright>Copyleft Vixen 2021</Copyright>
     <PackageProjectUrl></PackageProjectUrl>

@@ -7,9 +7,10 @@ using TinyCmds.Attributes;
 namespace TinyCmds {
 	public partial class TinyCmdsPlugin: IDalamudPlugin {
 		[Command("/tinyhelp")]
-		[Arguments("command")]
+		[Arguments("command...?")]
 		[Summary("Displays usage/help for the plugin's commands")]
 		[Aliases("/ptinyhelp", "/thelp", "/pthelp", "/tinycmd", "/ptinycmd", "/tcmd", "/ptcmd")]
+		[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
 		public void DisplayPluginCommandHelp(string command, string[] args, FlagMap flags) {
 			if (args.Length < 1) {
 				this.Util.SendPrefixedChat($"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
