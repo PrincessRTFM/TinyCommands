@@ -1,10 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Actors;
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
