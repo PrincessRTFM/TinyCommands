@@ -129,9 +129,12 @@ namespace TinyCmds {
 		}
 		#endregion
 
-		public void SendServerChat(string line) {
+		public void SendServerChat(string line, bool displayInChatlog = false, bool dryRun = false) {
 			// TODO add plugin logging
-			this.common.Functions.Chat.SendMessage(line);
+			if (displayInChatlog)
+				this.SendPrefixedChat(Colour.TEAL, line, Colour.NONE);
+			if (!dryRun)
+				this.common.Functions.Chat.SendMessage(line);
 		}
 
 		#region Argument parsing

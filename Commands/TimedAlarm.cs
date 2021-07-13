@@ -37,12 +37,7 @@ namespace TinyCmds {
 			}
 			int futureHours = (now.Hour + hours) % 24;
 			string cmd = $"/alarm \"{name}\" lt {futureHours:D2}{futureMinutes:D2}";
-			if (flags["d"] || flags["v"]) {
-				this.Util.SendPrefixedChat(PluginUtil.Colour.TEAL, cmd, PluginUtil.Colour.NONE);
-				if (flags["d"])
-					return;
-			}
-			this.Util.SendServerChat(cmd);
+			this.Util.SendServerChat(cmd, flags["d"] || flags["v"], flags["d"]);
 		}
 	}
 }
