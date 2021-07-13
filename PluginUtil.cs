@@ -15,8 +15,9 @@ using XivCommon;
 
 namespace TinyCmds {
 	internal class PluginUtil {
-		private readonly TinyCmdsPlugin plugin;
+		private TinyCmdsPlugin plugin;
 		private readonly XivCommonBase common;
+		private bool disposed = false;
 
 		private static readonly Regex timespecMatcher = new(@"^\s*((?:\d+h)?)(\d+)([hm]?)\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 		// From https://metacpan.org/dist/Text-ParseWords/source/lib/Text/ParseWords.pm - I really hope this works :/
@@ -248,15 +249,21 @@ namespace TinyCmds {
 
 		#region IDisposable Support
 		protected virtual void Dispose(bool disposing) {
-			if (!disposing) {
+			if (this.disposed) {
 				return;
 			}
-			this.common.Dispose();
+			if (disposing) {
+				this.common.Dispose();
+			}
+			this.plugin = null;
+			this.disposed = true;
 		}
-
 		public void Dispose() {
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
+		}
+		~PluginUtil() {
+			this.Dispose(false);
 		}
 		#endregion
 	}

@@ -17,6 +17,8 @@ namespace TinyCmds {
 
 		internal PluginCommand[] Commands => this.commands.ToArray();
 
+		private readonly bool disposed = false;
+
 		public TinyCmdPluginCommandManager(TinyCmdsPlugin host) {
 			this.pluginInterface = host.Interface;
 			this.commands = host.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
@@ -45,9 +47,20 @@ namespace TinyCmds {
 			}
 		}
 
-		public void Dispose() {
+		#region IDisposable Support
+		protected virtual void Dispose(bool disposing) {
+			if (this.disposed)
+				return;
 			this.RemoveCommandHandlers();
 			this.commands.Clear();
 		}
+		public void Dispose() {
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		~TinyCmdPluginCommandManager() {
+			this.Dispose(false);
+		}
+		#endregion
 	}
 }

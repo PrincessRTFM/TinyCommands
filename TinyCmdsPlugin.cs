@@ -14,6 +14,8 @@ namespace TinyCmds {
 		public readonly string Prefix = "TinyCmds";
 		public string PluginHelpCommand { get; private set; }
 
+		private bool disposed = false;
+
 		internal DalamudPluginInterface Interface { get; private set; }
 		internal Configuration Config { get; private set; }
 		internal TinyCmdPluginCommandManager CommandManager { get; private set; }
@@ -30,18 +32,24 @@ namespace TinyCmds {
 
 		#region IDisposable Support
 		protected virtual void Dispose(bool disposing) {
-			if (!disposing) {
+			if (this.disposed) {
 				return;
 			}
-			this.Interface.SavePluginConfig(this.Config);
-			this.CommandManager.Dispose();
-			this.Util.Dispose();
-			this.Interface.Dispose();
+			if (disposing) {
+				this.Interface.SavePluginConfig(this.Config);
+				this.CommandManager.Dispose();
+				this.Util.Dispose();
+				this.Interface.Dispose();
+			}
+			this.Util = null;
+			this.disposed = true;
 		}
-
 		public void Dispose() {
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
+		}
+		~TinyCmdsPlugin() {
+			this.Dispose(false);
 		}
 		#endregion
 	}
