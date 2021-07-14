@@ -11,14 +11,8 @@ namespace TinyCmds {
 	public partial class TinyCmdsPlugin: IDalamudPlugin {
 
 		#region UI*Payload functions
-		public UIForegroundPayload Foreground(ushort colorKey) {
-			return new UIForegroundPayload(this.Interface.Data, colorKey);
-		}
 		public UIForegroundPayload Foreground(ChatColour color) {
 			return new UIForegroundPayload(this.Interface.Data, (ushort)color);
-		}
-		public UIGlowPayload Glow(ushort colorKey) {
-			return new UIGlowPayload(this.Interface.Data, colorKey);
 		}
 		public UIGlowPayload Glow(ChatColour color) {
 			return new UIGlowPayload(this.Interface.Data, (ushort)color);
@@ -39,9 +33,9 @@ namespace TinyCmds {
 							ChatColour ck => new Payload[] { this.Foreground(ck) },
 							object o => new Payload[] { new TextPayload(o.ToString()) },
 							_ => new Payload[] {
-								this.Foreground(ChatColour.RED),
+								this.Foreground(ChatColour.ERROR),
 								new TextPayload($"[internal error in {this.Name}]"),
-								this.Foreground(ChatColour.NONE),
+								this.Foreground(ChatColour.RESET),
 							},
 						};
 					})
@@ -50,28 +44,32 @@ namespace TinyCmds {
 		}
 		public void SendPrefixedChat(params object[] payloads) {
 			List<object> plList = new() {
-				ChatColour.LAVENDER,
+				ChatColour.PREFIX,
 				$"[{this.Prefix}] ",
-				ChatColour.NONE,
+				ChatColour.RESET,
 			};
 			plList.AddRange(payloads);
 			this.SendDirectChat(plList.ToArray());
 		}
 		public void SendChatError(string error) {
-			this.SendPrefixedChat(ChatColour.RED, error, ChatColour.NONE);
+			this.SendPrefixedChat(ChatColour.ERROR, error, ChatColour.RESET);
 		}
 
 		public void SendServerChat(string line, bool displayInChatlog = false, bool dryRun = false) {
 			// TODO add plugin logging
 			if (displayInChatlog)
-				this.SendPrefixedChat(ChatColour.TEAL, line, ChatColour.NONE);
+				this.SendPrefixedChat(ChatColour.OUTGOING_TEXT, line, ChatColour.RESET);
 			if (!dryRun)
 				this.common.Functions.Chat.SendMessage(line);
 		}
 
 		[Conditional("DEBUG")]
 		public void Debug(string message, params object[] args) {
-			this.SendPrefixedChat(ChatColour.GREY, string.Format(message, args), ChatColour.NONE);
+			this.SendPrefixedChat(
+				ChatColour.QUIET,
+				string.Format(message, args),
+				ChatColour.RESET
+			);
 		}
 		#endregion
 	}

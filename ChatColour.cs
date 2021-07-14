@@ -1,5 +1,5 @@
 ﻿namespace TinyCmds {
-	public enum ChatColour: ushort {
+	public enum ChatColourKey: ushort {
 		NONE = 0,
 		WHITE = 1,
 		GREY = 4,
@@ -18,5 +18,22 @@
 		BRIGHTGREEN = 60,
 		ORANGE = 65,
 		PALEGREEN = 67,
+	}
+	public enum ChatColour: ushort {
+		RESET = ChatColourKey.NONE,
+		ERROR = ChatColourKey.RED,
+		CONDITION_FAILED = ChatColourKey.ORANGE,
+		CONDITION_PASSED = ChatColourKey.GREEN,
+		HIGHLIGHT_FAILED = ChatColourKey.YELLOW,
+		HIGHLIGHT_PASSED = ChatColourKey.BRIGHTGREEN,
+		PREFIX = ChatColourKey.LAVENDER,
+		OUTGOING_TEXT = ChatColourKey.TEAL,
+		QUIET = ChatColourKey.GREY,
+		HELP_TEXT = ChatColourKey.PALEGREEN,
+		USAGE_TEXT = ChatColourKey.LIGHTBLUE,
+		HIGHLIGHT = ChatColourKey.CYAN,
+		DEBUG = ChatColourKey.BROWN,
+		JOB = ChatColourKey.INDIGO,
+		COMMAND = ChatColourKey.PURPLE,
 	}
 }

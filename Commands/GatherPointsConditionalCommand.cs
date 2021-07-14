@@ -1,5 +1,4 @@
-﻿using System.Linq;
-
+﻿
 using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Plugin;
 
@@ -30,11 +29,27 @@ namespace TinyCmds {
 						this.SendServerChat(arg);
 					}
 					else {
-						this.SendPrefixedChat(ChatColour.GREEN, $"GP is at capacity ({gp})", ChatColour.NONE);
+						this.SendPrefixedChat(
+							ChatColour.CONDITION_PASSED,
+							"GP is at capacity (",
+							this.Glow(ChatColour.HIGHLIGHT_PASSED),
+							gp,
+							this.Glow(ChatColour.RESET),
+							")",
+							ChatColour.RESET
+						);
 					}
 				}
 				else if (arg.Length < 1) {
-					this.SendPrefixedChat(ChatColour.ORANGE, $"GP is below capacity ({gp})", ChatColour.NONE);
+					this.SendPrefixedChat(
+						ChatColour.CONDITION_FAILED,
+						"GP is below capacity (",
+						this.Glow(ChatColour.HIGHLIGHT_FAILED),
+						gp,
+						this.Glow(ChatColour.RESET),
+						")",
+						ChatColour.RESET
+					);
 				}
 			}
 			else if (flags["g"] || flags["l"]) {
@@ -51,11 +66,27 @@ namespace TinyCmds {
 									this.SendServerChat(cmd);
 								}
 								else {
-									this.SendPrefixedChat(ChatColour.GREEN, $"GP is at least {compareTo} ({gp})", ChatColour.NONE);
+									this.SendPrefixedChat(
+										ChatColour.CONDITION_PASSED,
+										$"GP is at least {compareTo} (",
+										this.Glow(ChatColour.HIGHLIGHT_PASSED),
+										gp,
+										this.Glow(ChatColour.RESET),
+										")",
+										ChatColour.RESET
+									);
 								}
 							}
 							else if (cmd.Length < 1) {
-								this.SendPrefixedChat(ChatColour.ORANGE, $"GP is too low ({gp})", ChatColour.NONE);
+								this.SendPrefixedChat(
+									ChatColour.CONDITION_FAILED,
+									$"GP is below {compareTo} (",
+									this.Glow(ChatColour.HIGHLIGHT_FAILED),
+									gp,
+									this.Glow(ChatColour.RESET),
+									")",
+									ChatColour.RESET
+								);
 							}
 						}
 						else if (flags["l"]) {
@@ -64,11 +95,27 @@ namespace TinyCmds {
 									this.SendServerChat(cmd);
 								}
 								else {
-									this.SendPrefixedChat(ChatColour.GREEN, $"GP is below {compareTo} ({gp})", ChatColour.NONE);
+									this.SendPrefixedChat(
+										ChatColour.CONDITION_PASSED,
+										$"GP is below {compareTo} (",
+										this.Glow(ChatColour.HIGHLIGHT_PASSED),
+										gp,
+										this.Glow(ChatColour.RESET),
+										")",
+										ChatColour.RESET
+									);
 								}
 							}
 							else if (cmd.Length < 1) {
-								this.SendPrefixedChat(ChatColour.ORANGE, $"GP is too high ({gp})", ChatColour.NONE);
+								this.SendPrefixedChat(
+									ChatColour.CONDITION_FAILED,
+									$"GP is above {compareTo} (",
+									this.Glow(ChatColour.HIGHLIGHT_FAILED),
+									gp,
+									this.Glow(ChatColour.RESET),
+									")",
+									ChatColour.RESET
+								);
 							}
 						}
 					}
@@ -81,9 +128,9 @@ namespace TinyCmds {
 				this.SendChatError("Expected one of -c, -g, or -l, but found none");
 				this.SendPrefixedChat(
 					"(Try ",
-					ChatColour.TEAL,
+					ChatColour.COMMAND,
 					$"/{command.TrimStart('/')} -h",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					" for help)"
 				);
 			}

@@ -16,39 +16,39 @@ namespace TinyCmds {
 				this.SendPrefixedChat($"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
 				this.SendPrefixedChat(
 					"These flags can be bundled into one argument, such that ",
-					ChatColour.YELLOW,
+					ChatColour.HIGHLIGHT,
 					"-va",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					" will set both the ",
-					ChatColour.BROWN,
+					ChatColour.HIGHLIGHT,
 					"v",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					" and ",
-					ChatColour.BROWN,
+					ChatColour.HIGHLIGHT,
 					"a",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					" flags."
 				);
 				this.SendPrefixedChat(
 					"All plugin commands accept ",
-					ChatColour.YELLOW,
+					ChatColour.HIGHLIGHT,
 					"-h",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					" to display their built-in help message."
 				);
 				this.SendPrefixedChat(
 					"To list all commands, use ",
-					ChatColour.TEAL,
+					ChatColour.COMMAND,
 					"/tinycmds",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					", optionally with ",
-					ChatColour.YELLOW,
+					ChatColour.HIGHLIGHT,
 					"-a",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					" to show their aliases and/or ",
-					ChatColour.YELLOW,
+					ChatColour.HIGHLIGHT,
 					"-v",
-					ChatColour.NONE,
+					ChatColour.RESET,
 					" to show their help messages."
 				);
 				return;
@@ -57,19 +57,23 @@ namespace TinyCmds {
 				string wanted = listing.TrimStart('/').ToLower();
 				foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
 					if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {
-						this.SendPrefixedChat(ChatColour.LIGHTBLUE, cmd.Usage, ChatColour.NONE);
+						this.SendPrefixedChat(
+							ChatColour.USAGE_TEXT,
+							cmd.Usage,
+							ChatColour.RESET
+						);
 						if (flags["a"] && cmd.Aliases.Length > 0) {
 							this.SendPrefixedChat(
-								ChatColour.GREY,
+								ChatColour.QUIET,
 								string.Join(", ", cmd.Aliases),
-								ChatColour.NONE
+								ChatColour.RESET
 							);
 						}
 						foreach (string line in cmd.HelpLines) {
 							this.SendPrefixedChat(
-								ChatColour.PALEGREEN,
+								ChatColour.HELP_TEXT,
 								line,
-								ChatColour.NONE
+								ChatColour.RESET
 							);
 						}
 						return;
