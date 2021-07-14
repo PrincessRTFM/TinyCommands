@@ -24,7 +24,7 @@ namespace TinyCmds {
 		public void GenerateTimedAlarm(string command, string args, FlagMap flags, ref bool showHelp) {
 			DateTime now = DateTime.Now;
 			string timespec = args.Split()[0];
-			string name = args.Substring(0, timespec.Length).Trim();
+			string name = args.Substring(timespec.Length).Trim();
 			int hours = 0;
 			int minutes = 0;
 			if (string.IsNullOrEmpty(timespec)) {
