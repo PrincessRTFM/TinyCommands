@@ -8,7 +8,6 @@ namespace TinyCmds {
 	public partial class TinyCmdsPlugin: IDalamudPlugin {
 		[Command("/ifcmd")]
 		[Arguments("condition flags", "command to run...?")]
-		[RawArgs]
 		[Summary("Run a chat command (or directly send a message) only if a condition is met")]
 		[Aliases("/ifthen")]
 		[HelpMessage(
@@ -16,7 +15,7 @@ namespace TinyCmds {
 			"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
 			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion"
 		)]
-		public void RunChatIfCond(string command, string[] args, FlagMap flags) {
+		public void RunChatIfCond(string command, string args, FlagMap flags, ref bool showHelp) {
 			//PlayerCharacter player = this.Interface.ClientState.LocalPlayer;
 			//PartyList party = this.Interface.ClientState.PartyList;
 			Targets targets = this.Interface.ClientState.Targets;
@@ -55,7 +54,7 @@ namespace TinyCmds {
 				msgCol = ChatColour.CONDITION_PASSED;
 			if (args.Length > 0) {
 				if (msgCol == ChatColour.CONDITION_PASSED) {
-					this.SendServerChat(args[0]);
+					this.SendServerChat(args);
 				}
 			}
 			else {

@@ -32,7 +32,6 @@ namespace TinyCmds {
 			public int MaxArgs { get; }
 			public bool ShowInDalamud { get; }
 			public bool ShowInListing { get; }
-			public bool WantsRawArgs { get; }
 			public PluginCommand(object instance, MethodInfo method, PluginCommandDelegate printHelp, PluginCommandInvocationErrorHandlerDelegate onError) {
 				CommandAttribute attrCommand = method.GetCustomAttribute<CommandAttribute>();
 				if (attrCommand is null) {
@@ -48,7 +47,6 @@ namespace TinyCmds {
 				this.MaxArgs = args?.MaxArguments ?? int.MaxValue;
 				this.ShowInDalamud = method.GetCustomAttribute<DoNotShowInHelpAttribute>() is null;
 				this.ShowInListing = method.GetCustomAttribute<HideInCommandListingAttribute>() is null;
-				this.WantsRawArgs = method.GetCustomAttribute<RawArgsAttribute>() is not null;
 				this.handler = Delegate.CreateDelegate(typeof(PluginCommandDelegate), instance, method) as PluginCommandDelegate;
 				this.helper = printHelp;
 				this.error = onError;
@@ -56,27 +54,14 @@ namespace TinyCmds {
 			public void Dispatch(string command, string argline) {
 				try {
 					(FlagMap flags, string rawArgs) = TinyCmdsPlugin.ExtractFlags(argline);
+					bool showHelp = false;
 					if (flags["h"]) {
-						this.helper(null, new string[] { command }, flags);
+						this.helper(null, command, flags, ref showHelp);
 						return;
 					}
-					if (this.WantsRawArgs) {
-						this.handler(command, new string[] { rawArgs }, flags);
-					}
-					else {
-						string[] args = TinyCmdsPlugin.ShellParse(rawArgs);
-						if (args.Length < this.MinArgs) {
-							this.error("Not enough arguments");
-							this.helper(null, new string[] { command }, flags);
-							return;
-						}
-						if (args.Length > this.MaxArgs) {
-							this.error("Too many arguments (did you forget to quote something?)");
-							this.helper(null, new string[] { command }, flags);
-							return;
-						}
-						this.handler(command, args, flags);
-					}
+					this.handler(command, rawArgs, flags, ref showHelp);
+					if (showHelp)
+						this.helper(null, command, flags, ref showHelp);
 				}
 				catch (Exception e) {
 					while (e is not null) {

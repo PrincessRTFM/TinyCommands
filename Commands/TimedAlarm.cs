@@ -21,14 +21,14 @@ namespace TinyCmds {
 			"This command sets a VANILLA in-game timer for the time calculated. If you use -v, the /alarm command will be printed. If you use -d, it will be printed and NOT run.",
 			"If the timer name contains spaces, it MUST be enclosed in double quotes."
 		)]
-		public void GenerateTimedAlarm(string command, string[] args, FlagMap flags) {
+		public void GenerateTimedAlarm(string command, string args, FlagMap flags, ref bool showHelp) {
 			DateTime now = DateTime.Now;
-			string timespec = args[0];
-			string name = args[1];
+			string timespec = args.Split()[0];
+			string name = args.Substring(0, timespec.Length).Trim();
 			int hours = 0;
 			int minutes = 0;
 			if (string.IsNullOrEmpty(timespec)) {
-				this.SendServerChat($"/{command.TrimStart('/')} -h");
+				showHelp = true;
 				return;
 			}
 			Match match = timespecMatcher.Match(timespec);

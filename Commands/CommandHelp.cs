@@ -11,7 +11,7 @@ namespace TinyCmds {
 		[Summary("Displays usage/help for the plugin's commands")]
 		[Aliases("/ptinyhelp", "/thelp", "/pthelp", "/tinycmd", "/ptinycmd", "/tcmd", "/ptcmd")]
 		[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
-		public void DisplayPluginCommandHelp(string command, string[] args, FlagMap flags) {
+		public void DisplayPluginCommandHelp(string command, string args, FlagMap flags, ref bool showHelp) {
 			if (args.Length < 1) {
 				this.SendPrefixedChat($"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
 				this.SendPrefixedChat(
@@ -53,7 +53,7 @@ namespace TinyCmds {
 				);
 				return;
 			}
-			foreach (string listing in args) {
+			foreach (string listing in ShellParse(args)) {
 				string wanted = listing.TrimStart('/').ToLower();
 				foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
 					if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {

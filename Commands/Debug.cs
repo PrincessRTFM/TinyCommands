@@ -9,7 +9,8 @@ namespace TinyCmds {
 		[HelpMessage("Specifically for dev use")]
 		[DoNotShowInHelp]
 		[HideInCommandListing]
-		public void PluginDebugCommand(string command, string[] args, FlagMap flags) {
+		public void PluginDebugCommand(string command, string argline, FlagMap flags, ref bool showHelp) {
+			string[] args = ShellParse(argline);
 			string jobName = this.Interface.ClientState.LocalPlayer.ClassJob.GameData.Abbreviation.ToString().ToUpper();
 			uint jobId = this.Interface.ClientState.LocalPlayer.ClassJob.Id;
 			this.SendPrefixedChat(

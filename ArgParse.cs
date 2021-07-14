@@ -47,33 +47,6 @@ namespace TinyCmds {
 			// No quotes, easy out
 			return string.IsNullOrWhiteSpace(input) ? (new string[0]) : input.Split();
 		}
-		public static (FlagMap, string[]) ParseArguments(in string argline) {
-			FlagMap flags = new();
-			string[] args = ShellParse(argline);
-			int i;
-			for (i = 0; i < args.Length; ++i) {
-				string next = args[i];
-				if (!next.StartsWith("-")) {
-					// not a flag argument
-					break;
-				}
-				if (next.Equals("--")) {
-					// end-of-flags argument
-					i++;
-					break;
-				}
-				flags.SetAll(next.TrimStart('-').ToCharArray());
-			}
-			string[] remaining;
-			if (i < args.Length) {
-				remaining = new string[args.Length - i];
-				Array.Copy(args, i, remaining, 0, remaining.Length);
-			}
-			else {
-				remaining = new string[0];
-			}
-			return (flags, remaining);
-		}
 		public static (FlagMap, string) ExtractFlags(in string argline) {
 			FlagMap flags = new();
 			char[] chars = argline.ToCharArray();

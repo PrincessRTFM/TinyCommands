@@ -11,7 +11,7 @@ using TinyCmds.Attributes;
 namespace TinyCmds {
 	public partial class TinyCmdPluginCommandManager: IDisposable {
 
-		internal delegate void PluginCommandDelegate(string command, string[] arguments, FlagMap flags);
+		internal delegate void PluginCommandDelegate(string command, string rawArguments, FlagMap flags, ref bool showHelp);
 		private readonly DalamudPluginInterface pluginInterface;
 		private readonly List<PluginCommand> commands;
 
