@@ -1,0 +1,70 @@
+#!perl
+
+use strict;
+use warnings;
+
+use IO::File;
+use File::Glob qw/:bsd_glob/;
+use Fcntl qw/:seek/;
+
+my $path = (bsd_glob("*.csproj", GLOB_NOCASE))[0] || '';
+unless ($path) {
+	print STDERR "Can't find a .csproj file to operate on!\n";
+	exit 2;
+}
+
+my $ver = lc(shift @ARGV || 'none');
+my $numVer;
+if ($ver !~ m/^(?:\d+(?:\.\d+)*|major|minor|patch|none)$/) {
+	print STDERR qq{Invalid version, must be dot-delimited numeric or keyword "major", "minor", "patch", "none"\n};
+	exit 3;
+}
+
+my $file = IO::File->new($path, O_RDWR | O_APPEND);
+$file->seek(0, SEEK_SET);
+unless ($file) {
+	printf STDERR qq{Failed to open "%s" (%s)\n}, $path, $! || "unknown error";
+	exit 255;
+}
+my @lines = map { s/\r?\n$//r } $file->getlines;
+for (my $i = 0; $i < @lines; ++$i) {
+	my $line = $lines[$i];
+	if ($line =~ m{^(\s*)<Version>(\d+(?:\.\d+)*)</Version>}i) {
+		my ($lead, $old) = ($1, $2, '');
+		my @parts = (split(/\./, $old), 0, 0, 0);
+		if ($ver eq "major") {
+			++$parts[0];
+			$parts[1] = $parts[2] = 0;
+		}
+		elsif ($ver eq "minor") {
+			++$parts[1];
+			$parts[2] = 0;
+		}
+		elsif ($ver eq "patch") {
+			++$parts[2];
+		}
+		elsif ($ver eq "none") {
+			printf "Current version is %s\n", $old;
+			exit 0;
+		}
+		else {
+			@parts = (split(/\./, $ver), 0, 0, 0);
+		}
+		my $numVer = join '.', @parts[0, 1, 2];
+		print "Updating from version $old to $numVer...\n";
+		$lines[$i] = "$lead<Version>$numVer</Version>";
+	}
+}
+
+$file->seek(0, SEEK_SET);
+$file->truncate(0);
+$file->print(join "\n", @lines);
+$file->print("\n");
+$file->close;
+
+if (@ARGV && $numVer) {
+	system qw/git add/, $path;
+	system qw/git commit -m/, @ARGV;
+	system qw/git tag -a/, "v$numVer";
+}
+
