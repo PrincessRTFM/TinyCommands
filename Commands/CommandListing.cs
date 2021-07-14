@@ -14,24 +14,24 @@ namespace TinyCmds {
 		)]
 		public void ListPluginCommands(string command, string[] args, FlagMap flags) {
 			foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
-				this.Util.SendPrefixedChat(
-					PluginUtil.Colour.LIGHTBLUE,
+				this.SendPrefixedChat(
+					ChatColour.LIGHTBLUE,
 					cmd.Usage,
-					PluginUtil.Colour.NONE
+					ChatColour.NONE
 				);
 				if (flags["a"] && cmd.Aliases.Length > 0) {
-					this.Util.SendPrefixedChat(
-						PluginUtil.Colour.GREY,
+					this.SendPrefixedChat(
+						ChatColour.GREY,
 						string.Join(", ", cmd.Aliases),
-						PluginUtil.Colour.NONE
+						ChatColour.NONE
 					);
 				}
 				if (flags["v"]) {
 					foreach (string line in cmd.HelpLines) {
-						this.Util.SendPrefixedChat(
-							PluginUtil.Colour.PALEGREEN,
+						this.SendPrefixedChat(
+							ChatColour.PALEGREEN,
 							line,
-							PluginUtil.Colour.NONE
+							ChatColour.NONE
 						);
 					}
 				}

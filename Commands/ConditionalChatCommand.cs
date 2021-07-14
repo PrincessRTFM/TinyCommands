@@ -21,7 +21,7 @@ namespace TinyCmds {
 			//PartyList party = this.Interface.ClientState.PartyList;
 			Targets targets = this.Interface.ClientState.Targets;
 			Condition cond = this.Interface.ClientState.Condition;
-			PluginUtil.Colour msgCol = PluginUtil.Colour.ORANGE;
+			ChatColour msgCol = ChatColour.ORANGE;
 			string msg = "Test passed but no command given";
 			if (flags["t"] && targets.CurrentTarget is null)
 				msg = "No target";
@@ -52,14 +52,14 @@ namespace TinyCmds {
 			else if (flags["C"] && cond[ConditionFlag.InCombat])
 				msg = "In combat";
 			else
-				msgCol = PluginUtil.Colour.GREEN;
+				msgCol = ChatColour.GREEN;
 			if (args.Length > 0) {
-				if (msgCol == PluginUtil.Colour.GREEN) {
-					this.Util.SendServerChat(args[0]);
+				if (msgCol == ChatColour.GREEN) {
+					this.SendServerChat(args[0]);
 				}
 			}
 			else {
-				this.Util.SendPrefixedChat(msgCol, msg, PluginUtil.Colour.NONE);
+				this.SendPrefixedChat(msgCol, msg, ChatColour.NONE);
 			}
 		}
 	}

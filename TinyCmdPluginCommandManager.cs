@@ -23,7 +23,7 @@ namespace TinyCmds {
 			this.pluginInterface = host.Interface;
 			this.commands = host.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
 				.Where(method => method.GetCustomAttribute<CommandAttribute>() != null)
-				.Select(m => new PluginCommand(host, m, host.DisplayPluginCommandHelp, host.Util.SendChatError))
+				.Select(m => new PluginCommand(host, m, host.DisplayPluginCommandHelp, host.SendChatError))
 				.ToList();
 			this.AddCommandHandlers();
 		}

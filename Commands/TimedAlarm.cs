@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 using Dalamud.Plugin;
 
@@ -6,6 +7,9 @@ using TinyCmds.Attributes;
 
 namespace TinyCmds {
 	public partial class TinyCmdsPlugin: IDalamudPlugin {
+
+		private static readonly Regex timespecMatcher = new(@"^\s*((?:\d+h)?)(\d+)([hm]?)\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
 		[Command("/timer")]
 		[Arguments("delay", "name")]
 		[Summary("Set an in-game alarm to go off AFTER a certain amount of time, instead of AT a given time")]
@@ -21,9 +25,34 @@ namespace TinyCmds {
 			DateTime now = DateTime.Now;
 			string timespec = args[0];
 			string name = args[1];
-			(int hours, int minutes) = PluginUtil.ParseTimespecString(timespec);
+			int hours = 0;
+			int minutes = 0;
+			if (string.IsNullOrEmpty(timespec)) {
+				this.SendServerChat($"/{command.TrimStart('/')} -h");
+				return;
+			}
+			Match match = timespecMatcher.Match(timespec);
+			if (match.Success) {
+				string
+					a = match.Groups[1]?.Captures[0]?.Value?.ToLower() ?? "",
+					b = match.Groups[2]?.Captures[0]?.Value?.ToLower() ?? "",
+					c = match.Groups[3]?.Captures[0]?.Value?.ToLower() ?? "";
+				if (a.Length > 0) {
+					// Hours and minutes BOTH
+					hours = int.Parse(a.TrimEnd('h'));
+					minutes = int.Parse(b);
+				}
+				else if (c.Equals("h")) {
+					// Hours ONLY
+					hours = int.Parse(b);
+				}
+				else {
+					// Minutes ONLY
+					minutes = int.Parse(b);
+				}
+			}
 			if (hours < 1 && minutes < 1) {
-				this.Util.SendChatError("A timer must delay for at least one minute");
+				this.SendChatError("A timer must delay for at least one minute");
 				return;
 			}
 			int futureMinutes = now.Minute + minutes;
@@ -32,12 +61,12 @@ namespace TinyCmds {
 				futureMinutes %= 60;
 			}
 			if (hours > 23) {
-				this.Util.SendChatError("A timer's total delay cannot be more than 23:59");
+				this.SendChatError("A timer's total delay cannot be more than 23:59");
 				return;
 			}
 			int futureHours = (now.Hour + hours) % 24;
 			string cmd = $"/alarm \"{name}\" lt {futureHours:D2}{futureMinutes:D2}";
-			this.Util.SendServerChat(cmd, flags["d"] || flags["v"], flags["d"]);
+			this.SendServerChat(cmd, flags["d"] || flags["v"], flags["d"]);
 		}
 	}
 }

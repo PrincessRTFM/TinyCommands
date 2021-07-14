@@ -12,13 +12,33 @@ namespace TinyCmds {
 		public void PluginDebugCommand(string command, string[] args, FlagMap flags) {
 			string jobName = this.Interface.ClientState.LocalPlayer.ClassJob.GameData.Abbreviation.ToString().ToUpper();
 			uint jobId = this.Interface.ClientState.LocalPlayer.ClassJob.Id;
-			this.Util.SendPrefixedChat(PluginUtil.Colour.GREY, "Received ", PluginUtil.Colour.BROWN, flags.Count, PluginUtil.Colour.GREY, " flags", PluginUtil.Colour.NONE);
-			this.Util.SendDirectChat(PluginUtil.Colour.INDIGO, string.Join(" ", flags.Keys), PluginUtil.Colour.NONE);
-			this.Util.SendPrefixedChat(PluginUtil.Colour.GREY, "Received ", PluginUtil.Colour.BROWN, args.Length, PluginUtil.Colour.GREY, " arguments", PluginUtil.Colour.NONE);
+			this.SendPrefixedChat(
+				ChatColour.GREY,
+				"Received ",
+				ChatColour.BROWN,
+				flags.Count,
+				ChatColour.GREY,
+				" flags",
+				ChatColour.NONE
+			);
+			this.SendDirectChat(
+				ChatColour.INDIGO,
+				string.Join(" ", flags.Keys),
+				ChatColour.NONE
+			);
+			this.SendPrefixedChat(
+				ChatColour.GREY,
+				"Received ",
+				ChatColour.BROWN,
+				args.Length,
+				ChatColour.GREY,
+				" arguments",
+				ChatColour.NONE
+			);
 			foreach (string arg in args) {
-				this.Util.SendDirectChat(PluginUtil.Colour.INDIGO, arg, PluginUtil.Colour.NONE);
+				this.SendDirectChat(ChatColour.INDIGO, arg, ChatColour.NONE);
 			}
-			this.Util.SendPrefixedChat($"Current job is {jobName} ({jobId})");
+			this.SendPrefixedChat($"Current job is {jobName} ({jobId})");
 		}
 	}
 }

@@ -55,7 +55,7 @@ namespace TinyCmds {
 			}
 			public void Dispatch(string command, string argline) {
 				try {
-					(FlagMap flags, string rawArgs) = PluginUtil.ExtractFlags(argline);
+					(FlagMap flags, string rawArgs) = TinyCmdsPlugin.ExtractFlags(argline);
 					if (flags["h"]) {
 						this.helper(null, new string[] { command }, flags);
 						return;
@@ -64,7 +64,7 @@ namespace TinyCmds {
 						this.handler(command, new string[] { rawArgs }, flags);
 					}
 					else {
-						string[] args = PluginUtil.ShellParse(rawArgs);
+						string[] args = TinyCmdsPlugin.ShellParse(rawArgs);
 						if (args.Length < this.MinArgs) {
 							this.error("Not enough arguments");
 							this.helper(null, new string[] { command }, flags);

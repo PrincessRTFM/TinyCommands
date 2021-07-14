@@ -22,24 +22,24 @@ namespace TinyCmds {
 			int gp = player.CurrentGp;
 			if (player.MaxGp < 1) {
 				// presumably not a gathering job, or maybe they have none unlocked - is MaxGp >0 when DoL is unlocked but current job is different?
-				this.Util.Debug("You have no GP");
+				this.Debug("You have no GP");
 			}
 			else if (flags["c"]) {
 				if (player.CurrentGp >= player.MaxGp) {
 					if (arg.Length > 0) {
-						this.Util.SendServerChat(arg);
+						this.SendServerChat(arg);
 					}
 					else {
-						this.Util.SendPrefixedChat(PluginUtil.Colour.GREEN, $"GP is at capacity ({gp})", PluginUtil.Colour.NONE);
+						this.SendPrefixedChat(ChatColour.GREEN, $"GP is at capacity ({gp})", ChatColour.NONE);
 					}
 				}
 				else if (arg.Length < 1) {
-					this.Util.SendPrefixedChat(PluginUtil.Colour.ORANGE, $"GP is below capacity ({gp})", PluginUtil.Colour.NONE);
+					this.SendPrefixedChat(ChatColour.ORANGE, $"GP is below capacity ({gp})", ChatColour.NONE);
 				}
 			}
 			else if (flags["g"] || flags["l"]) {
 				if (arg.Length < 1) {
-					this.Util.SendChatError("-g and -l both require a number to compare your current GP against");
+					this.SendChatError("-g and -l both require a number to compare your current GP against");
 				}
 				else {
 					string num = arg.Split()[0];
@@ -48,42 +48,42 @@ namespace TinyCmds {
 						if (flags["g"]) {
 							if (gp >= compareTo) {
 								if (cmd.Length > 0) {
-									this.Util.SendServerChat(cmd);
+									this.SendServerChat(cmd);
 								}
 								else {
-									this.Util.SendPrefixedChat(PluginUtil.Colour.GREEN, $"GP is at least {compareTo} ({gp})", PluginUtil.Colour.NONE);
+									this.SendPrefixedChat(ChatColour.GREEN, $"GP is at least {compareTo} ({gp})", ChatColour.NONE);
 								}
 							}
 							else if (cmd.Length < 1) {
-								this.Util.SendPrefixedChat(PluginUtil.Colour.ORANGE, $"GP is too low ({gp})", PluginUtil.Colour.NONE);
+								this.SendPrefixedChat(ChatColour.ORANGE, $"GP is too low ({gp})", ChatColour.NONE);
 							}
 						}
 						else if (flags["l"]) {
 							if (gp < compareTo) {
 								if (cmd.Length > 0) {
-									this.Util.SendServerChat(cmd);
+									this.SendServerChat(cmd);
 								}
 								else {
-									this.Util.SendPrefixedChat(PluginUtil.Colour.GREEN, $"GP is below {compareTo} ({gp})", PluginUtil.Colour.NONE);
+									this.SendPrefixedChat(ChatColour.GREEN, $"GP is below {compareTo} ({gp})", ChatColour.NONE);
 								}
 							}
 							else if (cmd.Length < 1) {
-								this.Util.SendPrefixedChat(PluginUtil.Colour.ORANGE, $"GP is too high ({gp})", PluginUtil.Colour.NONE);
+								this.SendPrefixedChat(ChatColour.ORANGE, $"GP is too high ({gp})", ChatColour.NONE);
 							}
 						}
 					}
 					else {
-						this.Util.SendChatError($"Couldn't parse \"{num}\" as an integer");
+						this.SendChatError($"Couldn't parse \"{num}\" as an integer");
 					}
 				}
 			}
 			else {
-				this.Util.SendChatError("Expected one of -c, -g, or -l, but found none");
-				this.Util.SendPrefixedChat(
+				this.SendChatError("Expected one of -c, -g, or -l, but found none");
+				this.SendPrefixedChat(
 					"(Try ",
-					PluginUtil.Colour.TEAL,
+					ChatColour.TEAL,
 					$"/{command.TrimStart('/')} -h",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					" for help)"
 				);
 			}

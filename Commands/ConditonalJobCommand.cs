@@ -26,25 +26,25 @@ namespace TinyCmds {
 			bool match = wantedJobNames.Split(',').Contains(currentJobName);
 			if (match ^ invert) {
 				if (cmd.Length > 0) {
-					this.Util.SendServerChat(cmd);
+					this.SendServerChat(cmd);
 				}
 				else {
-					this.Util.SendPrefixedChat(
-						PluginUtil.Colour.GREEN,
+					this.SendPrefixedChat(
+						ChatColour.GREEN,
 						"You are currently a ",
-						PluginUtil.Colour.PALEGREEN,
+						ChatColour.PALEGREEN,
 						currentJobName,
-						PluginUtil.Colour.NONE
+						ChatColour.NONE
 					);
 				}
 			}
 			else if (cmd.Length < 1) {
-				this.Util.SendPrefixedChat(
-					PluginUtil.Colour.ORANGE,
+				this.SendPrefixedChat(
+					ChatColour.ORANGE,
 					"You are currently a ",
-					PluginUtil.Colour.YELLOW,
+					ChatColour.YELLOW,
 					currentJobName,
-					PluginUtil.Colour.NONE
+					ChatColour.NONE
 				);
 			}
 		}

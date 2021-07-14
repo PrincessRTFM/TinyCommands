@@ -13,42 +13,42 @@ namespace TinyCmds {
 		[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
 		public void DisplayPluginCommandHelp(string command, string[] args, FlagMap flags) {
 			if (args.Length < 1) {
-				this.Util.SendPrefixedChat($"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
-				this.Util.SendPrefixedChat(
+				this.SendPrefixedChat($"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
+				this.SendPrefixedChat(
 					"These flags can be bundled into one argument, such that ",
-					PluginUtil.Colour.YELLOW,
+					ChatColour.YELLOW,
 					"-va",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					" will set both the ",
-					PluginUtil.Colour.BROWN,
+					ChatColour.BROWN,
 					"v",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					" and ",
-					PluginUtil.Colour.BROWN,
+					ChatColour.BROWN,
 					"a",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					" flags."
 				);
-				this.Util.SendPrefixedChat(
+				this.SendPrefixedChat(
 					"All plugin commands accept ",
-					PluginUtil.Colour.YELLOW,
+					ChatColour.YELLOW,
 					"-h",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					" to display their built-in help message."
 				);
-				this.Util.SendPrefixedChat(
+				this.SendPrefixedChat(
 					"To list all commands, use ",
-					PluginUtil.Colour.TEAL,
+					ChatColour.TEAL,
 					"/tinycmds",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					", optionally with ",
-					PluginUtil.Colour.YELLOW,
+					ChatColour.YELLOW,
 					"-a",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					" to show their aliases and/or ",
-					PluginUtil.Colour.YELLOW,
+					ChatColour.YELLOW,
 					"-v",
-					PluginUtil.Colour.NONE,
+					ChatColour.NONE,
 					" to show their help messages."
 				);
 				return;
@@ -57,25 +57,25 @@ namespace TinyCmds {
 				string wanted = listing.TrimStart('/').ToLower();
 				foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
 					if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {
-						this.Util.SendPrefixedChat(PluginUtil.Colour.LIGHTBLUE, cmd.Usage, PluginUtil.Colour.NONE);
+						this.SendPrefixedChat(ChatColour.LIGHTBLUE, cmd.Usage, ChatColour.NONE);
 						if (flags["a"] && cmd.Aliases.Length > 0) {
-							this.Util.SendPrefixedChat(
-								PluginUtil.Colour.GREY,
+							this.SendPrefixedChat(
+								ChatColour.GREY,
 								string.Join(", ", cmd.Aliases),
-								PluginUtil.Colour.NONE
+								ChatColour.NONE
 							);
 						}
 						foreach (string line in cmd.HelpLines) {
-							this.Util.SendPrefixedChat(
-								PluginUtil.Colour.PALEGREEN,
+							this.SendPrefixedChat(
+								ChatColour.PALEGREEN,
 								line,
-								PluginUtil.Colour.NONE
+								ChatColour.NONE
 							);
 						}
 						return;
 					}
 				}
-				this.Util.SendChatError($"Couldn't find plugin command '/{wanted}'");
+				this.SendChatError($"Couldn't find plugin command '/{wanted}'");
 			}
 		}
 	}
