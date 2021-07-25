@@ -36,4 +36,9 @@
 		JOB = ChatColourKey.INDIGO,
 		COMMAND = ChatColourKey.PURPLE,
 	}
+	public enum ChatGlow: ushort {
+		RESET = ChatColourKey.NONE,
+		CONDITION_FAILED = ChatColourKey.YELLOW,
+		CONDITION_PASSED = ChatColourKey.BRIGHTGREEN,
+	}
 }

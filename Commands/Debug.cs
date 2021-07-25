@@ -13,7 +13,7 @@ namespace TinyCmds {
 			string[] args = ShellParse(argline);
 			string jobName = this.Interface.ClientState.LocalPlayer.ClassJob.GameData.Abbreviation.ToString().ToUpper();
 			uint jobId = this.Interface.ClientState.LocalPlayer.ClassJob.Id;
-			this.SendPrefixedChat(
+			this.ShowPrefixedChatMessage(
 				ChatColour.QUIET,
 				"Received ",
 				ChatColour.DEBUG,
@@ -22,12 +22,12 @@ namespace TinyCmds {
 				" flags",
 				ChatColour.RESET
 			);
-			this.SendDirectChat(
+			this.ShowChatMessage(
 				ChatColour.DEBUG,
 				string.Join(" ", flags.Keys),
 				ChatColour.RESET
 			);
-			this.SendPrefixedChat(
+			this.ShowPrefixedChatMessage(
 				ChatColour.QUIET,
 				"Received ",
 				ChatColour.DEBUG,
@@ -37,9 +37,9 @@ namespace TinyCmds {
 				ChatColour.RESET
 			);
 			foreach (string arg in args) {
-				this.SendDirectChat(ChatColour.DEBUG, arg, ChatColour.RESET);
+				this.ShowChatMessage(ChatColour.DEBUG, arg, ChatColour.RESET);
 			}
-			this.SendPrefixedChat(
+			this.ShowPrefixedChatMessage(
 				"Current job is ",
 				ChatColour.JOB,
 				jobName,

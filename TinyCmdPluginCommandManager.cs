@@ -22,8 +22,8 @@ namespace TinyCmds {
 		public TinyCmdPluginCommandManager(TinyCmdsPlugin host) {
 			this.pluginInterface = host.Interface;
 			this.commands = host.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
-				.Where(method => method.GetCustomAttribute<CommandAttribute>() != null)
-				.Select(m => new PluginCommand(host, m, host.DisplayPluginCommandHelp, host.SendChatError))
+				.Where(method => method.GetCustomAttribute<CommandAttribute>() is not null)
+				.Select(m => new PluginCommand(host, m, host.DisplayPluginCommandHelp, host.ShowPrefixedChatError))
 				.ToList();
 			this.AddCommandHandlers();
 		}

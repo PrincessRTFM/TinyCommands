@@ -14,13 +14,13 @@ namespace TinyCmds {
 		)]
 		public void ListPluginCommands(string command, string args, FlagMap flags, ref bool showHelp) {
 			foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
-				this.SendPrefixedChat(
+				this.ShowPrefixedChatMessage(
 					ChatColour.USAGE_TEXT,
 					cmd.Usage,
 					ChatColour.RESET
 				);
 				if (flags["a"] && cmd.Aliases.Length > 0) {
-					this.SendPrefixedChat(
+					this.ShowPrefixedChatMessage(
 						ChatColour.QUIET,
 						string.Join(", ", cmd.Aliases),
 						ChatColour.RESET
@@ -28,7 +28,7 @@ namespace TinyCmds {
 				}
 				if (flags["v"]) {
 					foreach (string line in cmd.HelpLines) {
-						this.SendPrefixedChat(
+						this.ShowPrefixedChatMessage(
 							ChatColour.HELP_TEXT,
 							line,
 							ChatColour.RESET

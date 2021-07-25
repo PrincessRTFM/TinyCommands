@@ -13,8 +13,8 @@ namespace TinyCmds {
 		[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
 		public void DisplayPluginCommandHelp(string command, string args, FlagMap flags, ref bool showHelp) {
 			if (args.Length < 1) {
-				this.SendPrefixedChat($"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
-				this.SendPrefixedChat(
+				this.ShowPrefixedChatMessage($"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
+				this.ShowPrefixedChatMessage(
 					"These flags can be bundled into one argument, such that ",
 					ChatColour.HIGHLIGHT,
 					"-va",
@@ -29,14 +29,14 @@ namespace TinyCmds {
 					ChatColour.RESET,
 					" flags."
 				);
-				this.SendPrefixedChat(
+				this.ShowPrefixedChatMessage(
 					"All plugin commands accept ",
 					ChatColour.HIGHLIGHT,
 					"-h",
 					ChatColour.RESET,
 					" to display their built-in help message."
 				);
-				this.SendPrefixedChat(
+				this.ShowPrefixedChatMessage(
 					"To list all commands, use ",
 					ChatColour.COMMAND,
 					"/tinycmds",
@@ -57,20 +57,20 @@ namespace TinyCmds {
 				string wanted = listing.TrimStart('/').ToLower();
 				foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
 					if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {
-						this.SendPrefixedChat(
+						this.ShowPrefixedChatMessage(
 							ChatColour.USAGE_TEXT,
 							cmd.Usage,
 							ChatColour.RESET
 						);
 						if (flags["a"] && cmd.Aliases.Length > 0) {
-							this.SendPrefixedChat(
+							this.ShowPrefixedChatMessage(
 								ChatColour.QUIET,
 								string.Join(", ", cmd.Aliases),
 								ChatColour.RESET
 							);
 						}
 						foreach (string line in cmd.HelpLines) {
-							this.SendPrefixedChat(
+							this.ShowPrefixedChatMessage(
 								ChatColour.HELP_TEXT,
 								line,
 								ChatColour.RESET
@@ -79,7 +79,7 @@ namespace TinyCmds {
 						return;
 					}
 				}
-				this.SendChatError($"Couldn't find plugin command '/{wanted}'");
+				this.ShowPrefixedChatError($"Couldn't find plugin command '/{wanted}'");
 			}
 		}
 	}

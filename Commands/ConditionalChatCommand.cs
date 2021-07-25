@@ -58,7 +58,7 @@ namespace TinyCmds {
 				}
 			}
 			else {
-				this.SendPrefixedChat(msgCol, msg, ChatColour.RESET);
+				this.ShowPrefixedChatMessage(msgCol, msg, ChatColour.RESET);
 			}
 		}
 	}

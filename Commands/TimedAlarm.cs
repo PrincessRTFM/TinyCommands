@@ -52,7 +52,7 @@ namespace TinyCmds {
 				}
 			}
 			if (hours < 1 && minutes < 1) {
-				this.SendChatError("A timer must delay for at least one minute");
+				this.ShowPrefixedChatError("A timer must delay for at least one minute");
 				return;
 			}
 			int futureMinutes = now.Minute + minutes;
@@ -61,7 +61,7 @@ namespace TinyCmds {
 				futureMinutes %= 60;
 			}
 			if (hours > 23) {
-				this.SendChatError("A timer's total delay cannot be more than 23:59");
+				this.ShowPrefixedChatError("A timer's total delay cannot be more than 23:59");
 				return;
 			}
 			int futureHours = (now.Hour + hours) % 24;

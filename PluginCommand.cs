@@ -9,7 +9,7 @@ using TinyCmds.Attributes;
 namespace TinyCmds {
 	public partial class TinyCmdPluginCommandManager {
 		internal class PluginCommand {
-			internal delegate void PluginCommandInvocationErrorHandlerDelegate(string error);
+			internal delegate void PluginCommandInvocationErrorHandlerDelegate(params object[] payloads);
 			private readonly PluginCommandDelegate handler, helper;
 			private readonly PluginCommandInvocationErrorHandlerDelegate error;
 			public CommandInfo MainCommandInfo => new(this.Dispatch) {
@@ -65,7 +65,12 @@ namespace TinyCmds {
 				}
 				catch (Exception e) {
 					while (e is not null) {
-						this.error($"{e.GetType().Name}: {e.Message}\nat {e.TargetSite.DeclaringType.FullName} in {e.TargetSite.DeclaringType.Assembly}");
+						this.error(
+							$"{e.GetType().Name}: {e.Message}\n",
+							ChatColour.QUIET,
+							$"at {e.TargetSite.DeclaringType.FullName} in {e.TargetSite.DeclaringType.Assembly}",
+							ChatColour.RESET
+						);
 						e = e.InnerException;
 					}
 				}

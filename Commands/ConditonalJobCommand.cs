@@ -32,23 +32,23 @@ namespace TinyCmds {
 					this.SendServerChat(cmd);
 				}
 				else {
-					this.SendPrefixedChat(
+					this.ShowPrefixedChatMessage(
 						ChatColour.CONDITION_PASSED,
 						"You are currently a ",
-						this.Glow(ChatColour.HIGHLIGHT_PASSED),
+						ChatGlow.CONDITION_PASSED,
 						currentJobName,
-						this.Glow(ChatColour.RESET),
+						ChatGlow.RESET,
 						ChatColour.RESET
 					);
 				}
 			}
 			else if (cmd.Length < 1) {
-				this.SendPrefixedChat(
+				this.ShowPrefixedChatMessage(
 					ChatColour.CONDITION_FAILED,
 					"You are currently a ",
-					this.Glow(ChatColour.HIGHLIGHT_FAILED),
+					ChatGlow.CONDITION_FAILED,
 					currentJobName,
-					this.Glow(ChatColour.RESET),
+					ChatGlow.RESET,
 					ChatColour.RESET
 				);
 			}

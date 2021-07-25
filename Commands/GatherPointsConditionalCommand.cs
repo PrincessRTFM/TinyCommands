@@ -28,24 +28,24 @@ namespace TinyCmds {
 						this.SendServerChat(arg);
 					}
 					else {
-						this.SendPrefixedChat(
+						this.ShowPrefixedChatMessage(
 							ChatColour.CONDITION_PASSED,
 							"GP is at capacity (",
-							this.Glow(ChatColour.HIGHLIGHT_PASSED),
+							ChatGlow.CONDITION_PASSED,
 							gp,
-							this.Glow(ChatColour.RESET),
+							ChatGlow.RESET,
 							")",
 							ChatColour.RESET
 						);
 					}
 				}
 				else if (arg.Length < 1) {
-					this.SendPrefixedChat(
+					this.ShowPrefixedChatMessage(
 						ChatColour.CONDITION_FAILED,
 						"GP is below capacity (",
-						this.Glow(ChatColour.HIGHLIGHT_FAILED),
+						ChatGlow.CONDITION_FAILED,
 						gp,
-						this.Glow(ChatColour.RESET),
+						ChatGlow.RESET,
 						")",
 						ChatColour.RESET
 					);
@@ -53,7 +53,7 @@ namespace TinyCmds {
 			}
 			else if (flags["g"] || flags["l"]) {
 				if (arg.Length < 1) {
-					this.SendChatError("-g and -l both require a number to compare your current GP against");
+					this.ShowPrefixedChatError("-g and -l both require a number to compare your current GP against");
 				}
 				else {
 					string num = arg.Split()[0];
@@ -65,24 +65,24 @@ namespace TinyCmds {
 									this.SendServerChat(cmd);
 								}
 								else {
-									this.SendPrefixedChat(
+									this.ShowPrefixedChatMessage(
 										ChatColour.CONDITION_PASSED,
 										$"GP is at least {compareTo} (",
-										this.Glow(ChatColour.HIGHLIGHT_PASSED),
+										ChatGlow.CONDITION_PASSED,
 										gp,
-										this.Glow(ChatColour.RESET),
+										ChatGlow.RESET,
 										")",
 										ChatColour.RESET
 									);
 								}
 							}
 							else if (cmd.Length < 1) {
-								this.SendPrefixedChat(
+								this.ShowPrefixedChatMessage(
 									ChatColour.CONDITION_FAILED,
 									$"GP is below {compareTo} (",
-									this.Glow(ChatColour.HIGHLIGHT_FAILED),
+									ChatGlow.CONDITION_FAILED,
 									gp,
-									this.Glow(ChatColour.RESET),
+									ChatGlow.RESET,
 									")",
 									ChatColour.RESET
 								);
@@ -94,24 +94,24 @@ namespace TinyCmds {
 									this.SendServerChat(cmd);
 								}
 								else {
-									this.SendPrefixedChat(
+									this.ShowPrefixedChatMessage(
 										ChatColour.CONDITION_PASSED,
 										$"GP is below {compareTo} (",
-										this.Glow(ChatColour.HIGHLIGHT_PASSED),
+										ChatGlow.CONDITION_PASSED,
 										gp,
-										this.Glow(ChatColour.RESET),
+										ChatGlow.RESET,
 										")",
 										ChatColour.RESET
 									);
 								}
 							}
 							else if (cmd.Length < 1) {
-								this.SendPrefixedChat(
+								this.ShowPrefixedChatMessage(
 									ChatColour.CONDITION_FAILED,
 									$"GP is above {compareTo} (",
-									this.Glow(ChatColour.HIGHLIGHT_FAILED),
+									ChatGlow.CONDITION_FAILED,
 									gp,
-									this.Glow(ChatColour.RESET),
+									ChatGlow.RESET,
 									")",
 									ChatColour.RESET
 								);
@@ -119,13 +119,13 @@ namespace TinyCmds {
 						}
 					}
 					else {
-						this.SendChatError($"Couldn't parse \"{num}\" as an integer");
+						this.ShowPrefixedChatError($"Couldn't parse \"{num}\" as an integer");
 						showHelp = true;
 					}
 				}
 			}
 			else {
-				this.SendChatError("Expected one of -c, -g, or -l, but found none");
+				this.ShowPrefixedChatError("Expected one of -c, -g, or -l, but found none");
 				showHelp = true;
 			}
 		}
