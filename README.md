@@ -148,3 +148,28 @@ Fun fact: the inspiration for this command was that I wanted to easily set an al
 - `-v`: display the `/alarm` command that was generated, then run it
 - `-d`: display the generated `/alarm` command, but _don't_ run it
 
+#### `/echoerr`
+
+##### Aliases
+
+- `/echoerror`
+- `/error`
+
+##### Description
+
+It works just like the builtin `/echo` command, but it sends messages on the "error" channel instead. The idea is to be used with this plugin's conditional commands so that an emote macro can warn you if you need to have a target but don't, for example. An actual implementation of that would be simple, and might look similar to this:
+
+```
+/macroicon Poke emote
+/ifcmd -Tf /target <f>
+/ifcmd -t /poke motion
+/ifcmd -t /em prods <t> gently to get their attention
+/ifcmd -T /error You must have a target (or focus target) to use this!
+```
+
+This example macro would effectively change the message for the `/poke` animation, and also prevent you from using it unless you have a target. It doesn't make much sense to prod the air, after all.
+
+##### Flags
+
+- `-p`: display the error message with the plugin's usual prefix text, instead of as a "bare" message
+
