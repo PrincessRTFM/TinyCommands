@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace TinyCmds {
 	public class Configuration: IPluginConfiguration {
-		public int Version { get; set; }
+		public int Version { get; set; } = 0;
 
 		// Add any other properties or methods here.
 		[JsonIgnore] private DalamudPluginInterface pluginInterface;
