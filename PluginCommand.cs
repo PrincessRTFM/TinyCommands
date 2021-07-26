@@ -46,7 +46,7 @@ namespace TinyCmds {
 			this.Aliases = method.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? new string[0];
 			this.ShowInDalamud = method.GetCustomAttribute<DoNotShowInHelpAttribute>() is null || string.IsNullOrEmpty(this.Summary);
 			this.ShowInListing = method.GetCustomAttribute<HideInCommandListingAttribute>() is null;
-			this.handler = Delegate.CreateDelegate(typeof(PluginCommandDelegate), instance, method) as PluginCommandDelegate;
+			this.handler = (PluginCommandDelegate)Delegate.CreateDelegate(typeof(PluginCommandDelegate), instance, method);
 			this.helper = printHelp;
 			this.error = onError;
 		}
