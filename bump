@@ -13,9 +13,9 @@ unless ($path) {
 	exit 2;
 }
 
-my $ver = lc(shift @ARGV || 'none');
+my $userVer = lc(shift @ARGV || 'none');
 my $numVer;
-if ($ver !~ m/^(?:\d+(?:\.\d+)*|major|minor|patch|none)$/) {
+if ($userVer !~ m/^(?:\d+(?:\.\d+)*|major|minor|patch|none)$/) {
 	print STDERR qq{Invalid version, must be dot-delimited numeric or keyword "major", "minor", "patch", "none"\n};
 	exit 3;
 }
@@ -30,28 +30,33 @@ my @lines = map { s/\r?\n$//r } $file->getlines;
 for (my $i = 0; $i < @lines; ++$i) {
 	my $line = $lines[$i];
 	if ($line =~ m{^(\s*)<Version>(\d+(?:\.\d+)*)</Version>}i) {
-		my ($lead, $old) = ($1, $2, '');
-		my @parts = (split(/\./, $old), 0, 0, 0);
-		if ($ver eq "major") {
+		my ($lead, $old) = ($1, $2);
+		my @parts = split /\./, $old;
+		if ($userVer eq "major") {
 			++$parts[0];
 			$parts[1] = $parts[2] = 0;
 		}
-		elsif ($ver eq "minor") {
+		elsif ($userVer eq "minor") {
 			++$parts[1];
 			$parts[2] = 0;
 		}
-		elsif ($ver eq "patch") {
+		elsif ($userVer eq "patch") {
 			++$parts[2];
 		}
-		elsif ($ver eq "none") {
-			printf "Current version is %s\n", $old;
-			exit 0;
+		elsif ($userVer eq "none") {
+			# nop
 		}
 		else {
-			@parts = (split(/\./, $ver), 0, 0, 0);
+			@parts = split /\./, $userVer;
 		}
-		my $numVer = join '.', @parts[0, 1, 2];
-		print "Updating from version $old to $numVer...\n";
+		$parts[$_] //= 0 for 0..2;
+		$numVer = join '.', @parts;
+		if ($userVer eq "none") {
+			print "Current version is $numVer\n";
+		}
+		else {
+			print "Updating from version $old to $numVer...\n";
+		}
 		$lines[$i] = "$lead<Version>$numVer</Version>";
 	}
 }
@@ -64,7 +69,7 @@ $file->close;
 
 if (@ARGV && $numVer) {
 	system qw/git add/, $path;
-	system qw/git commit -m/, @ARGV;
+	system qw/git commit/, @ARGV;
 	system qw/git tag -a/, "v$numVer";
 }
 
