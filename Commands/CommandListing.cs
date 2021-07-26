@@ -1,9 +1,11 @@
 ﻿using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/tinycmds")]
 		[Arguments()]
 		[Summary("List all plugin commands, along with their help messages")]
@@ -13,7 +15,7 @@ namespace TinyCmds {
 			"Use \"-a\" to include command aliases, \"-v\" to include help messages, or both (\"-av\" or \"-va\" or separately) for both."
 		)]
 		public void ListPluginCommands(string command, string args, FlagMap flags, ref bool showHelp) {
-			foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
+			foreach (PluginCommand cmd in this.CommandManager.Commands) {
 				this.ShowPrefixedChatMessage(
 					ChatColour.USAGE_TEXT,
 					cmd.Usage,

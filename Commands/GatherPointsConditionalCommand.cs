@@ -3,9 +3,11 @@ using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/ifgp")]
 		[Arguments("condition flag", "GP to compare?", "command to run...?")]
 		[Summary("Run a chat command (or directly send a message) only if GP meets condition")]

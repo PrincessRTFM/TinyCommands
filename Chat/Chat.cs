@@ -2,13 +2,14 @@
 using System.Diagnostics;
 using System.Linq;
 
-using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin;
 
+using TinyCmds.Chat;
+
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 
 		internal List<Payload> GenerateMessagePayloads(params object[] payloads) {
 			return new List<Payload>(payloads
@@ -73,7 +74,7 @@ namespace TinyCmds {
 			if (displayInChatlog || dryRun)
 				this.ShowPrefixedChatMessage(ChatColour.OUTGOING_TEXT, line, ChatColour.RESET);
 			if (!dryRun)
-				this.common.Functions.Chat.SendMessage(line);
+				this.Common.Functions.Chat.SendMessage(line);
 		}
 	}
 }

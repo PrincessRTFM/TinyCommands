@@ -3,9 +3,11 @@
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/tinyhelp")]
 		[Arguments("command...?")]
 		[Summary("Displays usage/help for the plugin's commands")]
@@ -53,9 +55,9 @@ namespace TinyCmds {
 				);
 				return;
 			}
-			foreach (string listing in ShellParse(args)) {
+			foreach (string listing in ArgumentParser.ShellParse(args)) {
 				string wanted = listing.TrimStart('/').ToLower();
-				foreach (TinyCmdPluginCommandManager.PluginCommand cmd in this.CommandManager.Commands) {
+				foreach (PluginCommand cmd in this.CommandManager.Commands) {
 					if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {
 						this.ShowPrefixedChatMessage(
 							ChatColour.USAGE_TEXT,

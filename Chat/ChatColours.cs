@@ -1,4 +1,4 @@
-﻿namespace TinyCmds {
+﻿namespace TinyCmds.Chat {
 	public enum ChatColourKey: ushort {
 		NONE = 0,
 		WHITE = 1,

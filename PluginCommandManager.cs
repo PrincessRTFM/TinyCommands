@@ -9,9 +9,8 @@ using Dalamud.Plugin;
 using TinyCmds.Attributes;
 
 namespace TinyCmds {
-	public partial class TinyCmdPluginCommandManager: IDisposable {
+	public class PluginCommandManager: IDisposable {
 
-		internal delegate void PluginCommandDelegate(string command, string rawArguments, FlagMap flags, ref bool showHelp);
 		private readonly DalamudPluginInterface pluginInterface;
 		private readonly List<PluginCommand> commands;
 
@@ -19,7 +18,7 @@ namespace TinyCmds {
 
 		private readonly bool disposed = false;
 
-		public TinyCmdPluginCommandManager(TinyCmdsPlugin host) {
+		public PluginCommandManager(TinyCmds host) {
 			this.pluginInterface = host.Interface;
 			this.commands = host.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
 				.Where(method => method.GetCustomAttribute<CommandAttribute>() is not null)
@@ -58,7 +57,7 @@ namespace TinyCmds {
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-		~TinyCmdPluginCommandManager() {
+		~PluginCommandManager() {
 			this.Dispose(false);
 		}
 		#endregion

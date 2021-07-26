@@ -1,9 +1,10 @@
 ﻿using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/noop")]
 		[Summary("Does absolutely nothing. At all. Literally not a single thing.")]
 		[Aliases("/nop", "/null")]

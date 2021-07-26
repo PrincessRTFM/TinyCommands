@@ -5,8 +5,8 @@ using System.Text.RegularExpressions;
 
 using Dalamud.Plugin;
 
-namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+namespace TinyCmds.Utils {
+	public class ArgumentParser {
 
 		// From https://metacpan.org/dist/Text-ParseWords/source/lib/Text/ParseWords.pm - I really hope this works :/
 		private static readonly Regex wordparser = new(@"^

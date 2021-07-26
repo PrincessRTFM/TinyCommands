@@ -10,7 +10,7 @@ using XivCommon;
 
 namespace TinyCmds {
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Plugin command methods are delegates")]
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 
 		public string Name => "TinyCommands";
 		public readonly string Prefix = "TinyCmds";
@@ -18,19 +18,19 @@ namespace TinyCmds {
 
 		private bool disposed = false;
 
-		private XivCommonBase common;
+		internal XivCommonBase Common { get; private set; }
 
 		internal DalamudPluginInterface Interface { get; private set; }
 		internal Configuration Config { get; private set; }
-		internal TinyCmdPluginCommandManager CommandManager { get; private set; }
+		internal PluginCommandManager CommandManager { get; private set; }
 
 		public void Initialize(DalamudPluginInterface pluginInterface) {
 			this.PluginHelpCommand ??= this.GetType().GetMethod(nameof(DisplayPluginCommandHelp)).GetCustomAttribute<CommandAttribute>().Command;
 			this.Interface = pluginInterface;
 			this.Config = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 			this.Config.Initialize(pluginInterface);
-			this.CommandManager = new TinyCmdPluginCommandManager(this);
-			this.common = new XivCommonBase(this.Interface, Hooks.None); // just need the chat feature to send commands
+			this.CommandManager = new PluginCommandManager(this);
+			this.Common = new XivCommonBase(this.Interface, Hooks.None); // just need the chat feature to send commands
 		}
 
 		#region IDisposable Support
@@ -49,7 +49,7 @@ namespace TinyCmds {
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-		~TinyCmdsPlugin() {
+		~TinyCmds() {
 			this.Dispose(false);
 		}
 		#endregion

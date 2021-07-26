@@ -4,9 +4,10 @@ using System.Text.RegularExpressions;
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 
 		private static readonly Regex timespecMatcher = new(@"^\s*((?:\d+h)?)(\d+)([hm]?)\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 

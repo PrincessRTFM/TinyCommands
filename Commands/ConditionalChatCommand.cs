@@ -3,9 +3,11 @@ using Dalamud.Game.ClientState.Actors;
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/ifcmd")]
 		[Arguments("condition flags", "command to run...?")]
 		[Summary("Run a chat command (or directly send a message) only if a condition is met")]

@@ -2,15 +2,17 @@
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/tinydebug")]
 		[HelpMessage("Specifically for dev use")]
 		[DoNotShowInHelp]
 		[HideInCommandListing]
 		public void PluginDebugCommand(string command, string argline, FlagMap flags, ref bool showHelp) {
-			string[] args = ShellParse(argline);
+			string[] args = ArgumentParser.ShellParse(argline);
 			string jobName = this.Interface.ClientState.LocalPlayer.ClassJob.GameData.Abbreviation.ToString().ToUpper();
 			uint jobId = this.Interface.ClientState.LocalPlayer.ClassJob.Id;
 			this.ShowPrefixedChatMessage(

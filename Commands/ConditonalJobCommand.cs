@@ -3,9 +3,11 @@
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmdsPlugin: IDalamudPlugin {
+	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/ifjob")]
 		[Arguments("'-n'?", "jobs to match against", "command to run...?")]
 		[Summary("Run a chat command (or directly send a message) only when playing certain classes/jobs")]
