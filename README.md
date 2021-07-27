@@ -173,3 +173,17 @@ This example macro would effectively change the message for the `/poke` animatio
 
 - `-p`: display the error message with the plugin's usual prefix text, instead of as a "bare" message
 
+#### `/playsound`
+
+##### Aliases
+
+- `/playsfx`
+
+##### Description
+
+It can be annoying to keep `/echo`ing the `<se.##>` placeholders to find one you want to use for something, especially with the way it clutters up your chatlog. This won't save you from needing to change the ID each time, but at least now it's a single backspace and there's no output message. Unless something goes wrong, like using an invalid index.
+
+##### Flags
+
+None.
+
