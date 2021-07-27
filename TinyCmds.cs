@@ -8,6 +8,8 @@ using TinyCmds.Attributes;
 
 using XivCommon;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+// I cannot fucking WAIT for dalamud net5 so I can use the nullable analysis annotations.
 namespace TinyCmds {
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Plugin command methods are delegates")]
 	public partial class TinyCmds: IDalamudPlugin {

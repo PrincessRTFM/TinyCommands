@@ -8,6 +8,9 @@ using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+// Once net5 plugins are supported, I'll be able to actually handle that properly with the annotations.
+// Until then, just Trust Me™
 namespace TinyCmds {
 	internal delegate void PluginCommandDelegate(string command, string rawArguments, FlagMap flags, ref bool showHelp);
 	internal delegate void PluginCommandInvocationErrorHandlerDelegate(params object[] payloads);
