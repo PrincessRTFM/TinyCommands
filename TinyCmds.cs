@@ -5,6 +5,7 @@ using System.Reflection;
 using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Internal;
 
 using XivCommon;
 
@@ -26,13 +27,16 @@ namespace TinyCmds {
 		internal Configuration Config { get; private set; }
 		internal PluginCommandManager CommandManager { get; private set; }
 
+		internal PlaySound SoundEffect { get; private set; }
+
 		public void Initialize(DalamudPluginInterface pluginInterface) {
 			this.PluginHelpCommand ??= this.GetType().GetMethod(nameof(DisplayPluginCommandHelp)).GetCustomAttribute<CommandAttribute>().Command;
 			this.Interface = pluginInterface;
 			this.Config = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 			this.Config.Initialize(pluginInterface);
-			this.CommandManager = new PluginCommandManager(this);
-			this.Common = new XivCommonBase(this.Interface, Hooks.None); // just need the chat feature to send commands
+			this.CommandManager = new(this);
+			this.Common = new(this.Interface, Hooks.None); // just need the chat feature to send commands
+			this.SoundEffect = new(pluginInterface.TargetModuleScanner);
 		}
 
 		#region IDisposable Support
