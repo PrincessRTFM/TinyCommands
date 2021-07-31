@@ -67,8 +67,8 @@ $file->print(join "\n", @lines);
 $file->print("\n");
 $file->close;
 
+system qw/git add/, $path;
 if (@ARGV && $numVer) {
-	system qw/git add/, $path;
 	system qw/git commit/, @ARGV;
 	system qw/git tag -a/, "v$numVer";
 }
