@@ -11,7 +11,7 @@ namespace TinyCmds {
 		[Command("/ifjob")]
 		[Arguments("'-n'?", "jobs to match against", "command to run...?")]
 		[Summary("Run a chat command (or directly send a message) only when playing certain classes/jobs")]
-		[Aliases("/ifclass", "/whenjob", "/whenclass")]
+		[Aliases("/ifclass", "/whenjob", "/whenclass", "/job", "/class")]
 		[HelpMessage(
 			"Much like /ifcmd and /ifgp, this command executes a given command when the condition is met.",
 			"In this case, the condition is whether or not your current class/job is one of the given set.",

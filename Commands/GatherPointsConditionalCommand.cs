@@ -9,6 +9,7 @@ using TinyCmds.Utils;
 namespace TinyCmds {
 	public partial class TinyCmds: IDalamudPlugin {
 		[Command("/ifgp")]
+		[Aliases("/gp", "/whengp")]
 		[Arguments("condition flag", "GP to compare?", "command to run...?")]
 		[Summary("Run a chat command (or directly send a message) only if GP meets condition")]
 		[HelpMessage(
