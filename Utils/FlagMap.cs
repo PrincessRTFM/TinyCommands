@@ -23,38 +23,22 @@ namespace TinyCmds.Utils {
 				this[key] = true;
 			}
 		}
-		public void Set(params string[] keys) {
-			this.SetAll(keys);
-		}
+		public void Set(params string[] keys) => this.SetAll(keys);
 
-		public void SetAll(IEnumerable<char> keys) {
-			this.SetAll(keys.Select(c => c.ToString()));
-		}
-		public void Set(params char[] keys) {
-			this.SetAll(keys);
-		}
+		public void SetAll(IEnumerable<char> keys) => this.SetAll(keys.Select(c => c.ToString()));
+		public void Set(params char[] keys) => this.SetAll(keys);
 
 		public void ToggleAll(IEnumerable<string> keys) {
 			foreach (string key in keys) {
 				this[key] = !this[key];
 			}
 		}
-		public void Toggle(params string[] keys) {
-			this.ToggleAll(keys);
-		}
+		public void Toggle(params string[] keys) => this.ToggleAll(keys);
 
-		public void ToggleAll(IEnumerable<char> keys) {
-			this.ToggleAll(keys.Select(c => c.ToString()));
-		}
-		public void Toggle(params char[] keys) {
-			this.ToggleAll(keys);
-		}
+		public void ToggleAll(IEnumerable<char> keys) => this.ToggleAll(keys.Select(c => c.ToString()));
+		public void Toggle(params char[] keys) => this.ToggleAll(keys);
 
-		public bool Get(string key) {
-			return this[key];
-		}
-		public bool Get(char key) {
-			return this.Get(key.ToString());
-		}
+		public bool Get(string key) => this[key];
+		public bool Get(char key) => this.Get(key.ToString());
 	}
 }

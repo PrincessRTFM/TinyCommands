@@ -1,13 +1,12 @@
-﻿using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Actors;
-using Dalamud.Plugin;
+﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.Enums;
 
 using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmds: IDalamudPlugin {
+	public static partial class PluginCommands {
 		[Command("/ifcmd")]
 		[Arguments("condition flags", "command to run...?")]
 		[Summary("Run a chat command (or directly send a message) only if a condition is met")]
@@ -17,50 +16,50 @@ namespace TinyCmds {
 			"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
 			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion"
 		)]
-		public void RunChatIfCond(string command, string args, FlagMap flags, ref bool showHelp) {
-			//PlayerCharacter player = this.Interface.ClientState.LocalPlayer;
-			//PartyList party = this.Interface.ClientState.PartyList;
-			Targets targets = this.Interface.ClientState.Targets;
-			Condition cond = this.Interface.ClientState.Condition;
+		public static void RunChatIfCond(string command, string args, FlagMap flags, ref bool showHelp) {
+			if (TinyCmds.client.LocalPlayer is null) {
+				ChatUtil.ShowPrefixedError("Can't find player object - this should be impossible unless you're not logged in.");
+				return;
+			}
 			ChatColour msgCol = ChatColour.CONDITION_FAILED;
 			string msg = "Test passed but no command given";
-			if (flags["t"] && targets.CurrentTarget is null)
+			if (flags["t"] && TinyCmds.targets.Target is null)
 				msg = "No target";
-			else if (flags["T"] && targets.CurrentTarget is not null)
+			else if (flags["T"] && TinyCmds.targets.Target is not null)
 				msg = "Target present";
-			else if (flags["p"] && targets.CurrentTarget?.ObjectKind is not ObjectKind.Player)
+			else if (flags["p"] && TinyCmds.targets.Target?.ObjectKind is not ObjectKind.Player)
 				msg = "Target is not player";
-			else if (flags["P"] && targets.CurrentTarget?.ObjectKind is ObjectKind.Player)
+			else if (flags["P"] && TinyCmds.targets.Target?.ObjectKind is ObjectKind.Player)
 				msg = "Target is player";
-			else if (flags["n"] && targets.CurrentTarget?.ObjectKind is not ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
+			else if (flags["n"] && TinyCmds.targets.Target?.ObjectKind is not ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
 				msg = "Target is not NPC";
-			else if (flags["N"] && targets.CurrentTarget?.ObjectKind is ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
+			else if (flags["N"] && TinyCmds.targets.Target?.ObjectKind is ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
 				msg = "Target is NPC";
-			else if (flags["m"] && targets.CurrentTarget?.ObjectKind is not ObjectKind.Companion)
+			else if (flags["m"] && TinyCmds.targets.Target?.ObjectKind is not ObjectKind.Companion)
 				msg = "Target is not minion";
-			else if (flags["M"] && targets.CurrentTarget?.ObjectKind is ObjectKind.Companion)
+			else if (flags["M"] && TinyCmds.targets.Target?.ObjectKind is ObjectKind.Companion)
 				msg = "Target is minion";
-			else if (flags["f"] && targets.FocusTarget is null)
+			else if (flags["f"] && TinyCmds.targets.FocusTarget is null)
 				msg = "No focus target";
-			else if (flags["F"] && targets.FocusTarget is not null)
+			else if (flags["F"] && TinyCmds.targets.FocusTarget is not null)
 				msg = "Focus target present";
-			else if (flags["o"] && targets.MouseOverTarget is null)
+			else if (flags["o"] && TinyCmds.targets.MouseOverTarget is null)
 				msg = "No mouseover target";
-			else if (flags["O"] && targets.MouseOverTarget is not null)
+			else if (flags["O"] && TinyCmds.targets.MouseOverTarget is not null)
 				msg = "Mouseover target present";
-			else if (flags["c"] && !cond[ConditionFlag.InCombat])
+			else if (flags["c"] && !TinyCmds.conditions[ConditionFlag.InCombat])
 				msg = "Not in combat";
-			else if (flags["C"] && cond[ConditionFlag.InCombat])
+			else if (flags["C"] && TinyCmds.conditions[ConditionFlag.InCombat])
 				msg = "In combat";
 			else
 				msgCol = ChatColour.CONDITION_PASSED;
 			if (args.Length > 0) {
 				if (msgCol == ChatColour.CONDITION_PASSED) {
-					this.SendServerChat(args);
+					ChatUtil.SendChatlineToServer(args);
 				}
 			}
 			else {
-				this.ShowPrefixedChatMessage(msgCol, msg, ChatColour.RESET);
+				ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
 			}
 		}
 	}

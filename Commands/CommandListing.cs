@@ -1,11 +1,10 @@
-﻿using Dalamud.Plugin;
-
+﻿
 using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmds: IDalamudPlugin {
+	public static partial class PluginCommands {
 		[Command("/tinycmds")]
 		[Arguments()]
 		[Summary("List all plugin commands, along with their help messages")]
@@ -14,15 +13,15 @@ namespace TinyCmds {
 			"Lists all plugin commands.",
 			"Use \"-a\" to include command aliases, \"-v\" to include help messages, or both (\"-av\" or \"-va\" or separately) for both."
 		)]
-		public void ListPluginCommands(string command, string args, FlagMap flags, ref bool showHelp) {
-			foreach (PluginCommand cmd in this.CommandManager.Commands) {
-				this.ShowPrefixedChatMessage(
+		public static void ListPluginCommands(string command, string args, FlagMap flags, ref bool showHelp) {
+			foreach (PluginCommand cmd in TinyCmds.commandManager.commands) {
+				ChatUtil.ShowPrefixedMessage(
 					ChatColour.USAGE_TEXT,
 					cmd.Usage,
 					ChatColour.RESET
 				);
 				if (flags["a"] && cmd.Aliases.Length > 0) {
-					this.ShowPrefixedChatMessage(
+					ChatUtil.ShowPrefixedMessage(
 						ChatColour.QUIET,
 						string.Join(", ", cmd.Aliases),
 						ChatColour.RESET
@@ -30,7 +29,7 @@ namespace TinyCmds {
 				}
 				if (flags["v"]) {
 					foreach (string line in cmd.HelpLines) {
-						this.ShowPrefixedChatMessage(
+						ChatUtil.ShowPrefixedMessage(
 							ChatColour.HELP_TEXT,
 							line,
 							ChatColour.RESET

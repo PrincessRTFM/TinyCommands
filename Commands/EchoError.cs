@@ -2,9 +2,10 @@
 
 using TinyCmds.Attributes;
 using TinyCmds.Utils;
+using TinyCmds.Chat;
 
 namespace TinyCmds {
-	public partial class TinyCmds: IDalamudPlugin {
+	public static partial class PluginCommands {
 		[Command("/echoerr")]
 		[Summary("Like /echo, but to the error channel")]
 		[Aliases("/echoerror", "/error")]
@@ -13,11 +14,11 @@ namespace TinyCmds {
 			"Mostly useful with the conditional chat commands to allow, for instance, an emote macro to warn you when you use it wrong.",
 			"If you use the -p flag, the error message will be prefixed as coming from this plugin, instead of being a bare message."
 		)]
-		public void EchoToErrorChannel(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void EchoToErrorChannel(string command, string args, FlagMap flags, ref bool showHelp) {
 			if (flags["p"])
-				this.ShowPrefixedChatError(args.Trim());
+				ChatUtil.ShowPrefixedError(args.Trim());
 			else
-				this.ShowChatError(args.Trim());
+				ChatUtil.ShowError(args.Trim());
 		}
 	}
 }

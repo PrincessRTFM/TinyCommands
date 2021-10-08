@@ -1,42 +1,54 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 
+using Dalamud.Game;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.Command;
+using Dalamud.Game.Gui;
+using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Game.ClientState.Conditions;
 
 using TinyCmds.Attributes;
 using TinyCmds.Internal;
 
 using XivCommon;
+using Dalamud.Game.ClientState.Objects;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-// I cannot fucking WAIT for dalamud net5 so I can use the nullable analysis annotations.
 namespace TinyCmds {
-	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Plugin command methods are delegates")]
-	public partial class TinyCmds: IDalamudPlugin {
+	public class TinyCmds: IDalamudPlugin {
 
-		public string Name => "TinyCommands";
-		public readonly string Prefix = "TinyCmds";
-		public string PluginHelpCommand { get; private set; }
+		public const string PluginName = "TinyCommands";
+		public const string Prefix = "TinyCmds";
+		public string Name => PluginName;
 
 		private bool disposed = false;
 
-		internal XivCommonBase Common { get; private set; }
+		[PluginService] internal static ChatGui chat { get; private set; } = null!;
+		[PluginService] internal static DalamudPluginInterface pluginInterface { get; private set; } = null!;
+		[PluginService] internal static SigScanner scanner { get; private set; } = null!;
+		[PluginService] internal static CommandManager cmdManager { get; private set; } = null!;
+		[PluginService] internal static ClientState client { get; private set; } = null!;
+		[PluginService] internal static Condition conditions { get; private set; } = null!;
+		[PluginService] internal static TargetManager targets { get; private set; } = null!;
+		internal static XivCommonBase common { get; private set; } = null!;
+		internal static PluginCommandDelegate? pluginHelpCommand { get; private set; } = null!;
+		internal static PluginCommandManager commandManager { get; private set; } = null!;
+		internal static PlaySound sfx { get; private set; } = null!;
 
-		internal DalamudPluginInterface Interface { get; private set; }
-		internal Configuration Config { get; private set; }
-		internal PluginCommandManager CommandManager { get; private set; }
-
-		internal PlaySound SoundEffect { get; private set; }
-
-		public void Initialize(DalamudPluginInterface pluginInterface) {
-			this.PluginHelpCommand ??= this.GetType().GetMethod(nameof(DisplayPluginCommandHelp)).GetCustomAttribute<CommandAttribute>().Command;
-			this.Interface = pluginInterface;
-			this.Config = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-			this.Config.Initialize(pluginInterface);
-			this.CommandManager = new(this);
-			this.Common = new(this.Interface, Hooks.None); // just need the chat feature to send commands
-			this.SoundEffect = new(pluginInterface.TargetModuleScanner);
+		public TinyCmds() {
+			pluginHelpCommand = Delegate.CreateDelegate(typeof(PluginCommandDelegate), null,
+				typeof(PluginCommands)
+					.GetMethods()
+					.Where(m => m.GetCustomAttribute<PluginCommandHelpHandlerAttribute>() is not null)
+					.First()
+			) as PluginCommandDelegate;
+			if (pluginHelpCommand is null)
+				Logger.warning("No plugin command was flagged as the default help/usage text method");
+			commandManager = new();
+			common = new(); // just need the chat feature to send commands
+			sfx = new();
 		}
 
 		#region IDisposable Support
@@ -45,9 +57,8 @@ namespace TinyCmds {
 				return;
 			}
 			if (disposing) {
-				this.Interface.SavePluginConfig(this.Config);
-				this.CommandManager.Dispose();
-				this.Interface.Dispose();
+				commandManager.Dispose();
+				pluginInterface.Dispose();
 			}
 			this.disposed = true;
 		}

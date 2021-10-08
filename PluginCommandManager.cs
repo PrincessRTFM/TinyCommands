@@ -4,44 +4,42 @@ using System.Linq;
 using System.Reflection;
 
 using Dalamud.Game.Command;
-using Dalamud.Plugin;
 
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
 
 namespace TinyCmds {
 	public class PluginCommandManager: IDisposable {
 
-		private readonly DalamudPluginInterface pluginInterface;
-		private readonly List<PluginCommand> commands;
+		private readonly List<PluginCommand> commandList;
 
-		internal PluginCommand[] Commands => this.commands.ToArray();
+		internal PluginCommand[] commands => this.commandList.ToArray();
 
 		private readonly bool disposed = false;
 
-		public PluginCommandManager(TinyCmds host) {
-			this.pluginInterface = host.Interface;
-			this.commands = host.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
+		public PluginCommandManager() {
+			this.commandList = typeof(TinyCmds).GetMethods(BindingFlags.Public | BindingFlags.Instance)
 				.Where(method => method.GetCustomAttribute<CommandAttribute>() is not null)
-				.Select(m => new PluginCommand(host, m, host.DisplayPluginCommandHelp, host.ShowPrefixedChatError))
+				.Select(m => new PluginCommand(m, TinyCmds.pluginHelpCommand, ChatUtil.ShowPrefixedError))
 				.ToList();
-			this.AddCommandHandlers();
+			this.addCommandHandlers();
 		}
 
-		private void AddCommandHandlers() {
-			foreach (PluginCommand cmd in this.Commands) {
-				this.pluginInterface.CommandManager.AddHandler(cmd.Command, cmd.MainCommandInfo);
+		private void addCommandHandlers() {
+			foreach (PluginCommand cmd in this.commands) {
+				TinyCmds.cmdManager.AddHandler(cmd.Command, cmd.MainCommandInfo);
 				CommandInfo hidden = cmd.AliasCommandInfo;
 				foreach (string alt in cmd.Aliases) {
-					this.pluginInterface.CommandManager.AddHandler(alt, hidden);
+					TinyCmds.cmdManager.AddHandler(alt, hidden);
 				}
 			}
 		}
 
-		private void RemoveCommandHandlers() {
-			foreach (PluginCommand cmd in this.Commands) {
-				this.pluginInterface.CommandManager.RemoveHandler(cmd.Command);
+		private void removeCommandHandlers() {
+			foreach (PluginCommand cmd in this.commands) {
+				TinyCmds.cmdManager.RemoveHandler(cmd.Command);
 				foreach (string alt in cmd.Aliases) {
-					this.pluginInterface.CommandManager.RemoveHandler(alt);
+					TinyCmds.cmdManager.RemoveHandler(alt);
 				}
 			}
 		}
@@ -50,8 +48,8 @@ namespace TinyCmds {
 		protected virtual void Dispose(bool disposing) {
 			if (this.disposed)
 				return;
-			this.RemoveCommandHandlers();
-			this.commands.Clear();
+			this.removeCommandHandlers();
+			this.commandList.Clear();
 		}
 		public void Dispose() {
 			this.Dispose(true);

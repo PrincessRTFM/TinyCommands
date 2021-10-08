@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-using Dalamud.Plugin;
-
 using TinyCmds.Attributes;
+using TinyCmds.Chat;
 using TinyCmds.Utils;
 
 namespace TinyCmds {
-	public partial class TinyCmds: IDalamudPlugin {
+	public static partial class PluginCommands {
 
 		private static readonly Regex timespecMatcher = new(@"^\s*((?:\d+h)?)(\d+)([hm]?)\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -22,10 +21,10 @@ namespace TinyCmds {
 			"This command sets a VANILLA in-game timer for the time calculated. If you use -v, the /alarm command will be printed. If you use -d, it will be printed and NOT run.",
 			"If the timer name contains spaces, it MUST be enclosed in double quotes."
 		)]
-		public void GenerateTimedAlarm(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void GenerateTimedAlarm(string command, string args, FlagMap flags, ref bool showHelp) {
 			DateTime now = DateTime.Now;
 			string timespec = args.Split()[0];
-			string name = args.Substring(timespec.Length).Trim();
+			string name = args[timespec.Length..].Trim();
 			int hours = 0;
 			int minutes = 0;
 			if (string.IsNullOrEmpty(timespec)) {
@@ -53,7 +52,7 @@ namespace TinyCmds {
 				}
 			}
 			if (hours < 1 && minutes < 1) {
-				this.ShowPrefixedChatError("A timer must delay for at least one minute");
+				ChatUtil.ShowPrefixedError("A timer must delay for at least one minute");
 				return;
 			}
 			int futureMinutes = now.Minute + minutes;
@@ -62,12 +61,12 @@ namespace TinyCmds {
 				futureMinutes %= 60;
 			}
 			if (hours > 23) {
-				this.ShowPrefixedChatError("A timer's total delay cannot be more than 23:59");
+				ChatUtil.ShowPrefixedError("A timer's total delay cannot be more than 23:59");
 				return;
 			}
 			int futureHours = (now.Hour + hours) % 24;
 			string cmd = $"/alarm \"{name}\" lt {futureHours:D2}{futureMinutes:D2}";
-			this.SendServerChat(cmd, flags["d"] || flags["v"], flags["d"]);
+			ChatUtil.SendChatlineToServer(cmd, flags["d"] || flags["v"], flags["d"]);
 		}
 	}
 }

@@ -8,15 +8,13 @@ using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-// Once net5 plugins are supported, I'll be able to actually handle that properly with the annotations.
-// Until then, just Trust Me™
 namespace TinyCmds {
 	internal delegate void PluginCommandDelegate(string command, string rawArguments, FlagMap flags, ref bool showHelp);
 	internal delegate void PluginCommandInvocationErrorHandlerDelegate(params object[] payloads);
 
 	internal class PluginCommand {
-		private readonly PluginCommandDelegate handler, helper;
+		private readonly PluginCommandDelegate handler;
+		private readonly PluginCommandDelegate? helper;
 		private readonly PluginCommandInvocationErrorHandlerDelegate error;
 		public CommandInfo MainCommandInfo => new(this.Dispatch) {
 			HelpMessage = this.Summary,
@@ -36,20 +34,20 @@ namespace TinyCmds {
 		public string[] Aliases { get; }
 		public bool ShowInDalamud { get; }
 		public bool ShowInListing { get; }
-		public PluginCommand(object instance, MethodInfo method, PluginCommandDelegate printHelp, PluginCommandInvocationErrorHandlerDelegate onError) {
-			CommandAttribute attrCommand = method.GetCustomAttribute<CommandAttribute>();
+		public PluginCommand(MethodInfo method, PluginCommandDelegate? printHelp, PluginCommandInvocationErrorHandlerDelegate onError) {
+			CommandAttribute? attrCommand = method.GetCustomAttribute<CommandAttribute>();
 			if (attrCommand is null) {
 				throw new NullReferenceException("Cannot construct PluginCommand from method without CommandAttribute");
 			}
-			ArgumentsAttribute args = method.GetCustomAttribute<ArgumentsAttribute>();
+			ArgumentsAttribute? args = method.GetCustomAttribute<ArgumentsAttribute>();
 			this.Command = $"/{attrCommand.Command.TrimStart('/')}";
 			this.Summary = method.GetCustomAttribute<SummaryAttribute>()?.Summary ?? "";
 			this.Help = method.GetCustomAttribute<HelpMessageAttribute>()?.HelpMessage ?? "";
 			this.Usage = $"{this.Command} {args?.ArgumentDescription}".Trim();
-			this.Aliases = method.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? new string[0];
+			this.Aliases = method.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? Array.Empty<string>();
 			this.ShowInDalamud = method.GetCustomAttribute<DoNotShowInHelpAttribute>() is null || string.IsNullOrEmpty(this.Summary);
 			this.ShowInListing = method.GetCustomAttribute<HideInCommandListingAttribute>() is null;
-			this.handler = (PluginCommandDelegate)Delegate.CreateDelegate(typeof(PluginCommandDelegate), instance, method);
+			this.handler = (PluginCommandDelegate)Delegate.CreateDelegate(typeof(PluginCommandDelegate), null, method);
 			this.helper = printHelp;
 			this.error = onError;
 		}
@@ -58,22 +56,23 @@ namespace TinyCmds {
 				(FlagMap flags, string rawArgs) = ArgumentParser.ExtractFlags(argline);
 				bool showHelp = false;
 				if (flags["h"]) {
-					this.helper(null, command, flags, ref showHelp);
+					if (this.helper is not null)
+						this.helper(command, rawArgs, flags, ref showHelp);
 					return;
 				}
 				this.handler(command, rawArgs, flags, ref showHelp);
-				if (showHelp)
-					this.helper(null, command, flags, ref showHelp);
+				if (showHelp && this.helper is not null)
+					this.helper(command, rawArgs, flags, ref showHelp);
 			}
 			catch (Exception e) {
 				while (e is not null) {
 					this.error(
 						$"{e.GetType().Name}: {e.Message}\n",
 						ChatColour.QUIET,
-						$"at {e.TargetSite.DeclaringType.FullName} in {e.TargetSite.DeclaringType.Assembly}",
+						e.TargetSite?.DeclaringType is not null ? $"at {e.TargetSite.DeclaringType.FullName} in {e.TargetSite.DeclaringType.Assembly}" : "at unknown location",
 						ChatColour.RESET
 					);
-					e = e.InnerException;
+					e = e.InnerException!;
 				}
 			}
 		}

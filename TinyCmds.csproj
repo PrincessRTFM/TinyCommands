@@ -1,30 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Authors>VariableVixen</Authors>
 		<Company>-</Company>
-		<Version>2.3.0</Version>
+		<Version>3.0.0</Version>
 		<Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It doesn't even have a UI.</Description>
 		<Copyright>Copyleft Vixen 2021</Copyright>
-		<PackageProjectUrl></PackageProjectUrl>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<PackageProjectUrl>https://github.com/PrincessRTFM/TinyCommands</PackageProjectUrl>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net48</TargetFramework>
-		<Deterministic>true</Deterministic>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Platforms>x64</Platforms>
+		<PlatformTarget>x64</PlatformTarget>
+		<PackageId>TinyCmds</PackageId>
+		<Product>$(PackageId)</Product>
+		<AssemblyName>$(PackageId)</AssemblyName>
+		<TargetFramework>net5.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<NullableContextOptions>enable</NullableContextOptions>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>9.0</LangVersion>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<AssemblyName>TinyCmds</AssemblyName>
-		<AssemblyVersion>$(Version)</AssemblyVersion>
-		<FileVersion>$(Version)</FileVersion>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-		<PackageId>TinyCmds</PackageId>
-		<Product>TinyCmds</Product>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>full</DebugType>
 		<Optimize>false</Optimize>
@@ -32,7 +31,7 @@
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
 		<OutputPath>bin\Release\</OutputPath>
@@ -40,8 +39,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="1.2.1" />
-		<PackageReference Include="XivCommon" Version="2.1.1" />
+		<PackageReference Include="DalamudPackager" Version="2.1.4" />
+		<PackageReference Include="XivCommon" Version="3.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -70,9 +69,4 @@
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
-
-	<Target Name="PackagePlugin" AfterTargets="CleanOutDir">
-		<Message Text="Starting DalamudPackager" Importance="high" />
-		<DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)" AssemblyName="$(AssemblyName)" VersionComponents="4" MakeZip="true" />
-	</Target>
 </Project>

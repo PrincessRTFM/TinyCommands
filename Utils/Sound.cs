@@ -31,12 +31,8 @@
 				return $"SFX#{value.ToGameIndex()}";
 			return null;
 		}
-		public static bool IsValid(this Sound value) {
-			return value.ToGameIndex() >= 0;
-		}
-		public static bool IsSound(this Sound value) {
-			return value.ToGameIndex() > 0;
-		}
+		public static bool IsValid(this Sound value) => value.ToGameIndex() >= 0;
+		public static bool IsSound(this Sound value) => value.ToGameIndex() > 0;
 		public static int ToGameIndex(this Sound value) {
 			return value switch {
 				Sound.None => 0,

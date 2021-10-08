@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-
-using Dalamud.Plugin;
 
 namespace TinyCmds.Utils {
 	public class ArgumentParser {
@@ -39,13 +36,13 @@ namespace TinyCmds.Utils {
 					string word = match.Groups[2].Length > 0 ? match.Groups[2].Value.Replace("\\\"", "\"").Replace("\\\\", "\\") : match.Groups[1].Value;
 					if (word.Length > 0)
 						words.Add(word);
-					input = input.Substring(match.Value.Length);
+					input = input[match.Value.Length..];
 					match = wordparser.Match(input);
 				}
 				return words.ToArray();
 			}
 			// No quotes, easy out
-			return string.IsNullOrWhiteSpace(input) ? (new string[0]) : input.Split();
+			return string.IsNullOrWhiteSpace(input) ? Array.Empty<string>() : input.Split();
 		}
 		public static (FlagMap, string) ExtractFlags(in string argline) {
 			FlagMap flags = new();
@@ -73,7 +70,7 @@ namespace TinyCmds.Utils {
 			}
 			string remaining;
 			try {
-				remaining = argline.Substring(idx).Trim();
+				remaining = argline[idx..].Trim();
 			}
 			catch (ArgumentOutOfRangeException) {
 				remaining = string.Empty;
