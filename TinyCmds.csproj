@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Authors>VariableVixen</Authors>
 		<Company>-</Company>
-		<Version>3.0.0</Version>
+		<Version>3.0.1</Version>
 		<Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It doesn't even have a UI.</Description>
 		<Copyright>Copyleft Vixen 2021</Copyright>
 		<PackageProjectUrl>https://github.com/PrincessRTFM/TinyCommands</PackageProjectUrl>
@@ -18,8 +18,10 @@
 		<NullableContextOptions>enable</NullableContextOptions>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>9.0</LangVersion>
+		<PreserveCompilationContext>false</PreserveCompilationContext>
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	</PropertyGroup>
 
@@ -40,7 +42,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="DalamudPackager" Version="2.1.4" />
-		<PackageReference Include="XivCommon" Version="3.0.2" />
+		<PackageReference Include="XivCommon" Version="3.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
