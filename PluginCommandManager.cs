@@ -19,6 +19,7 @@ namespace TinyCmds {
 
 		public PluginCommandManager() {
 			this.commandList = typeof(TinyCmds).GetMethods(BindingFlags.Public | BindingFlags.Instance)
+			this.commandList = typeof(PluginCommands).GetMethods(BindingFlags.Public | BindingFlags.Static)
 				.Where(method => method.GetCustomAttribute<CommandAttribute>() is not null)
 				.Select(m => new PluginCommand(m, TinyCmds.pluginHelpCommand, ChatUtil.ShowPrefixedError))
 				.ToList();
