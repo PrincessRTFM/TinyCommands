@@ -19,6 +19,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>9.0</LangVersion>
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	</PropertyGroup>
