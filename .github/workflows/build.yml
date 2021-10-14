@@ -47,6 +47,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
+        ref: master
         repository: ${{ env.PERSONAL_PLUGIN_REPO }}
         token: ${{ secrets.PAT }}
     - uses: actions/download-artifact@v2
@@ -55,7 +56,9 @@ jobs:
         path: plugins/${{ env.INTERNAL_NAME }}
     - uses: EndBug/add-and-commit@v7
       with:
-        add: --all
+        add: plugins/
+        branch: master
+        pathspec_error_handling: exitImmediately
         author_name: GitHub Action
         author_email: github-actions[bot]@users.noreply.github.com
         message: Update ${{ env.INTERNAL_NAME }}
