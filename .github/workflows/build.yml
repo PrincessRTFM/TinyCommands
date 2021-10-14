@@ -5,8 +5,8 @@ name: Build
 on:
   workflow_dispatch:
   push:
-    branches:
-    - master
+    tags:
+    - '*'
 
 env:
   SOLUTION_NAME: TinyCmds
