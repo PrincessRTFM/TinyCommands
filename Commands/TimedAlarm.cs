@@ -21,7 +21,7 @@ namespace TinyCmds {
 			"This command sets a VANILLA in-game timer for the time calculated. If you use -v, the /alarm command will be printed. If you use -d, it will be printed and NOT run.",
 			"If the timer name contains spaces, it MUST be enclosed in double quotes."
 		)]
-		public static void GenerateTimedAlarm(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void GenerateTimedAlarm(string? command, string args, FlagMap flags, ref bool showHelp) {
 			DateTime now = DateTime.Now;
 			string timespec = args.Split()[0];
 			string name = args[timespec.Length..].Trim();

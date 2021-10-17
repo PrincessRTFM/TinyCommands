@@ -1,8 +1,7 @@
-﻿using Dalamud.Plugin;
-
+﻿
 using TinyCmds.Attributes;
-using TinyCmds.Utils;
 using TinyCmds.Chat;
+using TinyCmds.Utils;
 
 namespace TinyCmds {
 	public static partial class PluginCommands {
@@ -14,7 +13,7 @@ namespace TinyCmds {
 			"Mostly useful with the conditional chat commands to allow, for instance, an emote macro to warn you when you use it wrong.",
 			"If you use the -p flag, the error message will be prefixed as coming from this plugin, instead of being a bare message."
 		)]
-		public static void EchoToErrorChannel(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void EchoToErrorChannel(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (flags["p"])
 				ChatUtil.ShowPrefixedError(args.Trim());
 			else

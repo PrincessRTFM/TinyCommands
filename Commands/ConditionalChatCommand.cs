@@ -16,7 +16,7 @@ namespace TinyCmds {
 			"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
 			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion"
 		)]
-		public static void RunChatIfCond(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void RunChatIfCond(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (TinyCmds.client.LocalPlayer is null) {
 				ChatUtil.ShowPrefixedError("Can't find player object - this should be impossible unless you're not logged in.");
 				return;

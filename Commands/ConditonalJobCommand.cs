@@ -16,7 +16,7 @@ namespace TinyCmds {
 			"Use the three-letter abbreviation, and if you want to check against more than one, separate them with commas but NOT spaces.",
 			"If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T one of those jobs."
 		)]
-		public static void RunIfJobMatches(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void RunIfJobMatches(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (TinyCmds.client.LocalPlayer is null) {
 				ChatUtil.ShowPrefixedError("Can't find player object - this should be impossible unless you're not logged in.");
 				return;

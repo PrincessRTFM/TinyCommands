@@ -14,7 +14,7 @@ namespace TinyCmds {
 		[Aliases("/ptinyhelp", "/thelp", "/pthelp", "/tinycmd", "/ptinycmd", "/tcmd", "/ptcmd")]
 		[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
 		[PluginCommandHelpHandler]
-		public static void DisplayPluginCommandHelp(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void DisplayPluginCommandHelp(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (args.Length < 1) {
 				ChatUtil.ShowPrefixedMessage($"{TinyCmds.PluginName} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
 				ChatUtil.ShowPrefixedMessage(

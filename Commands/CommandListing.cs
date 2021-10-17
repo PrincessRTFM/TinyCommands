@@ -13,7 +13,7 @@ namespace TinyCmds {
 			"Lists all plugin commands.",
 			"Use \"-a\" to include command aliases, \"-v\" to include help messages, or both (\"-av\" or \"-va\" or separately) for both."
 		)]
-		public static void ListPluginCommands(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void ListPluginCommands(string? command, string args, FlagMap flags, ref bool showHelp) {
 			foreach (PluginCommand cmd in TinyCmds.commandManager.commands) {
 				ChatUtil.ShowPrefixedMessage(
 					ChatColour.USAGE_TEXT,

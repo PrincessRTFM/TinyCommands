@@ -9,7 +9,7 @@ using TinyCmds.Chat;
 using TinyCmds.Utils;
 
 namespace TinyCmds {
-	internal delegate void PluginCommandDelegate(string command, string rawArguments, FlagMap flags, ref bool showHelp);
+	internal delegate void PluginCommandDelegate(string? command, string rawArguments, FlagMap flags, ref bool showHelp);
 	internal delegate void PluginCommandInvocationErrorHandlerDelegate(params object[] payloads);
 
 	internal class PluginCommand {
@@ -57,12 +57,12 @@ namespace TinyCmds {
 				bool showHelp = false;
 				if (flags["h"]) {
 					if (this.helper is not null)
-						this.helper(command, rawArgs, flags, ref showHelp);
+						this.helper(null, command, flags, ref showHelp);
 					return;
 				}
 				this.handler(command, rawArgs, flags, ref showHelp);
 				if (showHelp && this.helper is not null)
-					this.helper(command, rawArgs, flags, ref showHelp);
+					this.helper(null, command, flags, ref showHelp);
 			}
 			catch (Exception e) {
 				while (e is not null) {

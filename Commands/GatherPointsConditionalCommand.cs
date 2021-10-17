@@ -16,7 +16,7 @@ namespace TinyCmds {
 			"There are three possible tests: at least (-g), less than (-l), and a simple at capacity (-c).",
 			"If using -g or -l, the first argument should be a number to compare against. If using -c, ALL arguments are the command to run when your GP passes the check."
 		)]
-		public static void RunChatIfPlayerGp(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void RunChatIfPlayerGp(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (TinyCmds.client.LocalPlayer is null) {
 				ChatUtil.ShowPrefixedError("Can't find player object - this should be impossible unless you're not logged in.");
 				return;

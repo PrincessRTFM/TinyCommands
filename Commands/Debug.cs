@@ -1,8 +1,5 @@
 ﻿#if DEBUG
-using Dalamud.Plugin;
-
 using TinyCmds.Attributes;
-using TinyCmds.Chat;
 using TinyCmds.Utils;
 
 namespace TinyCmds {
@@ -11,7 +8,7 @@ namespace TinyCmds {
 		[HelpMessage("Specifically for dev use")]
 		[DoNotShowInHelp]
 		[HideInCommandListing]
-		public static void PluginDebugCommand(string command, string argline, FlagMap flags, ref bool showHelp) {
+		public static void PluginDebugCommand(string? command, string argline, FlagMap flags, ref bool showHelp) {
 			// nop until I need to debug something lol
 		}
 	}

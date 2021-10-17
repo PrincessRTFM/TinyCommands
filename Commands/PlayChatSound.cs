@@ -12,7 +12,7 @@ namespace TinyCmds {
 			"This lets you play the <se.##> sound effects in your chat without needing to /echo them.",
 			"It just helps keep things a little cleaner."
 		)]
-		public static void PlayChatSound(string command, string args, FlagMap flags, ref bool showHelp) {
+		public static void PlayChatSound(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (!TinyCmds.sfx.Valid) {
 				ChatUtil.ShowPrefixedError("Unable to play sounds, the relevant game function couldn't be located");
 				return;
