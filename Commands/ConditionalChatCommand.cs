@@ -14,7 +14,7 @@ namespace TinyCmds {
 		[HelpMessage(
 			"If the condition indicated by the flags is met, then all of the arguments will be executed as if entered into the chatbox manually. If no command/message is given, the test will print the result to your chatlog.",
 			"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
-			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion"
+			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory"
 		)]
 		public static void RunChatIfCond(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (TinyCmds.client.LocalPlayer is null) {
@@ -51,6 +51,34 @@ namespace TinyCmds {
 				msg = "Not in combat";
 			else if (flags["C"] && TinyCmds.conditions[ConditionFlag.InCombat])
 				msg = "In combat";
+			else if (flags["w"] && TinyCmds.conditions[ConditionFlag.Mounted])
+				msg = "Not unmounted";
+			else if (flags["W"] && !TinyCmds.conditions[ConditionFlag.Mounted])
+				msg = "Unmounted";
+			else if (flags["s"] && !TinyCmds.conditions[ConditionFlag.Swimming])
+				msg = "Not swimming";
+			else if (flags["S"] && TinyCmds.conditions[ConditionFlag.Swimming])
+				msg = "Swimming";
+			else if (flags["d"] && !TinyCmds.conditions[ConditionFlag.Diving])
+				msg = "Not diving";
+			else if (flags["D"] && TinyCmds.conditions[ConditionFlag.Diving])
+				msg = "Diving";
+			else if (flags["u"] && !TinyCmds.conditions[ConditionFlag.InFlight])
+				msg = "Not flying";
+			else if (flags["U"] && TinyCmds.conditions[ConditionFlag.InFlight])
+				msg = "Flying";
+			else if (flags["i"] && !TinyCmds.conditions[ConditionFlag.BoundByDuty])
+				msg = "Not in duty";
+			else if (flags["I"] && TinyCmds.conditions[ConditionFlag.BoundByDuty])
+				msg = "In duty";
+			else if (flags["l"] && !TinyCmds.conditions[ConditionFlag.UsingParasol])
+				msg = "Not using fashion accessory";
+			else if (flags["L"] && TinyCmds.conditions[ConditionFlag.UsingParasol])
+				msg = "Using fashion accessory";
+			//else if (flags["a"] && !XXXXX)
+			//	msg = "Not in an alliance";
+			//else if (flags["A"] && XXXXX)
+			//	msg = "In an alliance";
 			else
 				msgCol = ChatColour.CONDITION_PASSED;
 			if (args.Length > 0) {

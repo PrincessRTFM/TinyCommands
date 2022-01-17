@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Authors>VariableVixen</Authors>
 		<Company>-</Company>
-		<Version>4.0.0</Version>
+		<Version>4.1.0</Version>
 		<Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It doesn't even have a UI.</Description>
 		<Copyright>Copyleft Vixen 2021</Copyright>
 		<PackageProjectUrl>https://github.com/PrincessRTFM/TinyCommands</PackageProjectUrl>
