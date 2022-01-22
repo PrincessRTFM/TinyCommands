@@ -58,7 +58,6 @@ namespace TinyCmds {
 			}
 			if (disposing) {
 				commandManager.Dispose();
-				pluginInterface.Dispose();
 			}
 			this.disposed = true;
 		}

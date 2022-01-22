@@ -45,8 +45,8 @@ namespace TinyCmds {
 			this.Help = method.GetCustomAttribute<HelpMessageAttribute>()?.HelpMessage ?? "";
 			this.Usage = $"{this.Command} {args?.ArgumentDescription}".Trim();
 			this.Aliases = method.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? Array.Empty<string>();
-			this.ShowInDalamud = method.GetCustomAttribute<DoNotShowInHelpAttribute>() is null || string.IsNullOrEmpty(this.Summary);
 			this.ShowInListing = method.GetCustomAttribute<HideInCommandListingAttribute>() is null;
+			this.ShowInDalamud = this.ShowInListing && (method.GetCustomAttribute<DoNotShowInHelpAttribute>() is null || string.IsNullOrEmpty(this.Summary));
 			this.handler = (PluginCommandDelegate)Delegate.CreateDelegate(typeof(PluginCommandDelegate), null, method);
 			this.helper = printHelp;
 			this.error = onError;

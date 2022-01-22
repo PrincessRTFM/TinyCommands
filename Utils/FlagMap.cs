@@ -17,6 +17,10 @@ namespace TinyCmds.Utils {
 				}
 			}
 		}
+		public bool this[char key] {
+			get => this[key.ToString()];
+			set => this[key.ToString()] = value;
+		}
 
 		public void SetAll(IEnumerable<string> keys) {
 			foreach (string key in keys) {

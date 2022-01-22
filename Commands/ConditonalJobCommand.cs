@@ -22,7 +22,7 @@ namespace TinyCmds {
 				return;
 			}
 			string arg = args ?? string.Empty;
-			string currentJobName = TinyCmds.client.LocalPlayer.ClassJob.GameData.Abbreviation.ToString().ToUpper();
+			string currentJobName = TinyCmds.client.LocalPlayer.ClassJob.GameData!.Abbreviation.ToString().ToUpper();
 			string wantedJobNames = arg.Split()[0].ToUpper();
 			if (string.IsNullOrEmpty(wantedJobNames)) {
 				showHelp = true;
