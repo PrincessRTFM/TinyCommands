@@ -31,7 +31,7 @@ namespace TinyCmds {
 			else if (flags["c"]) {
 				if (player.CurrentGp >= player.MaxGp) {
 					if (arg.Length > 0) {
-						ChatUtil.SendChatlineToServer(arg);
+						ChatUtil.SendChatlineToServer(arg, flags["d"] || flags['v'], flags['d']);
 					}
 					else {
 						ChatUtil.ShowPrefixedMessage(

@@ -15,6 +15,7 @@ using TinyCmds.Internal;
 
 using XivCommon;
 using Dalamud.Game.ClientState.Objects;
+using Dalamud.Data;
 
 namespace TinyCmds {
 	public class TinyCmds: IDalamudPlugin {
@@ -32,6 +33,7 @@ namespace TinyCmds {
 		[PluginService] internal static ClientState client { get; private set; } = null!;
 		[PluginService] internal static Condition conditions { get; private set; } = null!;
 		[PluginService] internal static TargetManager targets { get; private set; } = null!;
+		[PluginService] internal static DataManager data { get; private set; } = null!;
 		internal static XivCommonBase common { get; private set; } = null!;
 		internal static PluginCommandDelegate? pluginHelpCommand { get; private set; } = null!;
 		internal static PluginCommandManager commandManager { get; private set; } = null!;

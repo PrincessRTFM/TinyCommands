@@ -28,12 +28,14 @@ namespace TinyCmds {
 				showHelp = true;
 				return;
 			}
-			string cmd = arg[wantedJobNames.Length..].Trim();
+			string cmd = arg.Contains(' ')
+				? arg[(wantedJobNames.Length + 1)..]
+				: string.Empty;
 			bool invert = flags["n"];
 			bool match = wantedJobNames.Split(',').Contains(currentJobName);
 			if (match ^ invert) {
 				if (cmd.Length > 0) {
-					ChatUtil.SendChatlineToServer(cmd);
+					ChatUtil.SendChatlineToServer(cmd, flags["d"] || flags['v'], flags['d']);
 				}
 				else {
 					ChatUtil.ShowPrefixedMessage(

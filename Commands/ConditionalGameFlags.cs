@@ -83,7 +83,7 @@ namespace TinyCmds {
 				msgCol = ChatColour.CONDITION_PASSED;
 			if (args.Length > 0) {
 				if (msgCol == ChatColour.CONDITION_PASSED) {
-					ChatUtil.SendChatlineToServer(args);
+					ChatUtil.SendChatlineToServer(args, flags["d"] || flags['v'], flags['r']);
 				}
 			}
 			else {
