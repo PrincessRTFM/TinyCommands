@@ -15,8 +15,8 @@ unless ($path) {
 
 my $userVer = lc(shift @ARGV || 'none');
 my $numVer;
-if ($userVer !~ m/^(?:\d+(?:\.\d+)*|major|minor|patch|none)$/) {
-	print STDERR qq{Invalid version, must be dot-delimited numeric or keyword "major", "minor", "patch", "none"\n};
+if ($userVer !~ m/^(?:\d+(?:\.\d+)?|major|minor|none)$/) {
+	print STDERR qq{Invalid version, must be <major[.minor]> or keyword "major", "minor", "none"\n};
 	exit 3;
 }
 
@@ -29,19 +29,16 @@ unless ($file) {
 my @lines = map { s/\r?\n$//r } $file->getlines;
 for (my $i = 0; $i < @lines; ++$i) {
 	my $line = $lines[$i];
-	if ($line =~ m{^(\s*)<Version>(\d+(?:\.\d+)*)</Version>}i) {
+	if ($line =~ m{^(\s*)<Version>(\d+(?:\.\d+)?)</Version>}i) {
 		my ($lead, $old) = ($1, $2);
-		my @parts = split /\./, $old;
+		my @parts = split '.', $old;
+		$parts[$_] //= 0 for 0..1;
 		if ($userVer eq "major") {
 			++$parts[0];
-			$parts[1] = $parts[2] = 0;
+			$parts[1] = 0;
 		}
 		elsif ($userVer eq "minor") {
 			++$parts[1];
-			$parts[2] = 0;
-		}
-		elsif ($userVer eq "patch") {
-			++$parts[2];
 		}
 		elsif ($userVer eq "none") {
 			# nop
@@ -49,7 +46,7 @@ for (my $i = 0; $i < @lines; ++$i) {
 		else {
 			@parts = split /\./, $userVer;
 		}
-		$parts[$_] //= 0 for 0..2;
+		$parts[$_] //= 0 for 0..1;
 		$numVer = join '.', @parts;
 		if ($userVer eq "none") {
 			print "Current version is $numVer\n";
@@ -66,10 +63,4 @@ $file->truncate(0);
 $file->print(join "\n", @lines);
 $file->print("\n");
 $file->close;
-
-system qw/git add/, $path;
-if (@ARGV && $numVer) {
-	system qw/git commit/, @ARGV;
-	system qw/git tag -a/, "v$numVer";
-}
 
