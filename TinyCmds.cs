@@ -40,17 +40,17 @@ namespace TinyCmds {
 		internal static PlaySound sfx { get; private set; } = null!;
 
 		public TinyCmds() {
+			common = new(); // just need the chat feature to send commands
+			sfx = new();
 			pluginHelpCommand = Delegate.CreateDelegate(typeof(PluginCommandDelegate), null,
 				typeof(PluginCommands)
 					.GetMethods()
 					.Where(m => m.GetCustomAttribute<PluginCommandHelpHandlerAttribute>() is not null)
-					.First()
-			) as PluginCommandDelegate;
+					.First(),
+			false) as PluginCommandDelegate;
 			if (pluginHelpCommand is null)
 				Logger.warning("No plugin command was flagged as the default help/usage text method");
 			commandManager = new();
-			common = new(); // just need the chat feature to send commands
-			sfx = new();
 		}
 
 		#region IDisposable Support
