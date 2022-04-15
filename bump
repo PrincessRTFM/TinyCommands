@@ -31,7 +31,7 @@ for (my $i = 0; $i < @lines; ++$i) {
 	my $line = $lines[$i];
 	if ($line =~ m{^(\s*)<Version>(\d+(?:\.\d+)?)</Version>}i) {
 		my ($lead, $old) = ($1, $2);
-		my @parts = split '.', $old;
+		my @parts = split /\./, $old;
 		$parts[$_] //= 0 for 0..1;
 		if ($userVer eq "major") {
 			++$parts[0];
