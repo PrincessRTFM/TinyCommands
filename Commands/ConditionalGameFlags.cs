@@ -14,7 +14,7 @@ namespace TinyCmds {
 		[HelpMessage(
 			"If the condition indicated by the flags is met, then all of the arguments will be executed as if entered into the chatbox manually. If no command/message is given, the test will print the result to your chatlog.",
 			"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
-			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory"
+			"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory, -r weapon drawn"
 		)]
 		public static void RunChatIfCond(string? command, string args, FlagMap flags, ref bool showHelp) {
 			if (TinyCmds.client.LocalPlayer is null) {
@@ -75,6 +75,10 @@ namespace TinyCmds {
 				msg = "Not using fashion accessory";
 			else if (flags["L"] && TinyCmds.conditions[ConditionFlag.UsingParasol])
 				msg = "Using fashion accessory";
+			else if (flags["r"] && !TinyCmds.client.LocalPlayer.StatusFlags.HasFlag(StatusFlags.WeaponOut))
+				msg = "No weapon drawn";
+			else if (flags["R"] && TinyCmds.client.LocalPlayer.StatusFlags.HasFlag(StatusFlags.WeaponOut))
+				msg = "Weapon drawn";
 			//else if (flags["a"] && !XXXXX)
 			//	msg = "Not in an alliance";
 			//else if (flags["A"] && XXXXX)
@@ -83,7 +87,7 @@ namespace TinyCmds {
 				msgCol = ChatColour.CONDITION_PASSED;
 			if (args.Length > 0) {
 				if (msgCol == ChatColour.CONDITION_PASSED) {
-					ChatUtil.SendChatlineToServer(args, flags["d"] || flags['v'], flags['r']);
+					ChatUtil.SendChatlineToServer(args, flags["d"] || flags['v'], flags['d']);
 				}
 			}
 			else {
