@@ -15,7 +15,7 @@ public static partial class PluginCommands {
 	[HelpMessage(
 		"If the condition indicated by the flags is met, then all of the arguments will be executed as if entered into the chatbox manually. If no command/message is given, the test will print the result to your chatlog.",
 		"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
-		"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory, -r weapon drawn"
+		"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory, -r weapon drawn, -a in alliance"
 	)]
 	public static void RunChatIfCond(string? command, string args, FlagMap flags, ref bool showHelp) {
 		if (Plugin.client.LocalPlayer is null) {
