@@ -1,7 +1,8 @@
-﻿using System;
+namespace TinyCmds.Attributes;
 
-namespace TinyCmds.Attributes {
-	[AttributeUsage(AttributeTargets.Method)]
-	internal class PluginCommandHelpHandlerAttribute: Attribute {
-	}
+using System;
+
+
+[AttributeUsage(AttributeTargets.Method)]
+internal class PluginCommandHelpHandlerAttribute: Attribute {
 }
