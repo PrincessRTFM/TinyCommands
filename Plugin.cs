@@ -2,6 +2,7 @@ namespace TinyCmds;
 
 using System;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 
 using Dalamud.Data;
@@ -29,6 +30,7 @@ public class Plugin: IDalamudPlugin {
 	private bool disposed = false;
 
 	[PluginService] internal static ChatGui chat { get; private set; } = null!;
+	[PluginService] internal static GameGui gui { get; private set; } = null!;
 	[PluginService] internal static DalamudPluginInterface pluginInterface { get; private set; } = null!;
 	[PluginService] internal static SigScanner scanner { get; private set; } = null!;
 	[PluginService] internal static CommandManager cmdManager { get; private set; } = null!;
@@ -46,6 +48,7 @@ public class Plugin: IDalamudPlugin {
 	public Plugin() {
 		common = new(); // just need the chat feature to send commands
 		sfx = new();
+		chat.Enable();
 		pluginHelpCommand = Delegate.CreateDelegate(typeof(PluginCommandDelegate), null,
 			typeof(PluginCommands)
 				.GetMethods()
@@ -55,6 +58,15 @@ public class Plugin: IDalamudPlugin {
 		if (pluginHelpCommand is null)
 			Logger.warning("No plugin command was flagged as the default help/usage text method");
 		commandManager = new();
+	}
+
+	internal static Vector2 worldToMap(Vector3 pos, ushort sizeFactor, short offsetX, short offsetY) {
+		float scale = sizeFactor / 100f;
+		float x = (10 - ((((pos.X + offsetX) * scale) + 1024f) * -0.2f / scale)) / 10f;
+		float y = (10 - ((((pos.Z + offsetY) * scale) + 1024f) * -0.2f / scale)) / 10f;
+		x = MathF.Round(x, 1, MidpointRounding.ToZero);
+		y = MathF.Round(y, 1, MidpointRounding.ToZero);
+		return new(x, y);
 	}
 
 	#region IDisposable Support
