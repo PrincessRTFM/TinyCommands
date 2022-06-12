@@ -19,6 +19,8 @@ public static class ChatUtil {
 					string st => new Payload[] { new TextPayload(st) },
 					ChatColour ck => new Payload[] { new UIForegroundPayload((ushort)ck) },
 					ChatGlow ck => new Payload[] { new UIGlowPayload((ushort)ck) },
+					SeString se => se.Payloads.ToArray(),
+					IEnumerable<Payload> en => en.ToArray(),
 					object o => new Payload[] { new TextPayload(o.ToString() ?? "") },
 					_ => new Payload[] {
 						new UIForegroundPayload((ushort)ChatColour.ERROR),
