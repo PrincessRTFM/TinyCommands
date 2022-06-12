@@ -7,6 +7,7 @@ using System.Numerics;
 
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.Text.SeStringHandling;
 
 using Lumina.Excel.GeneratedSheets;
 
@@ -64,25 +65,29 @@ public static partial class PluginCommands {
 		Vector2 offset = new(map.OffsetX, map.OffsetY);
 		int count = found.Count();
 
-		ChatUtil.ShowPrefixedMessage(
-			ChatColour.CONDITION_PASSED,
-			"Found ",
-			ChatColour.HIGHLIGHT_PASSED,
-			count,
-			ChatColour.CONDITION_PASSED,
-			$" entit{(count == 1 ? "y" : "ies")}:"
-		);
+		SeStringBuilder msg = new SeStringBuilder()
+			.AddUiForeground((ushort)ChatColour.PREFIX)
+			.AddText($"[{Plugin.Prefix}] ")
+			.AddUiForeground((ushort)ChatColour.CONDITION_PASSED)
+			.AddText("Found ")
+			.AddUiForeground((ushort)ChatColour.HIGHLIGHT_PASSED)
+			.AddText(count.ToString())
+			.AddUiForeground((ushort)ChatColour.CONDITION_PASSED)
+			.AddText($" entit{(count == 1 ? "y" : "ies")}:");
 
 		foreach ((string name, Vector3 position) in found) {
-			ChatUtil.ShowMessage(
-				ChatColour.HIGHLIGHT_PASSED,
-				name,
-				ChatColour.QUIET,
-				": ",
-				ChatColour.HIGHLIGHT,
-				//SeString.CreateMapLink(zone, map, x, y)
-				$"{position.X}, {position.Y}"
-			);
+			Vector2 flat = new(position.X, position.Y);
+			Vector2 mapped = (new Vector2(10) - ((((flat - -offset) * scale) + new Vector2(1024f)) * -0.2f / scale)) / 10;
+			msg = msg
+				.AddText("\n")
+				.AddUiForeground((ushort)ChatColour.HIGHLIGHT_PASSED)
+				.AddText(name)
+				.AddUiForeground((ushort)ChatColour.QUIET)
+				.AddText(": ")
+				.AddUiForeground((ushort)ChatColour.HIGHLIGHT)
+				.AddText($"{mapped.X}, {mapped.Y}");
 		}
+
+		Plugin.chat.Print(msg.AddUiForegroundOff().BuiltString);
 	}
 }

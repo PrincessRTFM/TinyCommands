@@ -34,11 +34,13 @@ public static class ChatUtil {
 
 	#region Chatlog functions
 	public static void ShowMessage(params object[] payloads) {
-		if (payloads.Length < 1 || !payloads.Where(e => e != null).Any())
+		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
 			return;
 		Plugin.chat.Print(new SeString(generateMessagePayloads(payloads)));
 	}
 	public static void ShowPrefixedMessage(params object[] payloads) {
+		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
+			return;
 		List<object> plList = new() {
 			ChatColour.PREFIX,
 			$"[{Plugin.Prefix}] ",
@@ -47,8 +49,14 @@ public static class ChatUtil {
 		plList.AddRange(payloads);
 		ShowMessage(plList.ToArray());
 	}
-	public static void ShowError(params object[] payloads) => Plugin.chat.PrintError(new SeString(generateMessagePayloads(payloads)));
+	public static void ShowError(params object[] payloads) {
+		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
+			return;
+		Plugin.chat.PrintError(new SeString(generateMessagePayloads(payloads)));
+	}
 	public static void ShowPrefixedError(params object[] payloads) {
+		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
+			return;
 		List<object> plList = new() {
 			ChatColour.PREFIX,
 			$"[{Plugin.Prefix}] ",
