@@ -18,6 +18,8 @@ using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
+using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
+
 public static partial class PluginCommands {
 	[Command("/whereis")]
 	[Arguments("partial name...")]
@@ -30,7 +32,7 @@ public static partial class PluginCommands {
 		"If you pass the -f flag, the first result IN THE SORT ORDER USED will be flagged on your map automatically."
 	)]
 	[Aliases("/locate")]
-	public static void LocateGameObjectCommand(string? command, string argline, FlagMap flags, ref bool showHelp) {
+	public static unsafe void LocateGameObjectCommand(string? command, string argline, FlagMap flags, ref bool showHelp) {
 		if (string.IsNullOrWhiteSpace(argline)) {
 			ChatUtil.ShowPrefixedError("You need to provide a (partial) name filter.");
 			showHelp = true;
@@ -44,6 +46,7 @@ public static partial class PluginCommands {
 				o => o.IsValid()
 				//&& o.ObjectId != GameObject.InvalidGameObjectId
 				&& o.ObjectKind is ObjectKind.BattleNpc or ObjectKind.Player or ObjectKind.EventNpc or ObjectKind.EventObj or ObjectKind.Companion
+				&& ((CSGO*)o.Address)->GetIsTargetable()
 				&& o.Name.TextValue.Trim().ToLower().Contains(needle)
 			)
 			.Select(o => (o.Name.TextValue.Trim(), o.Position, (o.Position - here).Length()));
