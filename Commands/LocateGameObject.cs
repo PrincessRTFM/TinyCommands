@@ -8,6 +8,7 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Logging;
 
 using Lumina.Excel.GeneratedSheets;
 
@@ -73,7 +74,8 @@ public static partial class PluginCommands {
 			.AddUiForeground((ushort)ChatColour.HIGHLIGHT_PASSED)
 			.AddText(count.ToString())
 			.AddUiForeground((ushort)ChatColour.CONDITION_PASSED)
-			.AddText($" entit{(count == 1 ? "y" : "ies")}:");
+			.AddText($" entit{(count == 1 ? "y" : "ies")}:")
+			.AddUiForegroundOff();
 
 		foreach ((string name, Vector3 position) in found) {
 			Vector2 flat = new(position.X, position.Y);
@@ -85,9 +87,14 @@ public static partial class PluginCommands {
 				.AddUiForeground((ushort)ChatColour.QUIET)
 				.AddText(": ")
 				.AddUiForeground((ushort)ChatColour.HIGHLIGHT)
-				.AddText($"{mapped.X}, {mapped.Y}");
+				.AddText($"{mapped.X:00.0}, {mapped.Y:00.0}");
 		}
 
-		Plugin.chat.Print(msg.AddUiForegroundOff().BuiltString);
+		SeString built = msg.AddUiForegroundOff().BuiltString;
+#if DEBUG
+		PluginLog.Information($"{built.Encode().LongLength} bytes:");
+		PluginLog.Information(built.TextValue);
+#endif
+		//Plugin.chat.Print(built);
 	}
 }
