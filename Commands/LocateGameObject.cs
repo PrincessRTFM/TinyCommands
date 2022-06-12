@@ -28,7 +28,7 @@ public static partial class PluginCommands {
 		"It uses case-insensitive partial matching, so that something like 'alph' will match Alphinaud and also Alpha.",
 		"All found objects are printed to chat with their full name and a location flag for where they were found.",
 		"By default, they are sorted alphabetically, but you can use the -d flag to instead sort by distance from you.",
-		"By default, sorts are ascending order (a-z or closest first). To reverse the sort order (either one), pass the -i flag.",
+		"By default, sorts are ascending order (a-z or closest first). To reverse the sort order, pass the -i flag.",
 		"If you pass the -f flag, the first result IN THE SORT ORDER USED will be flagged on your map automatically."
 	)]
 	[Aliases("/locate")]
