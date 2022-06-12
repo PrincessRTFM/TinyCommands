@@ -6,7 +6,6 @@ using System.Linq;
 using System.Numerics;
 
 using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -43,7 +42,7 @@ public static partial class PluginCommands {
 		IEnumerable<(string name, Vector3 position, float distance)> found = Plugin.objects
 			.Where(
 				o => o.IsValid()
-				&& o.ObjectId != GameObject.InvalidGameObjectId
+				//&& o.ObjectId != GameObject.InvalidGameObjectId
 				&& o.ObjectKind is ObjectKind.BattleNpc or ObjectKind.Player or ObjectKind.EventNpc or ObjectKind.EventObj or ObjectKind.Companion
 				&& o.Name.TextValue.Trim().ToLower().Contains(needle)
 			)
