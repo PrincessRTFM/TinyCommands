@@ -37,6 +37,7 @@ public class Plugin: IDalamudPlugin {
 	[PluginService] internal static TargetManager targets { get; private set; } = null!;
 	[PluginService] internal static DataManager data { get; private set; } = null!;
 	[PluginService] internal static PartyList party { get; private set; } = null!;
+	[PluginService] internal static ObjectTable objects { get; private set; } = null!;
 	internal static XivCommonBase common { get; private set; } = null!;
 	internal static PluginCommandDelegate? pluginHelpCommand { get; private set; } = null!;
 	internal static PluginCommandManager commandManager { get; private set; } = null!;
