@@ -17,7 +17,7 @@ public static partial class PluginCommands {
 		"Much like /ifcmd, this command executes a given command when the condition is met.",
 		"In this case, the condition is whether or not your current zone ID is one of the given set.",
 		"Use the numeric ID, and if you want to check against more than one, separate them with commas but NOT spaces.",
-		"If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T one of those jobs.",
+		"If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T in one of the given zones.",
 		"Using -g will print your current zone ID, to make it easier to find the one you want."
 	)]
 	public static void RunIfInMapZone(string? command, string args, FlagMap flags, ref bool showHelp) {
