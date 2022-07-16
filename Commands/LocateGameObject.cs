@@ -11,6 +11,8 @@ using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Logging;
 
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 
@@ -18,10 +20,12 @@ using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
+// Client Structs Game Object, not Counter Strike Global Offensive :P
 using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 public static partial class PluginCommands {
 	[Command("/whereis")]
+	[Summary("Find nearby objects, players, and NPCs by name")]
 	[Arguments("partial name...")]
 	[HelpMessage(
 		"This command locates a game object (player, npc, etc) by name in your current zone.",
@@ -29,7 +33,9 @@ public static partial class PluginCommands {
 		"All found objects are printed to chat with their full name and a location flag for where they were found.",
 		"By default, they are sorted alphabetically, but you can use the -d flag to instead sort by distance from you.",
 		"By default, sorts are ascending order (a-z or closest first). To reverse the sort order, pass the -i flag.",
-		"If you pass the -f flag, the first result IN THE SORT ORDER USED will be flagged on your map automatically."
+		"If you pass the -f flag, the first result IN THE SORT ORDER USED will be flagged on your map automatically.",
+		"By default, only \"real\" results are returned, meaning things you can see and target yourself. To show \"ghosts\", use -a.",
+		"By default, only NPCs, players, companions, and \"event objects\" are shown. To show all types, use -A."
 	)]
 	[Aliases("/locate")]
 	public static unsafe void LocateGameObjectCommand(string? command, string argline, FlagMap flags, ref bool showHelp) {
@@ -39,29 +45,24 @@ public static partial class PluginCommands {
 			return;
 		}
 
-		string needle = argline.Trim().ToLower();
+		string needle = argline.Trim();
 		Vector3 here = Plugin.client.LocalPlayer!.Position;
 		IEnumerable<(string name, Vector3 position, float distance)> found = Plugin.objects
-			.Where(
-				o => o.IsValid()
-				//&& o.ObjectId != GameObject.InvalidGameObjectId
-				&& o.ObjectKind is ObjectKind.BattleNpc or ObjectKind.Player or ObjectKind.EventNpc or ObjectKind.EventObj or ObjectKind.Companion
-				&& ((CSGO*)o.Address)->GetIsTargetable()
-				&& o.Name.TextValue.Trim().ToLower().Contains(needle)
+			.Where(o =>
+				(flags['A'] || o.ObjectKind is ObjectKind.BattleNpc or ObjectKind.Player or ObjectKind.EventNpc or ObjectKind.EventObj or ObjectKind.Companion)
+				&& (flags['a'] || ((CSGO*)o.Address)->GetIsTargetable())
+				&& o.Name.TextValue.Contains(needle, StringComparison.OrdinalIgnoreCase)
 			)
-			.Select(o => (o.Name.TextValue.Trim(), o.Position, (o.Position - here).Length()));
+			.Select(o => (o.Name.TextValue.Trim(), o.Position, Vector3.Distance(o.Position, here)));
 
 		if (!found.Any()) {
 			ChatUtil.ShowPrefixedError(ChatColour.HIGHLIGHT_FAILED, "No results found for ", ChatColour.RESET, ChatColour.CONDITION_FAILED, argline.Trim(), ChatColour.RESET);
 			return;
 		}
 
-		if (flags['d']) {
-			found = found.OrderBy(o => o.distance);
-		}
-		else {
-			found = found.OrderBy(o => o.name.ToLower());
-		}
+		found = flags['d']
+			? found.OrderBy(o => o.distance)
+			: found.OrderBy(o => o.name.ToLower());
 		if (flags['i'])
 			found = found.Reverse();
 
@@ -131,9 +132,18 @@ public static partial class PluginCommands {
 		Plugin.chat.Print(built);
 
 		if (flags['f']) {
-			Vector2 mapped = Plugin.worldToMap(found.First().position, map.SizeFactor, map.OffsetX, map.OffsetY);
-			MapLinkPayload pl = new(zone, mapId, mapped.X, mapped.Y);
-			Plugin.gui.OpenMapWithMapLink(pl);
+			try {
+				AgentMap* agentMap = AgentMap.Instance();
+				Vector3 pos = found.First().position;
+				agentMap->SetFlagMapMarker(zone, mapId, pos);
+			}
+			catch (Exception e) {
+				PluginLog.Error($"Failed to set map marker quietly: {e}");
+				PluginLog.Information("Falling back to loud mode! [excessive screaming]");
+				Vector2 mapped = Plugin.worldToMap(found.First().position, map.SizeFactor, map.OffsetX, map.OffsetY);
+				MapLinkPayload pl = new(zone, mapId, mapped.X, mapped.Y);
+				Plugin.gui.OpenMapWithMapLink(pl);
+			}
 		}
 	}
 }
