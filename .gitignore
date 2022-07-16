@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# This is currently broken and will not be fixed any time soon - I need to disassemble the game first
+Commands/EmoteId.cs
+GameHooks.cs
