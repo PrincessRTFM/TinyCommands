@@ -44,12 +44,10 @@ public class Plugin: IDalamudPlugin {
 	internal static PluginCommandDelegate? pluginHelpCommand { get; private set; } = null!;
 	internal static PluginCommandManager commandManager { get; private set; } = null!;
 	internal static PlaySound sfx { get; private set; } = null!;
-	internal static GameHooks gameHooks { get; private set; } = null!;
 
 	public Plugin() {
 		common = new(); // just need the chat feature to send commands
 		sfx = new();
-		//chat.Enable();
 		pluginHelpCommand = Delegate.CreateDelegate(typeof(PluginCommandDelegate), null,
 			typeof(PluginCommands)
 				.GetMethods()
