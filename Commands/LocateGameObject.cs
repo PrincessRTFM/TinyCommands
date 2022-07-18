@@ -1,4 +1,4 @@
-﻿namespace TinyCmds;
+namespace TinyCmds;
 
 using System;
 using System.Collections.Generic;

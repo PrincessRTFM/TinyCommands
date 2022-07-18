@@ -1,4 +1,4 @@
-﻿namespace TinyCmds;
+namespace TinyCmds;
 
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
