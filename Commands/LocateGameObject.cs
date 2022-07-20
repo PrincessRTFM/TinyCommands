@@ -35,7 +35,7 @@ public static partial class PluginCommands {
 		"By default, sorts are ascending order (a-z or closest first). To reverse the sort order, pass the -i flag.",
 		"If you pass the -f flag, the first result IN THE SORT ORDER USED will be flagged on your map automatically.",
 		"By default, only \"real\" results are returned, meaning things you can see and target yourself. To show \"ghosts\", use -a.",
-		"By default, only NPCs, players, companions, and \"event objects\" are shown. To show all types, use -A."
+		"By default, only NPCs, players, companions, and \"event objects\" are shown. Generally, this is all that most people care about. To show all types, use -A."
 	)]
 	[Aliases("/locate")]
 	public static unsafe void LocateGameObjectCommand(string? command, string argline, FlagMap flags, ref bool showHelp) {
@@ -45,12 +45,16 @@ public static partial class PluginCommands {
 			return;
 		}
 
+		int invisibleFlags = 0
+			| (1 << 1) // hide model
+			| (1 << 11); // hide nameplate
+
 		string needle = argline.Trim();
 		Vector3 here = Plugin.client.LocalPlayer!.Position;
 		IEnumerable<(string name, Vector3 position, float distance)> found = Plugin.objects
 			.Where(o =>
 				(flags['A'] || o.ObjectKind is ObjectKind.BattleNpc or ObjectKind.Player or ObjectKind.EventNpc or ObjectKind.EventObj or ObjectKind.Companion)
-				&& (flags['a'] || ((CSGO*)o.Address)->GetIsTargetable())
+				&& (flags['a'] || ((CSGO*)o.Address)->GetIsTargetable() || (((CSGO*)o.Address)->RenderFlags & invisibleFlags) != invisibleFlags)
 				&& o.Name.TextValue.Contains(needle, StringComparison.OrdinalIgnoreCase)
 			)
 			.Select(o => (o.Name.TextValue.Trim(), o.Position, Vector3.Distance(o.Position, here)));
@@ -126,8 +130,7 @@ public static partial class PluginCommands {
 
 		SeString built = msg.AddUiForegroundOff().BuiltString;
 #if DEBUG
-		PluginLog.Information($"{built.Encode().LongLength} bytes:");
-		PluginLog.Information(built.TextValue);
+		PluginLog.Information($"{built.Encode().LongLength} bytes:\n{built.TextValue}");
 #endif
 		Plugin.chat.Print(built);
 
