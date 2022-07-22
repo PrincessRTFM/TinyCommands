@@ -20,7 +20,11 @@ TinyCommands also uses a custom command registration framework as an interface b
 
 - `/ptinyhelp`
 - `/thelp`
-- `pthelp`
+- `/pthelp`
+- `/tinycmd`
+- `/ptinycmd`
+- `/tcmd`
+- `/ptcmd`
 
 ##### Description
 
@@ -61,20 +65,23 @@ If you do not provide any text to execute on success, a message will be printed 
 
 ##### Flags
 
+:alert: For all flags, use the UPPERCASE letter to invert the meaning.
+
 - `-t`: you have a _normal_ target
-- `-T`: you **do not** have a _normal_ target
 - `-f`: you have a _focus_ target
-- `-F`: you **do not** have a _focus_ target
 - `-o`: you have a _mouseover_ "target" (see the `<mo>` chat placeholder)
-- `-O`: you **do not** have a _mouseover_ "target"
 - `-c`: you are in combat
-- `-C`: you **are not** in combat
 - `-p`: you have a _normal_ target and it is **a player**
-- `-P`: you **do not** have a _normal_ target OR it is **not a player**
 - `-n`: you have a _normal_ target and it is **an NPC**
-- `-N`: you **do not** have a _normal_ target OR it is **not an NPC**
 - `-m`: you have a _normal_ target and it is **a minion**
-- `-M`: you **do not** have a _normal_ target OR it is **not a minion**
+- `-w`: you are unmounted
+- `-s`: you are swimming
+- `-d`: you are diving
+- `-u`: you are flying
+- `-i`: you are in an instance
+- `-l`: you are using a fashion accessory
+- `-r`: you have a weapon drawn (even as a crafter/gatherer)
+- `-a`: you are in an alliance
 
 #### `/ifjob`
 
@@ -83,6 +90,8 @@ If you do not provide any text to execute on success, a message will be printed 
 - `/ifclass`
 - `/whenjob`
 - `/whenclass`
+- `/job`
+- `/class`
 
 ##### Description
 
@@ -98,7 +107,8 @@ If you don't provide any text to execute, a message will be printed with your cu
 
 ##### Aliases
 
-None at present.
+- `/gp`
+- `/whengp`
 
 ##### Description
 
@@ -111,6 +121,24 @@ As with both of the others, a status message reporting the result of the test is
 - `-l`: less than (must pass threshold to test against as FIRST argument following flags)
 - `-g`: greater than **or** equal to (must pass threshold like with `-l`)
 - `-c`: at capacity (do **not** pass a test threshold)
+
+#### `/ifzone`
+
+##### Aliases
+
+- `/ifmap`
+- `/ifmapzone`
+
+##### Description
+
+The fourth conditional command implemented, takes as a first argument a comma-separated (**NOT** whitespace-separated) list of numeric map zone IDs, which your current map zone will be checked against. If your current zone is in the list, the match succeeds. When _not_ inverted, the test passes when the match succeeds; otherwise, it passes when the match _fails_ instead. All remaining text after the first argument will be treated the same as with `/ifcmd` and effectively sent from your chatbox.
+
+In order to find the numeric map zone ID for your current zone, use the `-g` flag. If you don't pass any arguments and the `-g` flag is missing, the command help will be printed.
+
+##### Flags
+
+- `-g`: **g**et the numeric map zone ID for your current zone
+- `-n`: invert the test ("**not** in one of the listed zones")
 
 #### `/noop`
 
@@ -154,6 +182,9 @@ Fun fact: the inspiration for this command was that I wanted to easily set an al
 
 - `/echoerror`
 - `/error`
+- `/eerr`
+- `/err`
+- `/ee`
 
 ##### Description
 
@@ -161,10 +192,9 @@ It works just like the builtin `/echo` command, but it sends messages on the "er
 
 ```
 /macroicon Poke emote
-/ifcmd -Tf /target <f>
 /ifcmd -t /poke motion
 /ifcmd -t /em prods <t> gently to get their attention
-/ifcmd -T /error You must have a target (or focus target) to use this!
+/ifcmd -T /error You must have a target to use this!
 ```
 
 This example macro would effectively change the message for the `/poke` animation, and also prevent you from using it unless you have a target. It doesn't make much sense to prod the air, after all.
@@ -186,4 +216,38 @@ It can be annoying to keep `/echo`ing the `<se.##>` placeholders to find one you
 ##### Flags
 
 None.
+
+#### `/whereis`
+
+##### Aliases
+
+- `/locate`
+
+##### Description
+
+If you've ever needed to find something - an NPC in a crowded market, an interactible in the world for a quest, etc - and you've known the name but not where it _is_, this command is precisely what you need. It takes a (case-insensitive) partial name filter and looks for anything near you by that name. Whatever it finds, it prints to your chat, with the full name, distance from you, and current coordinates. It even works on players, if you lose your friend in a city. The range is limited for technical reasons (it can only scan things your client is aware of) so it won't work across the whole entire map, but that's not something that can be fixed.
+
+For added convenience, you can change the sorting order from alphabetical to by-distance (nearest first) and even automatically place your map flag at the location of the first result found, in sort order - so you can drop your marker right on the nearest instance of whatever you're looking for.
+
+##### Flags
+
+- `-d`: sort the list by distance from you (nearest first) instead of alphabetical (a-z)
+- `-i`: reverse the list (z-a alphabetical, or farthest first distance)
+- `-f`: place your map marker at the first result of the sorted list (the big map will not be opened)
+- `-a`: show all results, ignoring ghost checks - all game objects exist in the world at all times, even if they're not rendered or interactable
+- `-A`: show all _types_ of results, rather than just the ones people usually want (NPCs, players, companions, quest targets) - this may be needed to return aether currents in the list, so if you can't find any, try it out
+
+#### `/clearflag`
+
+##### Aliases
+
+- `/unflag`
+
+##### Description
+
+Remove your map marker with a command. This allows you to make a macro which can be hotkeyed, or to use another plugin, or even to use conditional commands from this plugin, in order to remove your map flag without having to open your map, find the flag, and right click it.
+
+##### Flags
+
+None. Including your map flag, even.
 
