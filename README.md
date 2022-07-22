@@ -2,6 +2,10 @@
 
 TinyCommands adds a handful of small slash commands, [much as the name would suggest](https://tvtropes.org/pmwiki/pmwiki.php/Main/ExactlywhatItSaysOnTheTin). These commands can be used from the chatbox directly, or from macros, or with other plugins, but the ""intended"" usage is primarily from within macros.
 
+## Installation
+
+This is a Dalamud plugin, and as such requires you to be using [QuickLauncher](https://github.com/goatcorp/FFXIVQuickLauncher) to start the game. If you are not already doing so, simply follow the instructions on that page to install it. Then, once you've launched FFXIV using QuickLauncher, follow the instructions on [my plugin repo page](https://github.com/PrincessRTFM/MyDalamudPlugins) to add TinyCommands to your plugin installer list. Install it from there, and you're done!
+
 ## Commands
 
 ### Arguments
