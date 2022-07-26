@@ -3,6 +3,8 @@ namespace TinyCmds.Internal;
 using System;
 using System.Runtime.InteropServices;
 
+using Dalamud.Hooking;
+
 internal abstract class GameFunctionBase<T> where T : Delegate {
 	private readonly IntPtr addr = IntPtr.Zero;
 	public IntPtr Address => this.addr;
@@ -38,4 +40,7 @@ internal abstract class GameFunctionBase<T> where T : Delegate {
 
 	public dynamic? Invoke(params dynamic[] parameters)
 		=> this.Delegate?.DynamicInvoke(parameters);
+
+	public Hook<T> Hook(T handler)
+		=> Hook<T>.FromAddress(this.Address, handler);
 }
