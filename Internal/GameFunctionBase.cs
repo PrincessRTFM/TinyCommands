@@ -24,7 +24,7 @@ internal abstract class GameFunctionBase<T> where T : Delegate {
 		if (Plugin.scanner.TryScanText(sig, out this.addr)) {
 			this.addr += offset;
 			ulong totalOffset = (ulong)this.Address.ToInt64() - (ulong)Plugin.scanner.Module.BaseAddress.ToInt64();
-			Logger.debug($"{this.GetType().Name} loaded; address = 0x{this.Address.ToInt64():X16}, base memory offset = 0x{totalOffset:X16}");
+			Logger.info($"{this.GetType().Name} loaded; address = 0x{this.Address.ToInt64():X16}, base memory offset = 0x{totalOffset:X16}");
 		}
 		else {
 			Logger.warning($"{this.GetType().Name} FAILED, could not find address from signature: ${sig.ToUpper()}");
