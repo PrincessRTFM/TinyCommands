@@ -28,6 +28,7 @@ internal class PluginCommand {
 	public string CommandComparable => this.Command.TrimStart('/').ToLower();
 	public string[] AliasesComparable => this.Aliases.Select(s => s.TrimStart('/').ToLower()).ToArray();
 	public string[] HelpLines => this.Help.Split('\r', '\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+	public string[] InvocationNames => (new string[] { this.Command }).Concat(this.Aliases).ToArray();
 	public string Command { get; }
 	public string Summary { get; }
 	public string Help { get; }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 
 using Dalamud.Game.Command;
+using Dalamud.Logging;
 
 using TinyCmds.Attributes;
 using TinyCmds.Chat;
@@ -28,6 +29,7 @@ public class PluginCommandManager: IDisposable {
 
 	private void addCommandHandlers() {
 		foreach (PluginCommand cmd in this.commands) {
+			PluginLog.Information($"Registering command {cmd.MainCommandInfo.Handler.Method.Name} as {string.Join(", ", cmd.InvocationNames)}");
 			Plugin.cmdManager.AddHandler(cmd.Command, cmd.MainCommandInfo);
 			CommandInfo hidden = cmd.AliasCommandInfo;
 			foreach (string alt in cmd.Aliases) {
@@ -38,6 +40,7 @@ public class PluginCommandManager: IDisposable {
 
 	private void removeCommandHandlers() {
 		foreach (PluginCommand cmd in this.commands) {
+			PluginLog.Information($"Unregistering command {string.Join(", ", cmd.InvocationNames)} for {cmd.MainCommandInfo.Handler.Method.Name}");
 			Plugin.cmdManager.RemoveHandler(cmd.Command);
 			foreach (string alt in cmd.Aliases) {
 				Plugin.cmdManager.RemoveHandler(alt);
