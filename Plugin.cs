@@ -13,6 +13,7 @@ using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
+using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
@@ -31,6 +32,7 @@ public class Plugin: IDalamudPlugin {
 
 	[PluginService] internal static ChatGui chat { get; private set; } = null!;
 	[PluginService] internal static GameGui gui { get; private set; } = null!;
+	[PluginService] internal static ToastGui toast { get; private set; } = null!;
 	[PluginService] internal static DalamudPluginInterface pluginInterface { get; private set; } = null!;
 	[PluginService] internal static SigScanner scanner { get; private set; } = null!;
 	[PluginService] internal static CommandManager cmdManager { get; private set; } = null!;
