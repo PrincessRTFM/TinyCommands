@@ -10,7 +10,7 @@ using TinyCmds.Utils;
 [Command("/ifcmd")]
 [Arguments("condition flags", "command to run...?")]
 [Summary("Run a chat command (or directly send a message) only if a condition is met")]
-[Aliases("/ifthen")]
+[Aliases("/ifthen", "/ifcondition", "/ifcond")]
 [HelpMessage(
 	"This command's test is based on game state, as described by the flags you use.",
 	"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. The available flags are:",
@@ -96,7 +96,8 @@ public class ConditionalGameFlags: BaseConditionalCommand {
 			return true;
 		}
 
-		ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
+		if (args.Length == 0)
+			ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
 		return false;
 	}
 }
