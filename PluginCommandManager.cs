@@ -61,8 +61,15 @@ public class PluginCommandManager: IDisposable {
 	protected virtual void Dispose(bool disposing) {
 		if (this.disposed)
 			return;
-		this.removeCommandHandlers();
-		this.commandList.Clear();
+
+		if (disposing) {
+			this.removeCommandHandlers();
+
+			foreach (PluginCommand cmd in this.commandList)
+				cmd.Dispose();
+
+			this.commandList.Clear();
+		}
 	}
 	public void Dispose() {
 		this.Dispose(true);
