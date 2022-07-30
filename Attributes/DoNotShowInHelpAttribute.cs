@@ -3,6 +3,6 @@ namespace TinyCmds;
 using System;
 
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Class)]
 internal class DoNotShowInHelpAttribute: Attribute {
 }

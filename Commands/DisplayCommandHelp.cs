@@ -1,6 +1,5 @@
-namespace TinyCmds;
+namespace TinyCmds.Commands;
 
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using TinyCmds.Attributes;
@@ -8,15 +7,15 @@ using TinyCmds.Chat;
 using TinyCmds.Utils;
 
 
-[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Plugin command methods are delegates")]
-public static partial class PluginCommands {
-	[Command("/tinyhelp")]
-	[Arguments("command...?")]
-	[Summary("Displays usage/help for the plugin's commands")]
-	[Aliases("/ptinyhelp", "/thelp", "/pthelp", "/tinycmd", "/ptinycmd", "/tcmd", "/ptcmd")]
-	[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
-	[PluginCommandHelpHandler]
-	public static void DisplayPluginCommandHelp(string? command, string args, FlagMap flags, ref bool showHelp) {
+[Command("/tinyhelp")]
+[Arguments("command...?")]
+[Summary("Displays usage/help for the plugin's commands")]
+[Aliases("/ptinyhelp", "/thelp", "/pthelp", "/tinycmd", "/ptinycmd", "/tcmd", "/ptcmd")]
+[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
+[PluginCommandHelpHandler]
+public class DisplayCommandHelp: PluginCommand {
+	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+		string[] args = rawArguments.Split(' ');
 		if (args.Length < 1) {
 			ChatUtil.ShowPrefixedMessage($"{Plugin.PluginName} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
 			ChatUtil.ShowPrefixedMessage(
@@ -58,7 +57,7 @@ public static partial class PluginCommands {
 			);
 			return;
 		}
-		foreach (string listing in ArgumentParser.ShellParse(args)) {
+		foreach (string listing in args) {
 			string wanted = listing.TrimStart('/').ToLower();
 			foreach (PluginCommand cmd in Plugin.commandManager.commands) {
 				if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {

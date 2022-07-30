@@ -9,7 +9,8 @@ using Dalamud.Game.Command;
 using Dalamud.Logging;
 
 using TinyCmds.Attributes;
-using TinyCmds.Chat;
+
+public delegate void PluginCommandInvocationErrorHandlerDelegate(params object[] payloads);
 
 public class PluginCommandManager: IDisposable {
 
@@ -19,17 +20,25 @@ public class PluginCommandManager: IDisposable {
 
 	private readonly bool disposed = false;
 
+	public PluginCommandInvocationErrorHandlerDelegate? ErrorHandler { get; internal set; }
+	public PluginCommand? HelpHandler { get; internal set; }
+
 	public PluginCommandManager() {
-		this.commandList = typeof(PluginCommands).GetMethods(BindingFlags.Public | BindingFlags.Static)
-			.Where(method => method.GetCustomAttribute<CommandAttribute>() is not null)
-			.Select(m => new PluginCommand(m, Plugin.pluginHelpCommand, ChatUtil.ShowPrefixedError))
+		Type b = typeof(PluginCommand);
+		this.commandList = AppDomain.CurrentDomain.GetAssemblies()
+			.SelectMany(asm => asm.GetTypes())
+			.Where(t => t.IsSubclassOf(b) && !t.IsAbstract)
+			.Where(t => t.GetConstructor(Array.Empty<Type>()) is not null)
+			.Select(t => Activator.CreateInstance(t))
+			.Where(o => o is not null)
+			.Cast<PluginCommand>()
 			.ToList();
-		this.addCommandHandlers();
+		this.HelpHandler = this.commandList.Where(c => c.GetType().GetCustomAttribute<PluginCommandHelpHandlerAttribute>() is not null).FirstOrDefault();
 	}
 
-	private void addCommandHandlers() {
+	internal void addCommandHandlers() {
 		foreach (PluginCommand cmd in this.commands) {
-			PluginLog.Information($"Registering command {cmd.MainCommandInfo.Handler.Method.Name} as {string.Join(", ", cmd.InvocationNames)}");
+			PluginLog.Information($"Registering command {cmd.InternalName} as {string.Join(", ", cmd.InvocationNames)}");
 			Plugin.cmdManager.AddHandler(cmd.Command, cmd.MainCommandInfo);
 			CommandInfo hidden = cmd.AliasCommandInfo;
 			foreach (string alt in cmd.Aliases) {
@@ -38,9 +47,9 @@ public class PluginCommandManager: IDisposable {
 		}
 	}
 
-	private void removeCommandHandlers() {
+	internal void removeCommandHandlers() {
 		foreach (PluginCommand cmd in this.commands) {
-			PluginLog.Information($"Unregistering command {string.Join(", ", cmd.InvocationNames)} for {cmd.MainCommandInfo.Handler.Method.Name}");
+			PluginLog.Information($"Unregistering command {string.Join(", ", cmd.InvocationNames)} for {cmd.InternalName}");
 			Plugin.cmdManager.RemoveHandler(cmd.Command);
 			foreach (string alt in cmd.Aliases) {
 				Plugin.cmdManager.RemoveHandler(alt);

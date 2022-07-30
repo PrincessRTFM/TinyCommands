@@ -1,49 +1,53 @@
-namespace TinyCmds;
+namespace TinyCmds.Commands.Conditional;
 
-using System;
 using System.Linq;
 
 using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
-
-public static partial class PluginCommands {
-	[Command("/ifzone")]
-	[Arguments("'-n'?", "zone IDs to match against", "command to run...?")]
-	[Summary("Run a chat command (or directly send a message) only when in a certain map zone")]
-	[Aliases("/ifmap", "/ifmapzone")]
-	[HelpMessage(
-		"Much like /ifcmd, this command executes a given command when the condition is met.",
-		"In this case, the condition is whether or not your current zone ID is one of the given set.",
-		"Use the numeric ID, and if you want to check against more than one, separate them with commas but NOT spaces.",
-		"If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T in one of the given zones.",
-		"Using -g will print your current zone ID, to make it easier to find the one you want."
-	)]
-	public static void RunIfInMapZone(string? command, string args, FlagMap flags, ref bool showHelp) {
+[Command("/ifzone")]
+[Arguments("'-n'?", "zone IDs to match against", "command to run...?")]
+[Summary("Run a chat command (or directly send a message) only when in a certain map zone")]
+[Aliases("/ifmap", "/ifmapzone")]
+[HelpMessage(
+	"This command's test is whether or not your current zone ID is one of the given set.",
+	"Use the numeric ID, and if you want to check against more than one, separate them with commas but NOT spaces.",
+	"If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T in one of the given zones.",
+	"Using -g will print your current zone ID, to make it easier to find the one you want."
+)]
+public class ConditionalMapZone: BaseConditionalCommand {
+	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = args ?? string.Empty;
 		ushort territory = Plugin.client.TerritoryType;
+
 		if (territory == 0) {
 			ChatUtil.ShowPrefixedError("Cannot identify current area");
-			return;
+			return false;
 		}
-		else if (flags['g']) {
+
+		if (flags['g']) {
 			ChatUtil.ShowPrefixedMessage($"You are in map zone {territory}");
-			return;
+			return false;
 		}
+
 		string wantedMapZones = arg.Split()[0];
+
 		if (string.IsNullOrEmpty(wantedMapZones)) {
 			showHelp = true;
-			return;
+			return false;
 		}
+
 		string cmd = arg.Contains(' ')
 			? arg[(wantedMapZones.Length + 1)..]
 			: string.Empty;
 		bool invert = flags["n"];
 		bool match = wantedMapZones.Split(',').Contains(territory.ToString());
+
 		if (match ^ invert) {
+
 			if (cmd.Length > 0) {
-				ChatUtil.SendChatlineToServer(cmd, flags["d"] || flags['v'], flags['d']);
+				ChatUtil.SendChatlineToServer(cmd, dryRun || verbose, dryRun);
 			}
 			else {
 				ChatUtil.ShowPrefixedMessage(
@@ -55,8 +59,11 @@ public static partial class PluginCommands {
 					ChatColour.RESET
 				);
 			}
+
+			return true;
 		}
-		else if (cmd.Length < 1) {
+
+		if (cmd.Length < 1) {
 			ChatUtil.ShowPrefixedMessage(
 				ChatColour.CONDITION_FAILED,
 				"You are currently in zone ",
@@ -66,5 +73,7 @@ public static partial class PluginCommands {
 				ChatColour.RESET
 			);
 		}
+
+		return false;
 	}
 }

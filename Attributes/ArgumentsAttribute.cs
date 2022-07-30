@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Class)]
 internal class ArgumentsAttribute: Attribute {
 	public string ArgumentDescription => string.Join(" ", this.Arguments.Select(a => a.EndsWith("?") ? $"[{a.TrimEnd('?')}]" : $"<{a}>"));
 	public string[] Arguments { get; }

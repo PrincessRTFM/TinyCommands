@@ -3,7 +3,7 @@ namespace TinyCmds.Attributes;
 using System;
 
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Class)]
 internal class AliasesAttribute: Attribute {
 	public string[] Aliases { get; }
 

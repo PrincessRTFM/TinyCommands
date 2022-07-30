@@ -3,7 +3,7 @@ namespace TinyCmds.Attributes;
 using System;
 
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Class)]
 internal class CommandAttribute: Attribute {
 	public string Command { get; }
 

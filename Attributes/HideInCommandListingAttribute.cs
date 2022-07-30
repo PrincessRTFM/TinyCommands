@@ -3,6 +3,6 @@ namespace TinyCmds.Attributes;
 using System;
 
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Class)]
 internal class HideInCommandListingAttribute: Attribute {
 }

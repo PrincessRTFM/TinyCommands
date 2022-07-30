@@ -6,7 +6,7 @@ using System.Linq;
 
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-
+using Dalamud.Logging;
 
 public static class ChatUtil {
 
@@ -76,9 +76,12 @@ public static class ChatUtil {
 	#endregion
 
 	public static void SendChatlineToServer(string line, bool displayInChatlog = false, bool dryRun = false) {
-		// TODO add plugin logging
+		PluginLog.Information("{0} [{1}]",
+			dryRun ? "!>" : ">>",
+			line);
+
 		if (displayInChatlog || dryRun)
-			ShowPrefixedMessage(line, ChatColour.RESET);
+			ShowPrefixedMessage(ChatColour.DEBUG, line, ChatColour.RESET);
 		if (!dryRun)
 			Plugin.common.Functions.Chat.SendMessage(line);
 	}

@@ -3,7 +3,7 @@ namespace TinyCmds.Attributes;
 using System;
 
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Class)]
 internal class HelpMessageAttribute: Attribute {
 	public string HelpMessage { get; }
 

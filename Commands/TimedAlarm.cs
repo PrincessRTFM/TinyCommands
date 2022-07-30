@@ -1,4 +1,4 @@
-namespace TinyCmds;
+namespace TinyCmds.Commands;
 
 using System;
 using System.Text.RegularExpressions;
@@ -8,22 +8,20 @@ using TinyCmds.Chat;
 using TinyCmds.Utils;
 
 
-public static partial class PluginCommands {
-
+[Command("/timer")]
+[Arguments("delay", "name")]
+[Summary("Set an in-game alarm to go off AFTER a certain amount of time, instead of AT a given time")]
+[Aliases("/ptimer", "/delay", "/pdelay")]
+[HelpMessage(
+	"The delay must be specified as \"??h??m\", where \"??\" is the number of hours/minutes to wait.",
+	"If either number is zero, it and the following letter can be left off entirely.",
+	"As an additional special case, if you are only setting a minute-level delay, you can leave out the \"m\" as well, as in \"10\" for ten minutes.",
+	"This command sets a VANILLA in-game timer for the time calculated. If you use -?, the /alarm command will be printed. If you use -!, it will be printed and NOT run."
+)]
+public class TimedAlarm: PluginCommand {
 	private static readonly Regex timespecMatcher = new(@"^\s*((?:\d+h)?)(\d+)([hm]?)\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-	[Command("/timer")]
-	[Arguments("delay", "name")]
-	[Summary("Set an in-game alarm to go off AFTER a certain amount of time, instead of AT a given time")]
-	[Aliases("/ptimer", "/delay", "/pdelay")]
-	[HelpMessage(
-		"The delay must be specified as \"??h??m\", where \"??\" is the number of hours/minutes to wait.",
-		"If either number is zero, it and the following letter can be left off entirely.",
-		"As an additional special case, if you are only setting a minute-level delay, you can leave out the \"m\" as well, as in \"10\" for ten minutes.",
-		"This command sets a VANILLA in-game timer for the time calculated. If you use -v, the /alarm command will be printed. If you use -d, it will be printed and NOT run.",
-		"If the timer name contains spaces, it MUST be enclosed in double quotes."
-	)]
-	public static void GenerateTimedAlarm(string? command, string args, FlagMap flags, ref bool showHelp) {
+	protected override void Execute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		DateTime now = DateTime.Now;
 		string timespec = args.Split()[0];
 		string name = args[timespec.Length..].Trim();
@@ -68,6 +66,6 @@ public static partial class PluginCommands {
 		}
 		int futureHours = (now.Hour + hours) % 24;
 		string cmd = $"/alarm \"{name}\" lt {futureHours:D2}{futureMinutes:D2}";
-		ChatUtil.SendChatlineToServer(cmd, flags["d"] || flags["v"], flags["d"]);
+		ChatUtil.SendChatlineToServer(cmd, verbose, dryRun);
 	}
 }

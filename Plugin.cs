@@ -1,9 +1,7 @@
 namespace TinyCmds;
 
 using System;
-using System.Linq;
 using System.Numerics;
-using System.Reflection;
 
 using Dalamud.Data;
 using Dalamud.Game;
@@ -17,7 +15,7 @@ using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
-using TinyCmds.Attributes;
+using TinyCmds.Chat;
 using TinyCmds.Internal;
 
 using XivCommon;
@@ -43,22 +41,16 @@ public class Plugin: IDalamudPlugin {
 	[PluginService] internal static PartyList party { get; private set; } = null!;
 	[PluginService] internal static ObjectTable objects { get; private set; } = null!;
 	internal static XivCommonBase common { get; private set; } = null!;
-	internal static PluginCommandDelegate? pluginHelpCommand { get; private set; } = null!;
 	internal static PluginCommandManager commandManager { get; private set; } = null!;
 	internal static PlaySound sfx { get; private set; } = null!;
 
 	public Plugin() {
 		common = new(); // just need the chat feature to send commands
 		sfx = new();
-		pluginHelpCommand = Delegate.CreateDelegate(typeof(PluginCommandDelegate), null,
-			typeof(PluginCommands)
-				.GetMethods()
-				.Where(m => m.GetCustomAttribute<PluginCommandHelpHandlerAttribute>() is not null)
-				.First(),
-		false) as PluginCommandDelegate;
-		if (pluginHelpCommand is null)
-			Logger.warning("No plugin command was flagged as the default help/usage text method");
-		commandManager = new();
+		commandManager = new() {
+			ErrorHandler = ChatUtil.ShowPrefixedError
+		};
+		commandManager.addCommandHandlers();
 	}
 
 	internal static Vector2 worldToMap(Vector3 pos, ushort sizeFactor, short offsetX, short offsetY) {

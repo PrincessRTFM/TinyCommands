@@ -1,4 +1,4 @@
-namespace TinyCmds;
+namespace TinyCmds.Commands.Conditional;
 
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
@@ -7,23 +7,20 @@ using TinyCmds.Attributes;
 using TinyCmds.Chat;
 using TinyCmds.Utils;
 
-public static partial class PluginCommands {
-	[Command("/ifcmd")]
-	[Arguments("condition flags", "command to run...?")]
-	[Summary("Run a chat command (or directly send a message) only if a condition is met")]
-	[Aliases("/ifthen")]
-	[HelpMessage(
-		"If the condition indicated by the flags is met, then all of the arguments will be executed as if entered into the chatbox manually. If no command/message is given, the test will print the result to your chatlog.",
-		"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. Available flags are:",
-		"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory, -r weapon drawn, -a in alliance"
-	)]
-	public static void RunChatIfCond(string? command, string args, FlagMap flags, ref bool showHelp) {
-		if (Plugin.client.LocalPlayer is null) {
-			ChatUtil.ShowPrefixedError("Can't find player object - this should be impossible unless you're not logged in.");
-			return;
-		}
+[Command("/ifcmd")]
+[Arguments("condition flags", "command to run...?")]
+[Summary("Run a chat command (or directly send a message) only if a condition is met")]
+[Aliases("/ifthen")]
+[HelpMessage(
+	"This command's test is based on game state, as described by the flags you use.",
+	"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. The available flags are:",
+	"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory, -r weapon drawn, -a in alliance, -g has party members"
+)]
+public class ConditionalGameFlags: BaseConditionalCommand {
+	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		ChatColour msgCol = ChatColour.CONDITION_FAILED;
 		string msg = "Test passed but no command given";
+
 		if (flags["t"] && Plugin.targets.Target is null)
 			msg = "No target";
 		else if (flags["T"] && Plugin.targets.Target is not null)
@@ -76,23 +73,30 @@ public static partial class PluginCommands {
 			msg = "Not using fashion accessory";
 		else if (flags["L"] && Plugin.conditions[ConditionFlag.UsingParasol])
 			msg = "Using fashion accessory";
-		else if (flags["r"] && !Plugin.client.LocalPlayer.StatusFlags.HasFlag(StatusFlags.WeaponOut))
+		else if (flags["r"] && !Plugin.client.LocalPlayer!.StatusFlags.HasFlag(StatusFlags.WeaponOut))
 			msg = "No weapon drawn";
-		else if (flags["R"] && Plugin.client.LocalPlayer.StatusFlags.HasFlag(StatusFlags.WeaponOut))
+		else if (flags["R"] && Plugin.client.LocalPlayer!.StatusFlags.HasFlag(StatusFlags.WeaponOut))
 			msg = "Weapon drawn";
 		else if (flags["a"] && !Plugin.party.IsAlliance)
 			msg = "Not in an alliance";
 		else if (flags["A"] && Plugin.party.IsAlliance)
 			msg = "In an alliance";
+		else if (flags['g'] && Plugin.party.Length < 1)
+			msg = "No party members present";
+		else if (flags['G'] && Plugin.party.Length > 0)
+			msg = "Party members present";
 		else
 			msgCol = ChatColour.CONDITION_PASSED;
-		if (args.Length > 0) {
-			if (msgCol == ChatColour.CONDITION_PASSED) {
-				ChatUtil.SendChatlineToServer(args, flags["d"] || flags['v'], flags['d']);
-			}
+
+		if (msgCol == ChatColour.CONDITION_PASSED) {
+			if (args.Length > 0)
+				ChatUtil.SendChatlineToServer(args, dryRun || verbose, dryRun);
+			else
+				ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
+			return true;
 		}
-		else {
-			ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
-		}
+
+		ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
+		return false;
 	}
 }
