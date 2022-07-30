@@ -60,6 +60,9 @@ This command lists all TinyCommands plugin commands, optionally with their alias
 ##### Aliases
 
 - `/ifthen`
+- `/ifcondition`
+- `/ifcond`
+- `/ifstate`
 
 ##### Description
 
@@ -69,7 +72,7 @@ If you do not provide any text to execute on success, a message will be printed 
 
 ##### Flags
 
-:alert: For all flags, use the UPPERCASE letter to invert the meaning.
+:alert: For all condition flags, use the UPPERCASE letter to invert the meaning.
 
 - `-t`: you have a _normal_ target
 - `-f`: you have a _focus_ target
@@ -86,6 +89,12 @@ If you do not provide any text to execute on success, a message will be printed 
 - `-l`: you are using a fashion accessory
 - `-r`: you have a weapon drawn (even as a crafter/gatherer)
 - `-a`: you are in an alliance
+
+:alert: All conditional commands support the following flags.
+
+- `-?`: verbose mode - display in your local chatlog any text (including commands) that are sent to the server
+- `-!`: dry run - the same as verbose mode, except nothing is _actually_ sent to the server
+- `-$`: abort the currently running macro (by using the `/macrocancel` command)
 
 #### `/ifjob`
 
@@ -107,6 +116,12 @@ If you don't provide any text to execute, a message will be printed with your cu
 
 - `-n`: invert the test ("**not** one of the given jobs")
 
+:alert: All conditional commands support the following flags.
+
+- `-?`: verbose mode - display in your local chatlog any text (including commands) that are sent to the server
+- `-!`: dry run - the same as verbose mode, except nothing is _actually_ sent to the server
+- `-$`: abort the currently running macro (by using the `/macrocancel` command)
+
 #### `/ifgp`
 
 ##### Aliases
@@ -126,6 +141,12 @@ As with both of the others, a status message reporting the result of the test is
 - `-g`: greater than **or** equal to (must pass threshold like with `-l`)
 - `-c`: at capacity (do **not** pass a test threshold)
 
+:alert: All conditional commands support the following flags.
+
+- `-?`: verbose mode - display in your local chatlog any text (including commands) that are sent to the server
+- `-!`: dry run - the same as verbose mode, except nothing is _actually_ sent to the server
+- `-$`: abort the currently running macro (by using the `/macrocancel` command)
+
 #### `/ifzone`
 
 ##### Aliases
@@ -144,6 +165,12 @@ In order to find the numeric map zone ID for your current zone, use the `-g` fla
 - `-g`: **g**et the numeric map zone ID for your current zone
 - `-n`: invert the test ("**not** in one of the listed zones")
 
+:alert: All conditional commands support the following flags.
+
+- `-?`: verbose mode - display in your local chatlog any text (including commands) that are sent to the server
+- `-!`: dry run - the same as verbose mode, except nothing is _actually_ sent to the server
+- `-$`: abort the currently running macro (by using the `/macrocancel` command)
+
 #### `/noop`
 
 ##### Aliases
@@ -153,7 +180,7 @@ In order to find the numeric map zone ID for your current zone, use the `-g` fla
 
 ##### Description
 
-Does literally nothing. There are no effects whatsoever. The sole purpose of this command is to allow using `<wait.(delay)>` when `/wait` is unavailable but you don't want anything to happen. If you don't use Macrology, you'll probably never use this.
+Does literally nothing. There are no effects whatsoever. The sole purpose of this command is to allow using `<wait.(delay)>` when `/wait` is unavailable but you don't want anything to happen. If you don't use Macrology or a similar plugin, you'll probably never use this.
 
 ##### Flags
 
@@ -177,8 +204,8 @@ Fun fact: the inspiration for this command was that I wanted to easily set an al
 
 ##### Flags
 
-- `-v`: display the `/alarm` command that was generated, then run it
-- `-d`: display the generated `/alarm` command, but _don't_ run it
+- `-?`: display the `/alarm` command that was generated, then run it
+- `-!`: display the generated `/alarm` command, but _don't_ run it
 
 #### `/echoerr`
 
@@ -196,16 +223,16 @@ It works just like the builtin `/echo` command, but it sends messages on the "er
 
 ```
 /macroicon Poke emote
-/ifcmd -t /poke motion
-/ifcmd -t /em prods <t> gently to get their attention
-/ifcmd -T /error You must have a target to use this!
+/ifcmd -T$ /error You must have a target to use this!
+/poke motion
+/em prods <t> gently to get their attention
 ```
 
 This example macro would effectively change the message for the `/poke` animation, and also prevent you from using it unless you have a target. It doesn't make much sense to prod the air, after all.
 
 ##### Flags
 
-- `-p`: display the error message with the plugin's usual prefix text, instead of as a "bare" message
+None.
 
 #### `/playsound`
 
@@ -254,4 +281,23 @@ Remove your map marker with a command. This allows you to make a macro which can
 ##### Flags
 
 None. Including your map flag, even.
+
+#### `/popup`
+
+##### Aliases
+
+- `/toastmsg`
+
+##### Description
+
+This command provides an alternative to `/echo` and `/echoerror` that doesn't clog your chatlog, on top of a different look. It allows you to create custom game toast messages, like the ones for sub-area names as you travel around, or the error message when you try to use an action that isn't ready, or when you finish a quest objective. For example, it could be used in an emote macro to provide a different form of feedback for when the emote can't be used:
+
+```
+/micon Poke emote
+/ifcmd -T$ /popup -e This emote requires a target.
+/poke motion
+/em prods <t> gently.
+```
+
+Instead of the earlier example, this would create a red text popup message with the error that disappears after a few seconds, rather than an error message in your chatlog.
 
