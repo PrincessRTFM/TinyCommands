@@ -58,6 +58,9 @@ public abstract class PluginCommand: IDisposable {
 	protected virtual string ModifyHelpMessage(string original) => original;
 
 	public void Dispatch(string command, string argline) {
+		if (this.Disposed)
+			throw new ObjectDisposedException(this.InternalName, "Plugin command has already been disposed");
+
 		try {
 			(FlagMap flags, string rawArgs) = ArgumentParser.ExtractFlags(argline);
 			bool showHelp = false;
@@ -87,7 +90,11 @@ public abstract class PluginCommand: IDisposable {
 	}
 
 	#region IDisposable
-	protected virtual void Dispose(bool disposing) { }
+	protected virtual void Dispose(bool disposing) {
+		if (this.Disposed)
+			return;
+		this.Disposed = true;
+	}
 
 	public void Dispose() {
 		this.Dispose(true);

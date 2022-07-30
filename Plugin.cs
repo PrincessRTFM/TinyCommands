@@ -64,13 +64,14 @@ public class Plugin: IDalamudPlugin {
 
 	#region IDisposable Support
 	protected virtual void Dispose(bool disposing) {
-		if (this.disposed) {
+		if (this.disposed)
 			return;
-		}
+		this.disposed = true;
+
 		if (disposing) {
 			commandManager.Dispose();
 		}
-		this.disposed = true;
+
 	}
 	public void Dispose() {
 		this.Dispose(true);
