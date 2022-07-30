@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Authors>VariableVixen</Authors>
-		<Version>4.4</Version>
+		<Version>5.0</Version>
 		<Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It doesn't even have a UI.</Description>
 		<Copyright>Copyleft Vixen 2021</Copyright>
 		<PackageProjectUrl>https://github.com/PrincessRTFM/TinyCommands</PackageProjectUrl>
