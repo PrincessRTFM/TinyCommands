@@ -1,4 +1,4 @@
-﻿namespace TinyCmds.Commands.Conditional;
+namespace TinyCmds.Commands.Conditional;
 
 using Dalamud.Logging;
 

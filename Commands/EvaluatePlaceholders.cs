@@ -1,4 +1,4 @@
-﻿namespace TinyCmds.Commands;
+namespace TinyCmds.Commands;
 
 using System;
 using System.Diagnostics;
