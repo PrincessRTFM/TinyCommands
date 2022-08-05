@@ -301,3 +301,39 @@ This command provides an alternative to `/echo` and `/echoerror` that doesn't cl
 
 Instead of the earlier example, this would create a red text popup message with the error that disappears after a few seconds, rather than an error message in your chatlog.
 
+#### `/execute`
+
+##### Aliases
+
+- `/exec`
+- `/eval`
+- `/evaluate`
+
+# Description
+
+This command takes an input line, evaluates a limited set of vanilla placeholders and a set of custom ones in order to construct a new input line, and then runs that from your chat. Only target-based placeholders (ones that find a player or NPC), `<class>`/`<job>`, and the custom date/time ones will be affected, all others are passed through unchanged. It's possible to supply a character that must be within the `<`/`>` placeholder tags and before the word, in order to protect placeholders you want to pass through that would otherwise be evaluated.
+
+For example, using Glamourer, the following macro will save a design with your current target's appearance under a name containing their character name and the date/time you saved the design at. This macro combines a number of TinyCommands features listed above, in case you don't recognise some of the commands.
+
+```
+/ifcmd -T$ /popup -e No target to save glamour from.
+/exec -$ /glamour save,<t>,Saved (<$t>, <$year><$month><$day>-<$hour><$min><$sec>)
+```
+
+##### Flags
+
+- `-?`: display the input line to be sent before sending it
+- `-!`: display the input line that _would_ be sent, but don't actually send it
+
+A "guard character" can be set with one of the following, such that only placeholders prefixed with that character (within the brackets) will be replaced. **Only one will be recognised.** If more are used, the first one LISTED HERE will apply.
+
+- `-:`
+- `-@`
+- `-#`
+- `-$`
+- `-%`
+- `-^`
+- `-&`
+- `-*`
+- `-+`
+
