@@ -26,6 +26,8 @@
 		<Deterministic>false</Deterministic>
 		<AssemblyVersion>$(Version).*</AssemblyVersion>
 		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -33,20 +35,17 @@
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>embedded</DebugType>
 		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug\</OutputPath>
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<DebugType>portable</DebugType>
 		<Optimize>true</Optimize>
-		<OutputPath>bin\Release\</OutputPath>
 		<DefineConstants>TRACE</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="DalamudPackager" Version="2.1.7" />
-		<PackageReference Include="ILRepack" Version="2.0.18" />
 		<PackageReference Include="XivCommon" Version="5.0.0" />
 		<Reference Include="Newtonsoft.Json">
 			<HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
@@ -85,14 +84,4 @@
 		<None Remove="README.md" />
 	</ItemGroup>
 
-	<Target Name="ILRepack" AfterTargets="PostBuildEvent">
-		<ItemGroup>
-			<InputAssemblies Include="$(TargetPath)" />
-			<InputAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
-		</ItemGroup>
-		<Exec Command="$(PkgILRepack)\tools\ILRepack.exe /lib:$(DalamudLibPath) /out:$(TargetDir)..\$(Configuration).ILMerge\$(TargetFileName) @(InputAssemblies, ' ')" />
-	</Target>
-	<Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-		<DalamudPackager ProjectDir="$(ProjectDir)" OutputPath="$(OutputPath)..\$(Configuration).ILMerge" AssemblyName="$(AssemblyName)" MakeZip="true" />
-	</Target>
 </Project>
