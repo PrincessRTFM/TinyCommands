@@ -26,7 +26,7 @@ public class MakeToastPopup: PluginCommand {
 			Plugin.toast.ShowError(argline);
 
 		if (flags['q']) {
-			if (flags['i'] && argline.Contains(" ") && uint.TryParse(argline.Split(" ", 2)[0], out uint icon)) { // undocumented cause it's iffy
+			if (flags['i'] && argline.Contains(' ') && uint.TryParse(argline.Split(" ", 2)[0], out uint icon)) { // undocumented cause it's iffy
 				Plugin.toast.ShowQuest(argline.Split(" ", 2)[1], new QuestToastOptions() { IconId = icon, PlaySound = flags['p'] });
 			}
 			else {
