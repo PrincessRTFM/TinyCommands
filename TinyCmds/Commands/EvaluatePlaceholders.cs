@@ -20,20 +20,24 @@ using TinyCmds.Utils;
 [Summary("Evaluate placeholders in the given command, then run that new command")]
 [Aliases("/exec", "/eval", "/evaluate")]
 [HelpMessage(
-	"When provided with an input line, certain placeholders are evaluated, then the new input line is executed.",
-	"If you use one of :@#$%^&*+ as a flag, only placeholders that start with that character will be replaced, as in <:target>.",
-	"This is to allow passing actual placeholders in the event that a command has only partial support.",
-	"All placeholders that identify players or NPCs are supported, as are <class>/<job>. No others are evaluated, due to a lack of consistent/sensible formatting.",
-	"There are a number of non-vanilla placeholders that are also executed, which can only be used with this command.",
+	"When provided with an input line, this command will evaluate certain placeholders, then execute the new input line.",
+	"",
+	"If you use one of :@#$%^&*+ as a flag, only placeholders that start with that character will be replaced, as in <:target>."
+	+ " This is to allow passing actual placeholders in the event that a command has only partial support.",
+	"",
+	"All placeholders that identify players or NPCs are supported, as are <class>/<job>. No others are evaluated, due to a lack of consistent/sensible formatting."
+	+ " There are also a number of non-vanilla placeholders that are evaluated, which can only be used with this command:",
 	"- classname/jobname work like <class>/<job> but only output your (full) class/job name, without level. The suffix \".short\" will output the abbreviated form.",
 	"- level/lvl will output only your level as a number, without anything else. The \".short\" suffix will disable zero-padding.",
-	"- year, month, day, weekday, yearday, hour, min/minute, sec/second, ms, and am/pm act as you would expect.",
+	"- year, month, day, weekday, yearday, hour, min/minute, sec/second, ms, and am/pm act as you would expect",
 	"- month, day, and yearday can take \".0\" as a suffix to be zero-based (January/Sunday is 0, not 1) if desired.",
 	"- hour can take \".12\" as a suffix to use 12-hour time if desired. It can also take \".short\" to not zero-pad (6 -> 06) if desired.",
-	"All date/time placeholders can be suffixed with \".utc\" to use UTC/GMT instead of local time.",
-	"All placeholders that output text (instead of numbers) can take the suffixes \".upper\" and \".lower\" to specify their case.",
-	"Multiple suffixes can be used in any order, such that \"hour.12.short\" and \"hour.short.12\" will both work the same.",
-	"As with all commands that send input to the server, -? will display the command before it's run, and -! will display the command without running it."
+	"",
+	"All date/time placeholders can be suffixed with \".utc\" to use UTC/GMT instead of local time."
+	+ " All placeholders that output text (instead of numbers) can take the suffixes \".upper\" and \".lower\" to specify their case."
+	+ " Multiple suffixes can be used in any order, such that \"hour.12.short\" and \"hour.short.12\" will both work the same.",
+	"",
+	"As with all commands that send an input line to the server, the -? flag will display the input line before it's run, and the -! flag will display the input line without running it."
 )]
 public class EvaluatePlaceholders: PluginCommand {
 	private readonly string[] leaders = new string[] {

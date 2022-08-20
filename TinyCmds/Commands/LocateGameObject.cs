@@ -27,17 +27,21 @@ using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 [Summary("Find nearby objects, players, and NPCs by name")]
 [Arguments("partial name...")]
 [HelpMessage(
-	"This command locates a game object (player, npc, etc) by name in your current zone.",
-	"It uses case-insensitive partial matching, so that something like 'alph' will match Alphinaud and also Alpha.",
-	"All found objects are printed to chat with their full name and a location flag for where they were found.",
-	"By default, they are sorted alphabetically, but you can use the -d flag to instead sort by distance from you.",
-	"By default, sorts are ascending order (a-z or closest first). To reverse the sort order, pass the -i flag.",
-	"If you pass the -f flag, the first result IN THE SORT ORDER USED will be flagged on your map automatically.",
-	"The -s flag can only be used with -f, and will silence the result list. To silence ALL messages including failure to find anything, use -S.",
-	"By default, only \"real\" results are returned, meaning things you can see and target yourself. To show \"ghosts\", use -a.",
-	"By default, only NPCs, players, companions, and \"event objects\" are shown. Generally, this is all that most people care about. To show all types, use -A."
+	"This command locates a game object (player, npc, etc) by name in your current zone."
+	+ " All found objects are printed to chat with their full name and a location flag for where they were found."
+	+ " It uses case-insensitive partial matching, so that something like 'alph' will match Alphinaud and also Alpha.",
+	"",
+	"By default, objects are sorted alphabetically, but you can use the -d flag to instead sort by distance from you."
+	+ " By default, sorts are in ascending order (a-z or closest first). To reverse the sort order, pass the -i flag.",
+	"",
+	"If you pass the -f flag, the first result IN THE SORT ORDER USED will be flagged on your map automatically."
+	+ " The -s flag can only be used with -f, and will silence the result list. To silence ALL messages including failure to find anything, use -S.",
+	"",
+	"By default, only \"real\" results are returned, meaning things you can see and target yourself. To show \"ghosts\", use -a."
+	+ " By default, only NPCs, players, companions, and \"event objects\" are shown. Generally, this is all that most people care about. To show all types, use -A."
+	+ " In general, you shouldn't need either of these, unless you're trying to find something like an aether current or a quest NPC for a quest you aren't doing."
 )]
-[Aliases("/locate")]
+[Aliases("/locate", "/find")]
 public class LocateGameObjectCommand: PluginCommand {
 	protected override unsafe void Execute(string? command, string argline, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		if (string.IsNullOrWhiteSpace(argline)) {

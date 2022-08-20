@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 using Dalamud.Game.Command;
 using Dalamud.Logging;
@@ -23,13 +24,31 @@ public class PluginCommandManager: IDisposable {
 	public PluginCommandInvocationErrorHandlerDelegate? ErrorHandler { get; internal set; }
 	public PluginCommand? HelpHandler { get; internal set; }
 
-	public PluginCommandManager() {
+	public PluginCommandManager(Plugin core) {
 		Type b = typeof(PluginCommand);
+		Type p = core.GetType();
 		this.commandList = AppDomain.CurrentDomain.GetAssemblies()
 			.SelectMany(asm => asm.GetTypes())
-			.Where(t => t.IsSubclassOf(b) && !t.IsAbstract)
-			.Where(t => t.GetConstructor(Array.Empty<Type>()) is not null)
-			.Select(t => Activator.CreateInstance(t))
+			.Where(t => t.IsSubclassOf(b) && !t.IsAbstract && t.GetConstructor(Array.Empty<Type>()) is not null)
+			.Select(t => {
+				try {
+					ConstructorInfo ctor = t.GetConstructor(Array.Empty<Type>())!;
+					object instance = FormatterServices.GetUninitializedObject(t);
+					PropertyInfo prop = b
+						.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+						.Where(prop => prop.PropertyType == p)
+						.First();
+					PluginLog.Information($"Injecting {p.Name} object to {t.Name}.{prop.Name}");
+					prop.SetValue(instance, core);
+					PluginLog.Information($"Invoking {t.Name}.<ctor>()");
+					ctor.Invoke(instance, null);
+					return instance as PluginCommand;
+				}
+				catch (Exception e) {
+					PluginLog.Error(e, $"Failed to instantiate {t.Name}");
+					return null;
+				}
+			})
 			.Where(o => o is not null)
 			.Cast<PluginCommand>()
 			.ToList();

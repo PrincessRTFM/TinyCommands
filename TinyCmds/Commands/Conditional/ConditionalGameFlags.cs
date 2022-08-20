@@ -12,9 +12,24 @@ using TinyCmds.Utils;
 [Summary("Run a chat command (or directly send a message) only if a condition is met")]
 [Aliases("/ifthen", "/ifcondition", "/ifcond", "/ifstate")]
 [HelpMessage(
-	"This command's test is based on game state, as described by the flags you use.",
-	"Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. The available flags are:",
-	"-t has target, -f has focus, -o has mouseover, -c in combat, -p target is player, -n target is NPC, -m target is minion, -w unmounted, -s swimming, -d diving, -u flying, -i in duty, -l using fashion accessory, -r weapon drawn, -a in alliance, -g has party members"
+	"This command's test is based on game state, as described by the flags you use."
+	+ " Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. The available flags are:",
+	"-t has target",
+	"-f has focus",
+	"-o has mouseover",
+	"-c in combat",
+	"-p target is player",
+	"-n target is NPC",
+	"-m target is minion",
+	"-w unmounted",
+	"-s swimming",
+	"-d diving",
+	"-u flying",
+	"-i in duty",
+	"-l using fashion accessory",
+	"-r weapon drawn",
+	"-a in alliance",
+	"-g has party members"
 )]
 public class ConditionalGameFlags: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {

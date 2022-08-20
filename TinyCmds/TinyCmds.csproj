@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<Product>TinyCmds</Product>
 		<Authors>VariableVixen</Authors>
-		<Version>5.0</Version>
-		<Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It doesn't even have a UI.</Description>
-		<Copyright>Copyleft Vixen 2021</Copyright>
+		<Version>6.0</Version>
+		<Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It finally has a UI specifically for command help.</Description>
 		<PackageProjectUrl>https://github.com/PrincessRTFM/TinyCommands</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/PrincessRTFM/TinyCommands.git</RepositoryUrl>
+		<Copyright>Copyleft Vixen 2021</Copyright>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<Platforms>x64</Platforms>
 		<PlatformTarget>x64</PlatformTarget>
-		<PackageId>TinyCmds</PackageId>
-		<Product>$(PackageId)</Product>
-		<AssemblyName>$(PackageId)</AssemblyName>
-		<TargetFramework>net5.0-windows</TargetFramework>
+		<PackageId>$(Product)</PackageId>
+		<AssemblyName>$(Product)</AssemblyName>
+		<TargetFramework>net6-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<NullableContextOptions>enable</NullableContextOptions>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -21,7 +24,7 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<RootNamespace>TinyCmds</RootNamespace>
+		<RootNamespace>$(PackageId)</RootNamespace>
 		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 		<Deterministic>false</Deterministic>
 		<AssemblyVersion>$(Version).*</AssemblyVersion>
@@ -45,8 +48,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="2.1.7" />
-		<PackageReference Include="XivCommon" Version="5.0.0" />
+		<PackageReference Include="DalamudPackager" Version="2.1.8" />
+		<PackageReference Include="XivCommon" Version="6.0.1" />
 		<Reference Include="Newtonsoft.Json">
 			<HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
 			<Private>False</Private>
@@ -79,7 +82,6 @@
 
 	<ItemGroup>
 		<None Remove=".gitignore" />
-		<None Remove="bump" />
 		<None Remove="dalamud-plugin-ui-colours.png" />
 		<None Remove="README.md" />
 	</ItemGroup>

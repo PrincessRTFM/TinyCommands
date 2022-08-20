@@ -11,9 +11,10 @@ using TinyCmds.Utils;
 [Summary("Run a chat command (or directly send a message) only when in a certain map zone")]
 [Aliases("/ifmap", "/ifmapzone")]
 [HelpMessage(
-	"This command's test is whether or not your current zone ID is one of the given set.",
-	"Use the numeric ID, and if you want to check against more than one, separate them with commas but NOT spaces.",
-	"If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T in one of the given zones.",
+	"This command's test is whether or not your current zone ID is one of the given set."
+	+ " Use the numeric ID, and if you want to check against more than one, separate them with commas but NOT spaces."
+	+ " If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T in one of the given zones.",
+	"",
 	"Using -g will print your current zone ID, to make it easier to find the one you want."
 )]
 public class ConditionalMapZone: BaseConditionalCommand {

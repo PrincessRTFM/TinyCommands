@@ -1,83 +1,58 @@
 namespace TinyCmds.Commands;
 
+using System;
 using System.Linq;
+
+using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
 
 using TinyCmds.Attributes;
 using TinyCmds.Chat;
+using TinyCmds.Ui;
 using TinyCmds.Utils;
 
 
 [Command("/tinyhelp")]
 [Arguments("command...?")]
 [Summary("Displays usage/help for the plugin's commands")]
-[Aliases("/ptinyhelp", "/thelp", "/pthelp", "/tinycmd", "/ptinycmd", "/tcmd", "/ptcmd")]
-[HelpMessage("This command displays the extended usage and help for plugin commands.", "Run it alone for general/basic information.")]
+[Aliases("/thelp", "/tinycmd", "/tcmd")]
+[HelpMessage(
+	"This command displays the extended usage and help for plugin commands. Run it alone for basic general information.",
+	"",
+	"You can pass the \"-o\" flag to close all help windows. If you also pass a (partial) command name, that command's help will be displayed after all other windows are closed."
+)]
 [PluginCommandHelpHandler]
 public class DisplayCommandHelp: PluginCommand {
 	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		string[] args = rawArguments.Split(' ');
+		if (flags['o']) {
+			foreach (Window wnd in this.Plugin.helpWindows.Values)
+				wnd.IsOpen = false;
+		}
+		string[] args = rawArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+		PluginLog.Information($"args: #{args.Length}, {string.Join(" ", args.Select(s => $"[{s}]"))}");
 		if (args.Length < 1) {
-			ChatUtil.ShowPrefixedMessage($"{Plugin.PluginName} uses a custom command parser that accepts single-character boolean flags starting with a hyphen.");
-			ChatUtil.ShowPrefixedMessage(
-				"These flags can be bundled into one argument, such that ",
-				ChatColour.HIGHLIGHT,
-				"-va",
-				ChatColour.RESET,
-				" will set both the ",
-				ChatColour.HIGHLIGHT,
-				"v",
-				ChatColour.RESET,
-				" and ",
-				ChatColour.HIGHLIGHT,
-				"a",
-				ChatColour.RESET,
-				" flags."
-			);
-			ChatUtil.ShowPrefixedMessage(
-				"All plugin commands accept ",
-				ChatColour.HIGHLIGHT,
-				"-h",
-				ChatColour.RESET,
-				" to display their built-in help message."
-			);
-			ChatUtil.ShowPrefixedMessage(
-				"To list all commands, use ",
-				ChatColour.COMMAND,
-				"/tinycmds",
-				ChatColour.RESET,
-				", optionally with ",
-				ChatColour.HIGHLIGHT,
-				"-a",
-				ChatColour.RESET,
-				" to show their aliases and/or ",
-				ChatColour.HIGHLIGHT,
-				"-v",
-				ChatColour.RESET,
-				" to show their help messages."
-			);
+			if (this.Plugin is null)
+				PluginLog.Error($"{this.InternalName}.Plugin is null");
+			else if (this.Plugin.helpWindows["<PLUGIN>"] is null)
+				PluginLog.Error($"Default help window is null");
+			else
+				this.Plugin.helpWindows["<PLUGIN>"].IsOpen = !flags['o'];
 			return;
 		}
 		foreach (string listing in args) {
 			string wanted = listing.TrimStart('/').ToLower();
 			foreach (PluginCommand cmd in Plugin.commandManager.commands) {
 				if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {
-					ChatUtil.ShowPrefixedMessage(
-						ChatColour.USAGE_TEXT,
-						cmd.Usage,
-						ChatColour.RESET
-					);
-					if (flags["a"] && cmd.Aliases.Length > 0) {
-						ChatUtil.ShowPrefixedMessage(
-							ChatColour.QUIET,
-							string.Join(", ", cmd.Aliases),
-							ChatColour.RESET
-						);
+					if (this.Plugin.helpWindows.TryGetValue(cmd.CommandComparable, out Window? wnd)) {
+						wnd.IsOpen = true;
 					}
-					foreach (string line in cmd.HelpLines) {
-						ChatUtil.ShowPrefixedMessage(
-							ChatColour.HELP_TEXT,
-							line,
-							ChatColour.RESET
+					else {
+						ChatUtil.ShowPrefixedError(
+							"An internal error occured - the help window for ",
+							ChatColour.HIGHLIGHT_FAILED,
+							cmd.Command,
+							ChatColour.RESET,
+							" could not be found."
 						);
 					}
 					return;

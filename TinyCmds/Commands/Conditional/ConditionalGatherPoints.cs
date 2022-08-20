@@ -11,9 +11,9 @@ using TinyCmds.Utils;
 [Arguments("condition flag", "GP to compare?", "command to run...?")]
 [Summary("Run a chat command (or directly send a message) only if GP meets condition")]
 [HelpMessage(
-	"This command's test uses numeric inequality conditions against your GP.",
-	"There are three possible tests: at least (-g), less than (-l), and a simple at capacity (-c).",
-	"If using -g or -l, the first argument should be a number to compare against. If using -c, ALL arguments are the command to run when your GP passes the check."
+	"This command's test uses numeric inequality conditions against your GP."
+	+ " There are three possible tests: at least (-g), less than (-l), and a simple at capacity (-c)."
+	+ " If using -g or -l, the first argument should be a number to compare against. If using -c, ALL arguments are the command to run when your GP passes the check."
 )]
 public class ConditionalGatherPoints: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {

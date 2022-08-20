@@ -11,12 +11,15 @@ using TinyCmds.Utils;
 [Command("/timer")]
 [Arguments("delay", "name")]
 [Summary("Set an in-game alarm to go off AFTER a certain amount of time, instead of AT a given time")]
-[Aliases("/ptimer", "/delay", "/pdelay")]
+[Aliases("/delay")]
 [HelpMessage(
-	"The delay must be specified as \"??h??m\", where \"??\" is the number of hours/minutes to wait.",
-	"If either number is zero, it and the following letter can be left off entirely.",
-	"As an additional special case, if you are only setting a minute-level delay, you can leave out the \"m\" as well, as in \"10\" for ten minutes.",
-	"This command sets a VANILLA in-game timer for the time calculated. If you use -?, the /alarm command will be printed. If you use -!, it will be printed and NOT run."
+	"This command sets an in-game alarm at a time calculated based on the given delay. Since game alarms are timed to the minute, there may be inaccuracies of up to one minute.",
+	"",
+	"The delay must be specified as \"??h??m\", where \"??\" is the number of hours/minutes to wait."
+	+ " If either number is zero, it and the following letter can be left off entirely."
+	+ " As an additional special case, if you are only setting a minute-level delay, you can leave out the \"m\" as well, as in \"10\" for ten minutes.",
+	"",
+	"As with all commands that send an input line to the server, the \"-?\" flag will display the generated /alarm command before it's run, and the \"-!\" flag will display the generated command without running it."
 )]
 public class TimedAlarm: PluginCommand {
 	private static readonly Regex timespecMatcher = new(@"^\s*((?:\d+h)?)(\d+)([hm]?)\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);

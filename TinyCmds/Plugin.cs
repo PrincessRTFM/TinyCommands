@@ -1,6 +1,8 @@
 namespace TinyCmds;
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 using Dalamud.Data;
@@ -12,11 +14,13 @@ using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Toast;
+using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
 using TinyCmds.Chat;
 using TinyCmds.Internal;
+using TinyCmds.Ui;
 
 using XivCommon;
 
@@ -44,13 +48,39 @@ public class Plugin: IDalamudPlugin {
 	internal static PluginCommandManager commandManager { get; private set; } = null!;
 	internal static PlaySound sfx { get; private set; } = null!;
 
+	private readonly WindowSystem windowSystem;
+	internal readonly Dictionary<string, Window> helpWindows;
+
 	public Plugin() {
 		common = new(); // just need the chat feature to send commands
 		sfx = new();
-		commandManager = new() {
+		commandManager = new(this) {
 			ErrorHandler = ChatUtil.ShowPrefixedError
 		};
 		commandManager.addCommandHandlers();
+
+		this.windowSystem = new(this.GetType().Namespace!);
+		this.helpWindows = commandManager.commands.ToDictionary(cmd => cmd.CommandComparable, cmd => new HelpWindow(this, cmd) as Window);
+		this.helpWindows.Add("<PLUGIN>", new HelpWindow(
+			this,
+			"Basics",
+			this.Name,
+			"the plugin itself",
+			"Basic information about how commands work",
+			$"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen."
+			+ "These flags can be bundled into one argument, such that \"-va\" will set both the \"v\" and \"a\" flags, just like \"-av\" will.\n"
+			+ "\n"
+			+ "All commands accept \"-h\" to display their built-in help.\n"
+			+ "\n"
+			+ "To list all commands, you can use \"/tinycmds\", optionally with \"-a\" to also list their aliases."
+			+ " Be aware that this list may be a little long. It's also not really sorted."
+		));
+		this.helpWindows.Add("<LIST>", new CommandListWindow(this));
+
+		foreach (Window wnd in this.helpWindows.Values)
+			this.windowSystem.AddWindow(wnd);
+
+		pluginInterface.UiBuilder.Draw += this.windowSystem.Draw;
 	}
 
 	internal static Vector2 worldToMap(Vector3 pos, ushort sizeFactor, short offsetX, short offsetY) {
@@ -70,6 +100,10 @@ public class Plugin: IDalamudPlugin {
 
 		if (disposing) {
 			commandManager.Dispose();
+			pluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
+			this.windowSystem.RemoveAllWindows();
+			foreach (HelpWindow wnd in this.helpWindows.Values.Cast<HelpWindow>())
+				wnd.Dispose();
 		}
 
 	}

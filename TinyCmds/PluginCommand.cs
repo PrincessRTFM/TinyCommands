@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 
 using Dalamud.Game.Command;
+using Dalamud.Logging;
 
 using TinyCmds.Attributes;
 using TinyCmds.Chat;
@@ -34,8 +35,11 @@ public abstract class PluginCommand: IDisposable {
 	public bool ShowInDalamud { get; }
 	public bool ShowInListing { get; }
 
+	protected Plugin Plugin { get; private set; }
+
 	public readonly string InternalName;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public PluginCommand() {
 		Type t = this.GetType();
 		CommandAttribute? attrCommand = t.GetCustomAttribute<CommandAttribute>();
@@ -47,12 +51,24 @@ public abstract class PluginCommand: IDisposable {
 		this.Summary = t.GetCustomAttribute<SummaryAttribute>()?.Summary ?? "";
 		this.Help = this.ModifyHelpMessage(t.GetCustomAttribute<HelpMessageAttribute>()?.HelpMessage ?? "");
 		this.Usage = $"{this.Command} {args?.ArgumentDescription}".Trim();
-		this.Aliases = t.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? Array.Empty<string>();
+		this.Aliases = (new string[] { "9999p" + this.Command.TrimStart('/') })
+			.Concat(
+				(t.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? Array.Empty<string>())
+					.Select(s => s.TrimStart('/'))
+					.SelectMany(a => new string[] { "0000" + a, "9999p" + a })
+			)
+			.OrderBy(s => s)
+			.Select(s => "/" + s[4..])
+			.ToArray();
 		this.ShowInListing = t.GetCustomAttribute<HideInCommandListingAttribute>() is null;
 		this.ShowInDalamud = this.ShowInListing && (t.GetCustomAttribute<DoNotShowInHelpAttribute>() is null || string.IsNullOrEmpty(this.Summary));
 
 		this.InternalName = this.GetType().Name;
+
+		if (this.Plugin is null)
+			PluginLog.Warning($"{this.InternalName}.Plugin is null in constructor - this should not happen!");
 	}
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	protected abstract void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp);
 	protected virtual string ModifyHelpMessage(string original) => original;
@@ -61,8 +77,11 @@ public abstract class PluginCommand: IDisposable {
 		if (this.Disposed)
 			throw new ObjectDisposedException(this.InternalName, "Plugin command has already been disposed");
 
+		PluginLog.Information($"Command invocation: [{command}] [{argline}]");
 		try {
-			(FlagMap flags, string rawArgs) = ArgumentParser.ExtractFlags(argline);
+			(FlagMap flags, string rawArguments) = ArgumentParser.ExtractFlags(argline);
+			PluginLog.Information($"Parsed flags: {flags}");
+			PluginLog.Information($"Remaining argument line: [{rawArguments}]");
 			bool showHelp = false;
 			bool verbose = flags['?'];
 			bool dryRun = flags['!'];
@@ -70,17 +89,18 @@ public abstract class PluginCommand: IDisposable {
 				Plugin.commandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
 				return;
 			}
-			this.Execute(command, rawArgs, flags, verbose, dryRun, ref showHelp);
+			this.Execute(command, rawArguments, flags, verbose, dryRun, ref showHelp);
 			if (showHelp)
 				Plugin.commandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
 		}
 		catch (Exception e) {
+			PluginLog.Error(e, "Command invocation failed");
 			if (Plugin.commandManager.ErrorHandler is not null) {
 				while (e is not null) {
 					Plugin.commandManager.ErrorHandler.Invoke(
 						$"{e.GetType().Name}: {e.Message}\n",
 						ChatColour.QUIET,
-						e.TargetSite?.DeclaringType is not null ? $"at {e.TargetSite.DeclaringType.FullName} in {e.TargetSite.DeclaringType.Assembly}" : "at unknown location",
+						e.TargetSite?.DeclaringType is not null ? $"at {e.TargetSite.DeclaringType.FullName} in {e.TargetSite.DeclaringType.Assembly.GetName().Name}" : "at unknown location",
 						ChatColour.RESET
 					);
 					e = e.InnerException!;
@@ -94,6 +114,8 @@ public abstract class PluginCommand: IDisposable {
 		if (this.Disposed)
 			return;
 		this.Disposed = true;
+
+		this.Plugin = null!;
 	}
 
 	public void Dispose() {

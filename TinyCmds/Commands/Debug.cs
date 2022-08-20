@@ -5,7 +5,8 @@ using TinyCmds.Attributes;
 using TinyCmds.Utils;
 
 [Command("/tinydebug")]
-[HelpMessage("Specifically for dev use")]
+[Summary("Do not touch")]
+[HelpMessage("This command is specifically for dev use. It does whatever is needed at the moment, and is neither consistent nor stable.", "", "It also doesn't exist in non-debug builds.")]
 [DoNotShowInHelp]
 [HideInCommandListing]
 public class Debug: PluginCommand {

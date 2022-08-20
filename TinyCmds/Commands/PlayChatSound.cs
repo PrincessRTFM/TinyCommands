@@ -8,8 +8,7 @@ using TinyCmds.Utils;
 [Summary("Plays one of the sixteen <se.##> sound effects")]
 [Aliases("/playsfx")]
 [HelpMessage(
-	"This lets you play the <se.##> sound effects in your chat without needing to /echo them.",
-	"It just helps keep things a little cleaner."
+	"This command lets you play the <se.##> sound effects in your chat without needing to /echo them, in order to keep things a little cleaner."
 )]
 public class PlayChatSound: PluginCommand {
 	protected override void Execute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
