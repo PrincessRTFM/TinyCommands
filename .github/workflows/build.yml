@@ -14,7 +14,7 @@ on:
 env:
   SOLUTION_NAME: TinyCmds
   INTERNAL_NAME: TinyCmds
-  RELEASE_DIR: bin\Release.ILMerge\TinyCmds
+  RELEASE_DIR: TinyCmds\bin\Release\TinyCmds
   PERSONAL_PLUGIN_REPO: PrincessRTFM/MyDalamudPlugins
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
