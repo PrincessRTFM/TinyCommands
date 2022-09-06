@@ -1,4 +1,4 @@
-﻿namespace TinyCmds.Ui;
+namespace TinyCmds.Ui;
 
 using System;
 
