@@ -44,7 +44,7 @@ public class ConditionalGameFlags: BaseConditionalCommand {
 			msg = "Target is not player";
 		else if (flags["P"] && Plugin.targets.Target?.ObjectKind is ObjectKind.Player)
 			msg = "Target is player";
-		else if (flags["n"] && Plugin.targets.Target?.ObjectKind is not ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
+		else if (flags["n"] && Plugin.targets.Target?.ObjectKind is not (ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer))
 			msg = "Target is not NPC";
 		else if (flags["N"] && Plugin.targets.Target?.ObjectKind is ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
 			msg = "Target is NPC";
