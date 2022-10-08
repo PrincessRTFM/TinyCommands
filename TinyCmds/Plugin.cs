@@ -99,6 +99,7 @@ public class Plugin: IDalamudPlugin {
 		this.disposed = true;
 
 		if (disposing) {
+			common.Dispose();
 			commandManager.Dispose();
 			pluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
 			this.windowSystem.RemoveAllWindows();
