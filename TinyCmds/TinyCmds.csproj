@@ -24,7 +24,7 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<RootNamespace>$(PackageId)</RootNamespace>
+		<RootNamespace>PrincessRTFM.$(PackageId)</RootNamespace>
 		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 		<Deterministic>false</Deterministic>
 		<AssemblyVersion>$(Version).*</AssemblyVersion>
