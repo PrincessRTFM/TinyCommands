@@ -53,7 +53,7 @@ public class EvaluatePlaceholders: PluginCommand {
 	};
 
 	private static unsafe string readObjName(GameObject* obj)
-		=> obj is null ? "" : MemoryHelper.ReadStringNullTerminated(new IntPtr(obj->Name));
+		=> obj is null ? "" : MemoryHelper.ReadSeStringNullTerminated((IntPtr)obj->Name).TextValue;
 
 	private static unsafe string replace(string p) {
 		string[] parts = p.ToLower().Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
