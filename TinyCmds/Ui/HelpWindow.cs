@@ -1,4 +1,4 @@
-namespace TinyCmds.Ui;
+namespace PrincessRTFM.TinyCmds.Ui;
 
 using System;
 

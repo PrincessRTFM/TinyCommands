@@ -1,4 +1,4 @@
-namespace TinyCmds.Chat;
+namespace PrincessRTFM.TinyCmds.Chat;
 
 using System.Collections.Generic;
 using System.Diagnostics;

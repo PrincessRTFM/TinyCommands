@@ -1,4 +1,4 @@
-namespace TinyCmds;
+namespace PrincessRTFM.TinyCmds;
 
 using System;
 

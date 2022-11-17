@@ -1,11 +1,11 @@
-namespace TinyCmds.Commands.Conditional;
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/ifcmd")]
 [Arguments("condition flags", "command to run...?")]

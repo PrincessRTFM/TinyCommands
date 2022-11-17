@@ -1,4 +1,4 @@
-namespace TinyCmds;
+namespace PrincessRTFM.TinyCmds;
 
 using System;
 using System.Linq;
@@ -7,9 +7,9 @@ using System.Reflection;
 using Dalamud.Game.Command;
 using Dalamud.Logging;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 public abstract class PluginCommand: IDisposable {
 	protected bool Disposed = false;
@@ -63,7 +63,7 @@ public abstract class PluginCommand: IDisposable {
 		this.ShowInListing = t.GetCustomAttribute<HideInCommandListingAttribute>() is null;
 		this.ShowInDalamud = this.ShowInListing && (t.GetCustomAttribute<DoNotShowInHelpAttribute>() is null || string.IsNullOrEmpty(this.Summary));
 
-		this.InternalName = this.GetType().Name;
+		this.InternalName = t.Name;
 
 		if (this.Plugin is null)
 			PluginLog.Warning($"{this.InternalName}.Plugin is null in constructor - this should not happen!");

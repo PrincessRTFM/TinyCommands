@@ -1,9 +1,9 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
-using TinyCmds.Attributes;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/clearflag")]
 [Summary("Remove the flag marker from your map")]

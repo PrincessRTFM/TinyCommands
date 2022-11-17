@@ -1,8 +1,8 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/playsound")]
 [Summary("Plays one of the sixteen <se.##> sound effects")]

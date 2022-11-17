@@ -1,4 +1,4 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
 using System;
 using System.Linq;
@@ -6,10 +6,10 @@ using System.Linq;
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Ui;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Ui;
+using PrincessRTFM.TinyCmds.Utils;
 
 
 [Command("/tinyhelp")]

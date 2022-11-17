@@ -1,10 +1,11 @@
-namespace TinyCmds.Commands.Conditional;
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
+using System;
 using System.Linq;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/ifzone")]
 [Arguments("'-n'?", "zone IDs to match against", "command to run...?")]
@@ -43,7 +44,7 @@ public class ConditionalMapZone: BaseConditionalCommand {
 			? arg[(wantedMapZones.Length + 1)..]
 			: string.Empty;
 		bool invert = flags["n"];
-		bool match = wantedMapZones.Split(',').Contains(territory.ToString());
+		bool match = wantedMapZones.Split(',', StringSplitOptions.RemoveEmptyEntries).Contains(territory.ToString());
 
 		if (match ^ invert) {
 

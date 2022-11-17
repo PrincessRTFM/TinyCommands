@@ -1,4 +1,4 @@
-namespace TinyCmds;
+namespace PrincessRTFM.TinyCmds;
 
 using System;
 using System.Collections.Generic;
@@ -18,9 +18,9 @@ using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
-using TinyCmds.Chat;
-using TinyCmds.Internal;
-using TinyCmds.Ui;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Internal;
+using PrincessRTFM.TinyCmds.Ui;
 
 using XivCommon;
 

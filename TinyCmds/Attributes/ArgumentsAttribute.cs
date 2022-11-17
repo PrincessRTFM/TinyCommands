@@ -1,4 +1,4 @@
-namespace TinyCmds.Attributes;
+namespace PrincessRTFM.TinyCmds.Attributes;
 
 using System;
 using System.Linq;

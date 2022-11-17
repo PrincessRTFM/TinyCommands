@@ -1,11 +1,11 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
 using System;
 using System.Text.RegularExpressions;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 
 [Command("/timer")]

@@ -1,4 +1,4 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
 using System;
 using System.Collections.Generic;
@@ -16,9 +16,9 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 // Client Structs Game Object, not Counter Strike Global Offensive :P
 using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;

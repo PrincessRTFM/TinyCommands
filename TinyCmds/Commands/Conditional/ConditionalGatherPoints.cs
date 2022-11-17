@@ -1,10 +1,10 @@
-namespace TinyCmds.Commands.Conditional;
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 using Dalamud.Game.ClientState.Objects.SubKinds;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/ifgp")]
 [Aliases("/gp", "/whengp")]

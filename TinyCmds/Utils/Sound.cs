@@ -1,4 +1,4 @@
-namespace TinyCmds.Utils;
+namespace PrincessRTFM.TinyCmds.Utils;
 
 public enum Sound: byte {
 	None = 0x00,

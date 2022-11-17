@@ -1,4 +1,4 @@
-namespace TinyCmds.Internal;
+namespace PrincessRTFM.TinyCmds.Internal;
 
 using System;
 using System.Diagnostics;

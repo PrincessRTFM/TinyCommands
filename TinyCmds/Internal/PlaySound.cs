@@ -1,6 +1,6 @@
-namespace TinyCmds.Internal;
+namespace PrincessRTFM.TinyCmds.Internal;
 
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Utils;
 
 internal delegate ulong PlaySoundDelegate(int soundId, ulong unknown1, ulong unknown2);
 internal class PlaySound: GameFunctionBase<PlaySoundDelegate> {

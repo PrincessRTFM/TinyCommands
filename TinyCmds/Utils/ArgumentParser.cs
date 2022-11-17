@@ -1,4 +1,4 @@
-namespace TinyCmds.Utils;
+namespace PrincessRTFM.TinyCmds.Utils;
 
 using System;
 using System.Collections.Generic;

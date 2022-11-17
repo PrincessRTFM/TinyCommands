@@ -1,12 +1,13 @@
-namespace TinyCmds.Commands.Conditional;
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 using Dalamud.Logging;
 
-using TinyCmds.Chat;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Utils;
 
 public abstract class BaseConditionalCommand: PluginCommand {
-	protected override string ModifyHelpMessage(string original) => "All conditional commands will execute some given input line when their test passes."
+	protected override string ModifyHelpMessage(string original)
+		=> "All conditional commands will execute some given input line when their test passes."
 		+ " If no command/message is given, the test will print the result to your chatlog.\n"
 		+ "\n"
 		+ $"{original}\n"

@@ -1,4 +1,4 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
 using System;
 using System.Collections.Generic;
@@ -11,10 +11,10 @@ using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 
-using TinyCmds.Attributes;
-using TinyCmds.Chat;
-using TinyCmds.Internal;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Chat;
+using PrincessRTFM.TinyCmds.Internal;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/execute")]
 [Summary("Evaluate placeholders in the given command, then run that new command")]

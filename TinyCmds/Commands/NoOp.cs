@@ -1,7 +1,7 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
-using TinyCmds.Attributes;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/noop")]
 [Summary("Does absolutely nothing. At all. Literally not a single thing.")]

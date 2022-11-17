@@ -1,4 +1,4 @@
-namespace TinyCmds;
+namespace PrincessRTFM.TinyCmds;
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 using Dalamud.Game.Command;
 using Dalamud.Logging;
 
-using TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Attributes;
 
 public delegate void PluginCommandInvocationErrorHandlerDelegate(params object[] payloads);
 

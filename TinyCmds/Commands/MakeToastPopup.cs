@@ -1,9 +1,9 @@
-namespace TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
 using Dalamud.Game.Gui.Toast;
 
-using TinyCmds.Attributes;
-using TinyCmds.Utils;
+using PrincessRTFM.TinyCmds.Attributes;
+using PrincessRTFM.TinyCmds.Utils;
 
 [Command("/popup")]
 [Arguments("type flag", "content")]
