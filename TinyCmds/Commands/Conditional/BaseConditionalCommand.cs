@@ -1,7 +1,5 @@
 namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
-using Dalamud.Logging;
-
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
@@ -18,10 +16,7 @@ public abstract class BaseConditionalCommand: PluginCommand {
 	protected abstract bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp);
 
 	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		if (Plugin.client.LocalPlayer is null) {
-			PluginLog.Error("Can't find player object - this should be impossible unless you're not logged in.");
-			return;
-		}
+		Assert(Plugin.client.LocalPlayer is not null, "can't find LocalPlayer");
 
 		bool didConditionsPass = this.TryExecute(command, rawArguments, flags, verbose, dryRun, ref showHelp);
 

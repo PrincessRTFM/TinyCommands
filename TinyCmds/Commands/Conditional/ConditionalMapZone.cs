@@ -22,11 +22,7 @@ public class ConditionalMapZone: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = args ?? string.Empty;
 		ushort territory = Plugin.client.TerritoryType;
-
-		if (territory == 0) {
-			ChatUtil.ShowPrefixedError("Cannot identify current area");
-			return false;
-		}
+		Assert(territory is not 0, "cannot identify current area");
 
 		if (flags['g']) {
 			ChatUtil.ShowPrefixedMessage($"You are in map zone {territory}");

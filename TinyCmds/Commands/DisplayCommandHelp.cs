@@ -8,7 +8,6 @@ using Dalamud.Logging;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Ui;
 using PrincessRTFM.TinyCmds.Utils;
 
 
@@ -31,12 +30,9 @@ public class DisplayCommandHelp: PluginCommand {
 		string[] args = rawArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 		PluginLog.Information($"args: #{args.Length}, {string.Join(" ", args.Select(s => $"[{s}]"))}");
 		if (args.Length < 1) {
-			if (this.Plugin is null)
-				PluginLog.Error($"{this.InternalName}.Plugin is null");
-			else if (this.Plugin.helpWindows["<PLUGIN>"] is null)
-				PluginLog.Error($"Default help window is null");
-			else
-				this.Plugin.helpWindows["<PLUGIN>"].IsOpen = !flags['o'];
+			Assert(this.Plugin is not null, "Plugin is null, everything is broken");
+			Assert(this.Plugin!.helpWindows["<PLUGIN>"] is not null, "plugin information window doesn't exist");
+			this.Plugin.helpWindows["<PLUGIN>"].IsOpen = true;
 			return;
 		}
 		foreach (string listing in args) {

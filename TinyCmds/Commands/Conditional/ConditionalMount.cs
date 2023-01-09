@@ -28,6 +28,7 @@ public class ConditionalMount: BaseConditionalCommand {
 	protected override unsafe bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = args ?? string.Empty;
 		PC* player = (PC*)Plugin.client.LocalPlayer!.Address; // LocalPlayer is guaranteed to be non-null by BaseConditionalCommand
+		Assert(player is not null, "failed to acquire CS LocalPlayer");
 		PC.MountContainer? mount = Plugin.conditions[ConditionFlag.Mounted] || Plugin.conditions[ConditionFlag.Mounted2] ? player->Mount : null;
 		ushort mountId = mount?.MountId ?? 0;
 

@@ -154,6 +154,8 @@ public class EvaluatePlaceholders: PluginCommand {
 		int pos1 = input.IndexOf('<');
 		int pos2 = input.IndexOf('>');
 
+		Assert(pronouns is not null, "failed to load PronounModule");
+
 		timer.Start();
 		while (pos1 >= 0 && pos2 > pos1) {
 			if (timer.ElapsedMilliseconds >= 1000) // If you manage to hardlock this loop somehow, at least it won't last forever. If a legit string exceeds this, something's wrong anyway.

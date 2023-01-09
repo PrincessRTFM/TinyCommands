@@ -13,6 +13,9 @@ using PrincessRTFM.TinyCmds.Utils;
 )]
 [Aliases("/unflag")]
 public class ClearMapFlag: PluginCommand {
-	protected override unsafe void Execute(string? command, string argline, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp)
-		=> AgentMap.Instance()->IsFlagMarkerSet = 0;
+	protected override unsafe void Execute(string? command, string argline, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+		AgentMap* map = AgentMap.Instance();
+		Assert(map is not null, "failed to load AgentMap");
+		map->IsFlagMarkerSet = 0;
+	}
 }
