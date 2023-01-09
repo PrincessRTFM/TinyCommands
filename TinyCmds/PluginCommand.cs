@@ -73,6 +73,11 @@ public abstract class PluginCommand: IDisposable {
 	protected abstract void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp);
 	protected virtual string ModifyHelpMessage(string original) => original;
 
+	protected static void Assert(bool succeeds, string message) {
+		if (!succeeds)
+			throw new CommandAssertionFailureException(message);
+	}
+
 	public void Dispatch(string command, string argline) {
 		if (this.Disposed)
 			throw new ObjectDisposedException(this.InternalName, "Plugin command has already been disposed");
@@ -92,6 +97,10 @@ public abstract class PluginCommand: IDisposable {
 			this.Execute(command, rawArguments, flags, verbose, dryRun, ref showHelp);
 			if (showHelp)
 				Plugin.commandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
+		}
+		catch (CommandAssertionFailureException e) {
+			PluginLog.Error(e, $"Command assert failed: {this.Command}: {e.Message}");
+			Plugin.commandManager.ErrorHandler?.Invoke($"Internal assertion check failed:\n{e.Message}");
 		}
 		catch (Exception e) {
 			PluginLog.Error(e, "Command invocation failed");
