@@ -12,9 +12,8 @@ on:
     - release
 
 env:
-  SOLUTION_NAME: TinyCmds
   INTERNAL_NAME: TinyCmds
-  RELEASE_DIR: TinyCmds\bin\Release\TinyCmds
+  CONFIGURATION: Release
   PERSONAL_PLUGIN_REPO: PrincessRTFM/MyDalamudPlugins
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
@@ -32,20 +31,20 @@ jobs:
       run: |
         Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
         Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"
+    - name: Restore
+      run: dotnet restore -r win
     - name: Build
-      run: |
-        dotnet restore -r win ${{ env.SOLUTION_NAME }}.sln
-        dotnet build ${{ env.SOLUTION_NAME }}.sln --configuration Release --no-restore
+      run: dotnet build -c ${{ env.CONFIGURATION }} --no-restore
     - name: Upload build
       uses: actions/upload-artifact@v2
       with:
         name: PluginRepoZip
-        path: ${{ env.RELEASE_DIR }}
+        path: ${{ env.INTERNAL_NAME }}/bin/${{ env.CONFIGURATION }}/${{ env.INTERNAL_NAME }}
         if-no-files-found: error
         retention-days: 1
-    - name: Tag build
+    - name: Tag
       run: |
-        buildVersion=$(jq -j .AssemblyVersion "${{ env.RELEASE_DIR }}/${{ env.SOLUTION_NAME }}.json")
+        buildVersion=$(jq -j .AssemblyVersion "${{ env.INTERNAL_NAME }}/bin/${{ env.CONFIGURATION }}/${{ env.INTERNAL_NAME }}/${{ env.INTERNAL_NAME }}.json")
         git tag -am "[Automated build $buildVersion]" "v$buildVersion"
         git push origin "v$buildVersion"
       shell: bash
