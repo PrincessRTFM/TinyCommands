@@ -36,7 +36,7 @@ jobs:
     - name: Build
       run: dotnet build -c ${{ env.CONFIGURATION }} --no-restore
     - name: Upload build
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: PluginRepoZip
         path: ${{ env.INTERNAL_NAME }}/bin/${{ env.CONFIGURATION }}/${{ env.INTERNAL_NAME }}
@@ -65,7 +65,7 @@ jobs:
         repository: ${{ env.PERSONAL_PLUGIN_REPO }}
         token: ${{ secrets.PAT }}
     - name: Download build
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: PluginRepoZip
         path: plugins/${{ env.INTERNAL_NAME }}
@@ -73,7 +73,6 @@ jobs:
       uses: EndBug/add-and-commit@v9
       with:
         add: plugins/
-        branch: master
         pathspec_error_handling: exitImmediately
         author_name: GitHub Action
         author_email: github-actions[bot]@users.noreply.github.com
