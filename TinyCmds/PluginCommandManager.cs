@@ -42,7 +42,9 @@ public class PluginCommandManager: IDisposable {
 					prop.SetValue(instance, core);
 					PluginLog.Information($"Invoking {t.Name}.<ctor>()");
 					ctor.Invoke(instance, null);
-					return instance as PluginCommand;
+					PluginCommand? cmd = instance as PluginCommand;
+					cmd?.setup();
+					return cmd;
 				}
 				catch (Exception e) {
 					PluginLog.Error(e, $"Failed to instantiate {t.Name}");

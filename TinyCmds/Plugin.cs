@@ -44,6 +44,7 @@ public class Plugin: IDalamudPlugin {
 	[PluginService] internal static DataManager data { get; private set; } = null!;
 	[PluginService] internal static PartyList party { get; private set; } = null!;
 	[PluginService] internal static ObjectTable objects { get; private set; } = null!;
+	[PluginService] internal static Framework framework { get; private set; } = null!;
 	internal static XivCommonBase common { get; private set; } = null!;
 	internal static PluginCommandManager commandManager { get; private set; } = null!;
 	internal static PlaySound sfx { get; private set; } = null!;

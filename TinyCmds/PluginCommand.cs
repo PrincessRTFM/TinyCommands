@@ -72,6 +72,11 @@ public abstract class PluginCommand: IDisposable {
 
 	protected abstract void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp);
 	protected virtual string ModifyHelpMessage(string original) => original;
+	protected virtual void Initialise() { }
+	internal void setup() {
+		PluginLog.Information($"Initialising {this.InternalName}");
+		this.Initialise();
+	}
 
 	protected static void Assert(bool succeeds, string message) {
 		if (!succeeds)
