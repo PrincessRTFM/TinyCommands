@@ -7,6 +7,8 @@ TinyCommands adds a handful of small slash commands, [much as the name would sug
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/PrincessRTFM/TinyCommands/master?label=updated)
 [![GitHub issues](https://img.shields.io/github/issues-raw/PrincessRTFM/TinyCommands?label=known%20issues)](https://github.com/PrincessRTFM/TinyCommands/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 
+[![Support me!](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/V7V7IK9UU)
+
 ## Installation
 
 This is a Dalamud plugin, and as such requires you to be using [QuickLauncher](https://github.com/goatcorp/FFXIVQuickLauncher) to start the game. If you are not already doing so, simply follow the instructions on that page to install it. Then, once you've launched FFXIV using QuickLauncher, follow the instructions on [my plugin repo page](https://github.com/PrincessRTFM/MyDalamudPlugins) to add TinyCommands to your plugin installer list. Install it from there, and you're done!
