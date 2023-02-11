@@ -32,11 +32,13 @@ public unsafe class UseItem: PluginCommand {
 	private uint retryItem = 0;
 
 #pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable CS0649 // Member is never assigned to
 	[Signature("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 89 7C 24 38")]
 	private static delegate* unmanaged<nint, uint, uint, uint, short, void> useItem;
 
 	[Signature("E8 ?? ?? ?? ?? 44 8B 4B 2C")]
 	private static delegate* unmanaged<uint, uint, uint> getActionID;
+#pragma warning restore CS0649 // Member is never assigned to
 #pragma warning restore IDE0044 // Add readonly modifier
 
 	static UseItem() {
