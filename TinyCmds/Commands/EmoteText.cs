@@ -1,4 +1,4 @@
-﻿namespace PrincessRTFM.TinyCmds.Commands;
+namespace PrincessRTFM.TinyCmds.Commands;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;

@@ -1,4 +1,4 @@
-﻿namespace PrincessRTFM.TinyCmds;
+namespace PrincessRTFM.TinyCmds;
 
 using System;
 using System.Runtime.Serialization;

@@ -1,4 +1,4 @@
-﻿namespace PrincessRTFM.TinyCmds.Commands.Conditional;
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 using System;
 using System.Linq;
