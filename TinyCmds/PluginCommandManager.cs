@@ -27,8 +27,7 @@ public class PluginCommandManager: IDisposable {
 	public PluginCommandManager(Plugin core) {
 		Type b = typeof(PluginCommand);
 		Type p = core.GetType();
-		this.commandList = AppDomain.CurrentDomain.GetAssemblies()
-			.SelectMany(asm => asm.GetTypes())
+		this.commandList = this.GetType().Assembly.GetTypes()
 			.Where(t => t.IsSubclassOf(b) && !t.IsAbstract && t.GetConstructor(Array.Empty<Type>()) is not null)
 			.Select(t => {
 				try {
