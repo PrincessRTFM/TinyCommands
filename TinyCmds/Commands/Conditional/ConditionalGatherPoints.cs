@@ -6,11 +6,10 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/ifgp")]
-[Aliases("/gp", "/whengp")]
+[Command("/ifgp", "/gp", "/whengp")]
 [Arguments("condition flag", "GP to compare?", "command to run...?")]
 [Summary("Run a chat command (or directly send a message) only if GP meets condition")]
-[HelpMessage(
+[HelpText(
 	"This command's test uses numeric inequality conditions against your GP."
 	+ " There are three possible tests: at least (-g), less than (-l), and a simple at capacity (-c)."
 	+ " If using -g or -l, the first argument should be a number to compare against. If using -c, ALL arguments are the command to run when your GP passes the check."

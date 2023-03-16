@@ -5,11 +5,10 @@ using Dalamud.Game.Gui.Toast;
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/popup")]
+[Command("/popup", "/toastmsg")]
 [Arguments("type flag", "content")]
 [Summary("Creates a popup (\"toast\") message on your screen, as if the game itself had done so")]
-[Aliases("/toastmsg")]
-[HelpMessage(
+[HelpText(
 	"This command lets you create your own custom toast message popups, like the ones with sub-area names."
 	+ " The toast \"type\" can be set by flag: -q for quests, -e for errors, and -n for \"normal\" toasts."
 	+ " At least one type flag is required, and you can use more than one to show the same content in multiple toasts at once.",

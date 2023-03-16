@@ -7,11 +7,10 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/ifzone")]
+[Command("/ifzone", "/ifmap", "/ifmapzone")]
 [Arguments("'-n'?", "zone IDs to match against", "command to run...?")]
 [Summary("Run a chat command (or directly send a message) only when in a certain map zone")]
-[Aliases("/ifmap", "/ifmapzone")]
-[HelpMessage(
+[HelpText(
 	"This command's test is whether or not your current zone ID is one of the given set."
 	+ " Use the numeric ID, and if you want to check against more than one, separate them with commas but NOT spaces."
 	+ " If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T in one of the given zones.",

@@ -4,10 +4,9 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/emotetext")]
+[Command("/emotetext", "/emotion", "/customemote", "/cemote", "/cem", "/ce")]
 [Summary("Perform an emote without text, and simultaneously perform a custom-text emote to go with it")]
-[Aliases("/emotion", "/customemote", "/cemote", "/cem", "/ce")]
-[HelpMessage(
+[HelpText(
 	"This command condenses the given emote command (with the \"motion\" argument to silence it) and the \"/em\" command to simulate a custom emote macro in one command.",
 	"For example, you can do \"/cem pat gives <t> some headpats\" to play the /pat animation with the custom text \"<Your Character> gives <Target Name> some headpats\" without needing a whole macro."
 )]

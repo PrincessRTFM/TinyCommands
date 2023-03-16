@@ -16,10 +16,9 @@ using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Internal;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/execute")]
+[Command("/execute", "/exec", "/eval", "/evaluate")]
 [Summary("Evaluate placeholders in the given command, then run that new command")]
-[Aliases("/exec", "/eval", "/evaluate")]
-[HelpMessage(
+[HelpText(
 	"When provided with an input line, this command will evaluate certain placeholders, then execute the new input line.",
 	"",
 	"If you use one of :@#$%^&*+ as a flag, only placeholders that start with that character will be replaced, as in <:target>."

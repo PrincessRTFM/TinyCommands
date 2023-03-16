@@ -7,11 +7,10 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/ifcmd")]
+[Command("/ifcmd", "/ifthen", "/ifcondition", "/ifcond", "/ifstate")]
 [Arguments("condition flags", "command to run...?")]
 [Summary("Run a chat command (or directly send a message) only if a condition is met")]
-[Aliases("/ifthen", "/ifcondition", "/ifcond", "/ifstate")]
-[HelpMessage(
+[HelpText(
 	"This command's test is based on game state, as described by the flags you use."
 	+ " Lowercase flags require that their condition be met, uppercase flags require that their condition NOT be met. The available flags are:",
 	"-t has target",

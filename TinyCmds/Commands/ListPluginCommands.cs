@@ -6,11 +6,10 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Utils;
 
 
-[Command("/tinycmds")]
+[Command("/tinycmds", "/tcmds")]
 [Arguments()]
 [Summary("List all plugin commands")]
-[Aliases("/tcmds")]
-[HelpMessage(
+[HelpText(
 	"This command displays a list of all of this plugin's commands.",
 	"",
 	"You can also pass the \"-o\" flag to close all other help windows."

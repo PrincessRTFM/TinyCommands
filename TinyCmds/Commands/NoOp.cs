@@ -3,10 +3,9 @@ namespace PrincessRTFM.TinyCmds.Commands;
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/noop")]
+[Command("/noop", "/nop", "/null")]
 [Summary("Does absolutely nothing. At all. Literally not a single thing.")]
-[Aliases("/nop", "/null")]
-[HelpMessage(
+[HelpText(
 	"This command does literally nothing at all."
 	+ " Its only purpose is for use with Macrology or similar plugins, to allow pseudo-macros to use <wait.(delay)> without doing anything."
 )]

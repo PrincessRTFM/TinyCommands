@@ -20,10 +20,9 @@ using PrincessRTFM.TinyCmds.Utils;
 
 using CSFW = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
-[Command("/useitem")]
+[Command("/useitem", "/use", "/item")]
 [Summary("Use an item from your inventory by numeric ID or by name (case-insensitive full match)")]
-[Aliases("/use", "/item")]
-[HelpMessage(
+[HelpText(
 	"This command attempts to use an item from your inventory, including key items. It is best used with the item ID, but can search by name as well.",
 	"Name matching is case-insensitive, but NOT partial - you must pass the FULL name of the item you wish to use."
 )]

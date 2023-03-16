@@ -14,7 +14,7 @@ using PC = FFXIVClientStructs.FFXIV.Client.Game.Character.Character;
 [Command("/ifmount")]
 [Arguments("'-n'?", "mount IDs to match against", "command to run...?")]
 [Summary("Run a chat command (or directly send a message) only when using a specific mount")]
-[HelpMessage(
+[HelpText(
 	"This command's test is whether or not your current mount ID is one of the given set."
 	+ " Use the numeric ID, and if you want to check against more than one, separate them with commas but NOT spaces."
 	+ " If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T using one of the given mounts."

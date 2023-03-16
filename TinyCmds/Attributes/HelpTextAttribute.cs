@@ -4,10 +4,10 @@ using System;
 
 
 [AttributeUsage(AttributeTargets.Class)]
-internal class HelpMessageAttribute: Attribute {
+internal class HelpTextAttribute: Attribute {
 	public string HelpMessage { get; }
 
-	public HelpMessageAttribute(params string[] helpMessage) {
+	public HelpTextAttribute(params string[] helpMessage) {
 		this.HelpMessage = string.Join("\n", helpMessage);
 	}
 }

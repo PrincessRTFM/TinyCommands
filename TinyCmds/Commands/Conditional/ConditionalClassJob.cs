@@ -8,11 +8,10 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
-[Command("/ifjob")]
+[Command("/ifjob", "/ifclass", "/whenjob", "/whenclass", "/job", "/class")]
 [Arguments("'-n'?", "jobs to match against", "command to run...?")]
 [Summary("Run a chat command (or directly send a message) only when playing certain classes/jobs")]
-[Aliases("/ifclass", "/whenjob", "/whenclass", "/job", "/class")]
-[HelpMessage(
+[HelpText(
 	"This command's test is whether or not your current class/job is one of the given set."
 	+ " Use the three-letter abbreviation, and if you want to check against more than one, separate them with commas but NOT spaces."
 	+ " If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T one of those jobs."

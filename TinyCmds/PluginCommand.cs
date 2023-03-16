@@ -35,25 +35,21 @@ public abstract class PluginCommand: IDisposable {
 	public bool ShowInDalamud { get; }
 	public bool ShowInListing { get; }
 
-	protected Plugin Plugin { get; private set; }
+	protected Plugin Plugin { get; private set; } = null!;
 
 	public readonly string InternalName;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public PluginCommand() {
 		Type t = this.GetType();
-		CommandAttribute? attrCommand = t.GetCustomAttribute<CommandAttribute>();
-		if (attrCommand is null) {
-			throw new NullReferenceException("Cannot construct PluginCommand from type without CommandAttribute");
-		}
+		CommandAttribute attrCommand = t.GetCustomAttribute<CommandAttribute>() ?? throw new NullReferenceException("Cannot construct PluginCommand from type without CommandAttribute");
 		ArgumentsAttribute? args = t.GetCustomAttribute<ArgumentsAttribute>();
 		this.Command = $"/{attrCommand.Command.TrimStart('/')}";
 		this.Summary = t.GetCustomAttribute<SummaryAttribute>()?.Summary ?? "";
-		this.Help = this.ModifyHelpMessage(t.GetCustomAttribute<HelpMessageAttribute>()?.HelpMessage ?? "");
+		this.Help = this.ModifyHelpMessage(t.GetCustomAttribute<HelpTextAttribute>()?.HelpMessage ?? "");
 		this.Usage = $"{this.Command} {args?.ArgumentDescription}".Trim();
 		this.Aliases = (new string[] { "9999p" + this.Command.TrimStart('/') })
 			.Concat(
-				(t.GetCustomAttribute<AliasesAttribute>()?.Aliases ?? Array.Empty<string>())
+				attrCommand.Aliases
 					.Select(s => s.TrimStart('/'))
 					.SelectMany(a => new string[] { "0000" + a, "9999p" + a })
 			)
@@ -68,7 +64,6 @@ public abstract class PluginCommand: IDisposable {
 		if (this.Plugin is null)
 			PluginLog.Warning($"{this.InternalName}.Plugin is null in constructor - this should not happen!");
 	}
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	protected abstract void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp);
 	protected virtual string ModifyHelpMessage(string original) => original;

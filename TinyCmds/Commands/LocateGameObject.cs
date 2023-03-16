@@ -23,10 +23,10 @@ using PrincessRTFM.TinyCmds.Utils;
 // Client Structs Game Object, not Counter Strike Global Offensive :P
 using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
-[Command("/whereis")]
+[Command("/whereis", "/locate", "/find")]
 [Summary("Find nearby objects, players, and NPCs by name")]
 [Arguments("partial name...")]
-[HelpMessage(
+[HelpText(
 	"This command locates a game object (player, npc, etc) by name in your current zone."
 	+ " All found objects are printed to chat with their full name and a location flag for where they were found."
 	+ " It uses case-insensitive partial matching, so that something like 'alph' will match Alphinaud and also Alpha.",
@@ -41,7 +41,6 @@ using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 	+ " By default, only NPCs, players, companions, and \"event objects\" are shown. Generally, this is all that most people care about. To show all types, use -A."
 	+ " In general, you shouldn't need either of these, unless you're trying to find something like an aether current or a quest NPC for a quest you aren't doing."
 )]
-[Aliases("/locate", "/find")]
 public class LocateGameObjectCommand: PluginCommand {
 	protected override unsafe void Execute(string? command, string argline, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		if (string.IsNullOrWhiteSpace(argline)) {

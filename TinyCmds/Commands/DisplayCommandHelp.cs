@@ -11,11 +11,10 @@ using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
 
-[Command("/tinyhelp")]
+[Command("/tinyhelp", "/thelp", "/tinycmd", "/tcmd")]
 [Arguments("command...?")]
 [Summary("Displays usage/help for the plugin's commands")]
-[Aliases("/thelp", "/tinycmd", "/tcmd")]
-[HelpMessage(
+[HelpText(
 	"This command displays the extended usage and help for plugin commands. Run it alone for basic general information.",
 	"",
 	"You can pass the \"-o\" flag to close all help windows. If you also pass a (partial) command name, that command's help will be displayed after all other windows are closed."
