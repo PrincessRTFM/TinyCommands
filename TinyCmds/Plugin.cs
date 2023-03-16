@@ -8,16 +8,19 @@ using System.Numerics;
 using Dalamud.Data;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Toast;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Utility;
+
+using Lumina.Excel.GeneratedSheets;
 
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Internal;
@@ -40,7 +43,7 @@ public class Plugin: IDalamudPlugin {
 	[PluginService] internal static SigScanner scanner { get; private set; } = null!;
 	[PluginService] internal static CommandManager cmdManager { get; private set; } = null!;
 	[PluginService] internal static ClientState client { get; private set; } = null!;
-	[PluginService] internal static Condition conditions { get; private set; } = null!;
+	[PluginService] internal static Dalamud.Game.ClientState.Conditions.Condition conditions { get; private set; } = null!;
 	[PluginService] internal static TargetManager targets { get; private set; } = null!;
 	[PluginService] internal static DataManager data { get; private set; } = null!;
 	[PluginService] internal static PartyList party { get; private set; } = null!;
@@ -86,13 +89,14 @@ public class Plugin: IDalamudPlugin {
 		pluginInterface.UiBuilder.Draw += this.windowSystem.Draw;
 	}
 
-	internal static Vector2 worldToMap(Vector3 pos, ushort sizeFactor, short offsetX, short offsetY) {
-		float scale = sizeFactor / 100f;
-		float x = (10 - ((((pos.X + offsetX) * scale) + 1024f) * -0.2f / scale)) / 10f;
-		float y = (10 - ((((pos.Z + offsetY) * scale) + 1024f) * -0.2f / scale)) / 10f;
-		x = MathF.Round(x, 1, MidpointRounding.ToZero);
-		y = MathF.Round(y, 1, MidpointRounding.ToZero);
-		return new(x, y);
+	internal static Vector2 worldToMap(Vector3 pos, Map zone) => worldToMap(new Vector2(pos.X, pos.Z), zone);
+	internal static Vector2 worldToMap(Vector2 pos, Map zone) {
+		Vector2 raw = MapUtil.WorldToMap(pos, zone);
+		return new((int)MathF.Round(raw.X * 10, 1) / 10f, (int)MathF.Round(raw.Y * 10, 1) / 10f);
+	}
+	internal static Vector2 mapToWorld(Vector2 pos, Map zone) {
+		MapLinkPayload maplink = new(zone.TerritoryType.Value!.RowId, zone.RowId, pos.X, pos.Y);
+		return new(maplink.RawX / 1000f, maplink.RawY / 1000f);
 	}
 
 	#region IDisposable Support

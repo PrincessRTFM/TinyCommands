@@ -90,7 +90,7 @@ public class LocateGameObjectCommand: PluginCommand {
 			catch (Exception e) {
 				PluginLog.Error($"Failed to set map marker quietly: {e}");
 				PluginLog.Information("Falling back to loud mode! [excessive screaming]");
-				Vector2 mapped = Plugin.worldToMap(found.First().position, map.SizeFactor, map.OffsetX, map.OffsetY);
+				Vector2 mapped = Plugin.worldToMap(found.First().position, map);
 				MapLinkPayload pl = new(zone, mapId, mapped.X, mapped.Y);
 				Plugin.gui.OpenMapWithMapLink(pl);
 			}
@@ -116,7 +116,7 @@ public class LocateGameObjectCommand: PluginCommand {
 			.AddUiForegroundOff();
 
 		foreach ((string name, Vector3 position, float distance) in found) {
-			Vector2 mapped = Plugin.worldToMap(position, map.SizeFactor, map.OffsetX, map.OffsetY);
+			Vector2 mapped = Plugin.worldToMap(position, map);
 			msg = msg
 				.AddText("\n")
 				.AddUiForeground((ushort)ChatColour.HIGHLIGHT_PASSED)
