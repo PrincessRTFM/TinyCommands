@@ -5,6 +5,7 @@ using System.Linq;
 
 using Dalamud.Game;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Logging;
 using Dalamud.Utility.Signatures;
 
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -84,6 +85,16 @@ public unsafe class UseItem: PluginCommand {
 	}
 
 	private void use(uint id) {
+		if (useItem is null) {
+			PluginLog.Error($"{this.GetType().Name}.use(uint) called without useItem delegate");
+			return;
+		}
+
+		if (getActionID is null) {
+			PluginLog.Error($"{this.GetType().Name}.use(uint) called without getActionID delegate");
+			return;
+		}
+
 		if (id == 0 || !usables.ContainsKey(id is >= 1_000_000 and < 2_000_000 ? id - 1_000_000 : id)) // yeah, HQ items are different IDs
 			return;
 
@@ -91,7 +102,7 @@ public unsafe class UseItem: PluginCommand {
 		if (framework is null)
 			return;
 
-		UIModule* uiModule = CSFW.Instance()->GetUiModule();
+		UIModule* uiModule = framework->GetUiModule();
 		if (uiModule is null)
 			return;
 
