@@ -11,6 +11,6 @@ using PrincessRTFM.TinyCmds.Utils;
 	"Mostly useful with the conditional chat commands to allow, for instance, an emote macro to warn you when you use it wrong."
 )]
 public class EchoError: PluginCommand {
-	protected override void Execute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp)
-		=> ChatUtil.ShowError(args.Trim());
+	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp)
+		=> ChatUtil.ShowError(rawArguments.Trim());
 }

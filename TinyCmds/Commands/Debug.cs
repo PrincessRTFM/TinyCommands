@@ -10,7 +10,7 @@ using PrincessRTFM.TinyCmds.Utils;
 [DoNotShowInHelp]
 [HideInCommandListing]
 public class Debug: PluginCommand {
-	protected override void Execute(string? command, string argline, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		// nop until I need to debug something lol
 	}
 }

@@ -15,8 +15,8 @@ using PrincessRTFM.TinyCmds.Utils;
 	+ " If using -g or -l, the first argument should be a number to compare against. If using -c, ALL arguments are the command to run when your GP passes the check."
 )]
 public class ConditionalGatherPoints: BaseConditionalCommand {
-	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		string arg = args ?? string.Empty;
+	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+		string arg = rawArguments ?? string.Empty;
 		PlayerCharacter player = Plugin.client.LocalPlayer!;
 		uint gp = player.CurrentGp;
 		if (player.MaxGp < 1) { // presumably not a gathering job, or maybe they have none unlocked - is MaxGp >0 when DoL is unlocked but current job is different?

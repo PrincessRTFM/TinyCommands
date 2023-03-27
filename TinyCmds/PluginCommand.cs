@@ -12,7 +12,7 @@ using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
 public abstract class PluginCommand: IDisposable {
-	protected bool Disposed = false;
+	protected bool Disposed { get; set; } = false;
 
 	public CommandInfo MainCommandInfo => new(this.Dispatch) {
 		HelpMessage = this.Summary,
@@ -37,12 +37,12 @@ public abstract class PluginCommand: IDisposable {
 
 	protected Plugin Plugin { get; private set; }
 
-	public readonly string InternalName;
+	public string InternalName { get; init; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public PluginCommand() {
 		Type t = this.GetType();
-		CommandAttribute attrCommand = t.GetCustomAttribute<CommandAttribute>() ?? throw new NullReferenceException("Cannot construct PluginCommand from type without CommandAttribute");
+		CommandAttribute attrCommand = t.GetCustomAttribute<CommandAttribute>() ?? throw new InvalidOperationException("Cannot construct PluginCommand from type without CommandAttribute");
 		ArgumentsAttribute? args = t.GetCustomAttribute<ArgumentsAttribute>();
 		this.Command = $"/{attrCommand.Command.TrimStart('/')}";
 		this.Summary = t.GetCustomAttribute<SummaryAttribute>()?.Summary ?? "";

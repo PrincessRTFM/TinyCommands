@@ -11,7 +11,7 @@ using Dalamud.Logging;
 
 using PrincessRTFM.TinyCmds.Attributes;
 
-public delegate void PluginCommandInvocationErrorHandlerDelegate(params object[] payloads);
+public delegate void PluginCommandInvocationErrorHandler(params object[] payloads);
 
 public class PluginCommandManager: IDisposable {
 
@@ -21,7 +21,7 @@ public class PluginCommandManager: IDisposable {
 
 	private readonly bool disposed = false;
 
-	public PluginCommandInvocationErrorHandlerDelegate? ErrorHandler { get; internal set; }
+	public PluginCommandInvocationErrorHandler? ErrorHandler { get; internal set; }
 	public PluginCommand? HelpHandler { get; internal set; }
 
 	public PluginCommandManager(Plugin core) {

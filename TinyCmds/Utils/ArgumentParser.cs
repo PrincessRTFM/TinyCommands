@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 public class ArgumentParser {
 
 	// From https://metacpan.org/dist/Text-ParseWords/source/lib/Text/ParseWords.pm - I really hope this works :/
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("GeneratedRegex", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.", Justification = "Way too big and long to be one-lined for the attribute")]
 	private static readonly Regex wordparser = new(@"^
 			(?:
 				# double quoted string

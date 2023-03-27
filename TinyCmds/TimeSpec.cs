@@ -1,4 +1,4 @@
-﻿namespace PrincessRTFM.TinyCmds;
+namespace PrincessRTFM.TinyCmds;
 
 using System;
 using System.Linq;
@@ -8,6 +8,7 @@ public static class TimeSpec {
 	/// <summary>
 	/// Matches digits followed by `h`, `m`, or `s`, with the final set of digits not requiring a suffix. Only one group.
 	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("GeneratedRegex", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.", Justification = "User's culture is relevant")]
 	public static readonly Regex Matcher = new(@"^((?:\d+[hms]?)+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 	public static bool TryParse(string spec, out uint hours, out uint minutes, out uint seconds) {
 		hours = 0;

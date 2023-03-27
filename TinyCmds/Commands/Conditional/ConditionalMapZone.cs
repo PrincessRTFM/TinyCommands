@@ -18,8 +18,8 @@ using PrincessRTFM.TinyCmds.Utils;
 	"Using -g will print your current zone ID, to make it easier to find the one you want."
 )]
 public class ConditionalMapZone: BaseConditionalCommand {
-	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		string arg = args ?? string.Empty;
+	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+		string arg = rawArguments ?? string.Empty;
 		ushort territory = Plugin.client.TerritoryType;
 		Assert(territory is not 0, "cannot identify current area");
 

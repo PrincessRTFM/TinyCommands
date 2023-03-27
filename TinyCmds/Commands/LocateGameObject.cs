@@ -42,8 +42,8 @@ using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 	+ " In general, you shouldn't need either of these, unless you're trying to find something like an aether current or a quest NPC for a quest you aren't doing."
 )]
 public class LocateGameObjectCommand: PluginCommand {
-	protected override unsafe void Execute(string? command, string argline, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		if (string.IsNullOrWhiteSpace(argline)) {
+	protected override unsafe void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+		if (string.IsNullOrWhiteSpace(rawArguments)) {
 			ChatUtil.ShowPrefixedError("You need to provide a (partial) name filter.");
 			showHelp = true;
 			return;
@@ -53,7 +53,7 @@ public class LocateGameObjectCommand: PluginCommand {
 			| (1 << 1) // hide model
 			| (1 << 11); // hide nameplate
 
-		string needle = argline.Trim();
+		string needle = rawArguments.Trim();
 		Vector3 here = Plugin.client.LocalPlayer!.Position;
 		IEnumerable<(string name, Vector3 position, float distance)> found = Plugin.objects
 			.Where(o =>
@@ -65,7 +65,7 @@ public class LocateGameObjectCommand: PluginCommand {
 
 		if (!found.Any()) {
 			if (!(flags['f'] && flags['S']))
-				ChatUtil.ShowPrefixedError(ChatColour.HIGHLIGHT_FAILED, "No results found for ", ChatColour.RESET, ChatColour.CONDITION_FAILED, argline.Trim(), ChatColour.RESET);
+				ChatUtil.ShowPrefixedError(ChatColour.HIGHLIGHT_FAILED, "No results found for ", ChatColour.RESET, ChatColour.CONDITION_FAILED, rawArguments.Trim(), ChatColour.RESET);
 			return;
 		}
 
@@ -76,7 +76,9 @@ public class LocateGameObjectCommand: PluginCommand {
 			found = found.Reverse();
 
 		uint zone = Plugin.client.TerritoryType;
+#pragma warning disable CA2201 // Do not raise reserved exception types
 		Map map = Plugin.data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+#pragma warning restore CA2201 // Do not raise reserved exception types
 		ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.data.Excel.GetSheet<TerritoryTypeTransient>();
 		uint mapId = map.RowId;
 		int count = found.Count();
@@ -112,7 +114,7 @@ public class LocateGameObjectCommand: PluginCommand {
 			.AddText($" entit{(count == 1 ? "y" : "ies")} matching ")
 			.AddUiForegroundOff()
 			.AddUiForeground((ushort)ChatColour.HIGHLIGHT_PASSED)
-			.AddText(argline.Trim())
+			.AddText(rawArguments.Trim())
 			.AddUiForegroundOff();
 
 		foreach ((string name, Vector3 position, float distance) in found) {

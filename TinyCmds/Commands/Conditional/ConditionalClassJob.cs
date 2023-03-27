@@ -17,8 +17,8 @@ using PrincessRTFM.TinyCmds.Utils;
 	+ " If you pass the -n flag, the match will be inverted so the command runs only when you AREN'T one of those jobs."
 )]
 public class ConditionalClassJob: BaseConditionalCommand {
-	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		string arg = args ?? string.Empty;
+	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+		string arg = rawArguments ?? string.Empty;
 		ClassJob? job = Plugin.client.LocalPlayer!.ClassJob.GameData;
 		Assert(job is not null, "cannot load current class/job game data");
 		string currentJobName = job!.Abbreviation.ToString().ToUpper();

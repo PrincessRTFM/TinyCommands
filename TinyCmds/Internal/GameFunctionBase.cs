@@ -1,6 +1,7 @@
 namespace PrincessRTFM.TinyCmds.Internal;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 using Dalamud.Hooking;
@@ -32,6 +33,7 @@ internal abstract class GameFunctionBase<T> where T : Delegate {
 			Logger.warning($"{this.GetType().Name} FAILED, could not find address from signature: ${sig.ToUpper()}");
 		}
 	}
+	[SuppressMessage("Reliability", "CA2020:Prevent from behavioral change", Justification = "If that explodes, we SHOULD be throwing")]
 	internal GameFunctionBase(IntPtr address, int offset = 0) {
 		this.addr = address + offset;
 		ulong totalOffset = (ulong)this.Address.ToInt64() - (ulong)Plugin.scanner.Module.BaseAddress.ToInt64();

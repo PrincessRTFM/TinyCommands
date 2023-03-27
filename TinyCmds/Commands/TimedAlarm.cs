@@ -21,10 +21,10 @@ using PrincessRTFM.TinyCmds.Utils;
 )]
 public class TimedAlarm: PluginCommand {
 
-	protected override void Execute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		DateTime now = DateTime.Now;
-		string timespec = args.Split()[0];
-		string name = args[timespec.Length..].Trim();
+		string timespec = rawArguments.Split()[0];
+		string name = rawArguments[timespec.Length..].Trim();
 		if (string.IsNullOrEmpty(timespec)) {
 			showHelp = true;
 			return;

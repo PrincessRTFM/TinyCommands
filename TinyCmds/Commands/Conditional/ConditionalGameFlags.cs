@@ -31,7 +31,7 @@ using PrincessRTFM.TinyCmds.Utils;
 	"-g has party members"
 )]
 public class ConditionalGameFlags: BaseConditionalCommand {
-	protected override bool TryExecute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
+	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		ChatColour msgCol = ChatColour.CONDITION_FAILED;
 		string msg = "Test passed but no command given";
 
@@ -103,14 +103,14 @@ public class ConditionalGameFlags: BaseConditionalCommand {
 			msgCol = ChatColour.CONDITION_PASSED;
 
 		if (msgCol == ChatColour.CONDITION_PASSED) {
-			if (args.Length > 0)
-				ChatUtil.SendChatlineToServer(args, dryRun || verbose, dryRun);
+			if (rawArguments.Length > 0)
+				ChatUtil.SendChatlineToServer(rawArguments, dryRun || verbose, dryRun);
 			else
 				ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
 			return true;
 		}
 
-		if (args.Length == 0)
+		if (rawArguments.Length == 0)
 			ChatUtil.ShowPrefixedMessage(msgCol, msg, ChatColour.RESET);
 		return false;
 	}

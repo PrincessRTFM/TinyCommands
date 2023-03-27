@@ -10,5 +10,5 @@ using PrincessRTFM.TinyCmds.Utils;
 	+ " Its only purpose is for use with Macrology or similar plugins, to allow pseudo-macros to use <wait.(delay)> without doing anything."
 )]
 public class NoOp: PluginCommand {
-	protected override void Execute(string? command, string args, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) { }
+	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) { }
 }
