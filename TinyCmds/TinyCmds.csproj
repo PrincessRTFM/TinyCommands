@@ -2,88 +2,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Product>TinyCmds</Product>
-		<Authors>VariableVixen</Authors>
 		<Version>7.0</Version>
 		<Description>This plugin adds tiny and simple but useful chat commands, and nothing more. It finally has a UI specifically for command help.</Description>
 		<PackageProjectUrl>https://github.com/PrincessRTFM/TinyCommands</PackageProjectUrl>
-		<Copyright>Copyleft Vixen 2021</Copyright>
+		<Copyright>Copyleft VariableVixen 2021</Copyright>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-		<OutputType>Library</OutputType>
-		<Platforms>x64</Platforms>
-		<PlatformTarget>x64</PlatformTarget>
-		<PackageId>$(Product)</PackageId>
-		<AssemblyName>$(Product)</AssemblyName>
-		<TargetFramework>net7-windows</TargetFramework>
-		<Nullable>enable</Nullable>
-		<NullableContextOptions>enable</NullableContextOptions>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>10</LangVersion>
-		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<RootNamespace>PrincessRTFM.$(PackageId)</RootNamespace>
-		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-		<Deterministic>false</Deterministic>
-		<AssemblyVersion>$(Version).*</AssemblyVersion>
-		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<OutputPath>bin\$(Configuration)\</OutputPath>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<SourceRevisionId>debug</SourceRevisionId>
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>embedded</DebugType>
-		<Optimize>false</Optimize>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-		<DebugType>portable</DebugType>
-		<Optimize>true</Optimize>
-		<DefineConstants>TRACE</DefineConstants>
-	</PropertyGroup>
+	<Import Project="dalamud.targets" />
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="2.1.10" />
 		<PackageReference Include="XivCommon" Version="7.0.0-alpha.1" />
-		<Reference Include="Newtonsoft.Json">
-			<HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Dalamud">
-			<HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="ImGui.NET">
-			<HintPath>$(DalamudLibPath)ImGui.NET.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="ImGuiScene">
-			<HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Lumina">
-			<HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Lumina.Excel">
-			<HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="FFXIVClientStructs">
-			<HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
-			<Private>false</Private>
-		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Remove=".gitignore" />
-		<None Remove="dalamud-plugin-ui-colours.png" />
-		<None Remove="README.md" />
 	</ItemGroup>
 
 </Project>
