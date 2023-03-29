@@ -107,6 +107,7 @@
 	</Choose>
 
 	<ItemGroup>
+		<None Remove="framework.targets" />
 		<None Remove=".gitignore" />
 		<None Remove="README.md" />
 		<None Remove="LICENSE" />

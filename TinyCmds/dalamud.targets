@@ -52,6 +52,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="dalamud.targets" />
 		<None Remove="dalamud-plugin-ui-colours.png" />
 	</ItemGroup>
 
