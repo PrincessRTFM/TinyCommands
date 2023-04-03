@@ -1,0 +1,19 @@
+name: 'Close stale issues and PRs'
+on:
+  schedule:
+    - cron: '23 */12 * * *'
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v8
+        with:
+          days-before-issue-stale: 30
+          days-before-pr-stale: 60
+          stale-issue-message: "There has been no activity on this issue for 30 days. If there is no change in the next week, it will be closed automatically."
+          close-issue-message: ""
+          stale-pr-message: "There has been no activity on this PR for 60 days. If there is no change in the next week, it will be closed automatically."
+          close-pr-message: ""
+          exempt-all-milestones: true
+          exempt-draft-pr: true
