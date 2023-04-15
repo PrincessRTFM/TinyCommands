@@ -1,7 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
 
-	<PropertyGroup>
+	<!-- PROJECT FILE PROPERTIES
+	- REQUIRED:
+		<Product>NAME</Product>
+		<Version>MAJOR.MINOR.PATCH</Version>
+		<Description>SUMMARY</Description>
+
+	- RECOMMENDED
+		<Copyright>COPYRIGHT</Copyright>
+
+	- DYNAMIC OVERRIDABLE:
+		<AssemblyName>$(Product)</AssemblyName>
+		<PackageId>$(Product)</PackageId>
+		<Title>$(Product)</Title>
+		<PackageProjectUrl>https://github.com/PrincessRTFM/$(Product)</PackageProjectUrl>
+		<RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+		<AssemblyVersion>$(Version)</AssemblyVersion>
+		<AssemblyFileVersion>$(AssemblyVersion)</AssemblyFileVersion>
+		<Deterministic>(DEPENDENT ON OUTPUT TYPE)</Deterministic>
+		<CopyLocalLockFileAssemblies>(DEPENDENT ON OUTPUT TYPE)</CopyLocalLockFileAssemblies>
+		<ProduceReferenceAssembly>(DEPENDENT ON OUTPUT TYPE)</ProduceReferenceAssembly>
+
+	- STATIC OVERRIDABLE:
+		<Platforms>x64</Platforms>
+		<PlatformTarget>x64</PlatformTarget>
+		<TargetFramework>net7</TargetFramework>
+
+	- SPECIAL:
+		<Authors>VariableVixen[, $(Authors)]</Authors>
+		<ContinuousIntegrationBuild>(AUTOMATICALLY ENABLED ON KNOWN CI SYSTEMS)</ContinuousIntegrationBuild>
+		<DebugSymbols>(DEPENDENT ON BUILD CONFIGURATION)</DebugSymbols>
+		<DebugType>(DEPENDENT ON BUILD CONFIGURATION)</DebugType>
+		<Optimize>(DEPENDENT ON BUILD CONFIGURATION)</Optimize>
+		<CopyDebugSymbolFilesFromPackages>(DEPENDENT ON BUILD CONFIGURATION)</CopyDebugSymbolFilesFromPackages>
+		<DefineConstants>(DEPENDENT ON BUILD CONFIGURATION)</DefineConstants>
+		<SourceRevisionId>(MODIFIED DEPENDENT ON BUILD CONFIGURATION)</SourceRevisionId>
+	-->
+
+	<PropertyGroup><!-- these properties are LOCKED and applied UNCONDITIONALLY -->
 		<RootNamespace>PrincessRTFM.$(Product)</RootNamespace>
 		<Nullable>enable</Nullable>
 		<NullableContextOptions>enable</NullableContextOptions>
@@ -43,17 +80,18 @@
 	</Choose>
 
 	<PropertyGroup>
-		<Copyright Condition=" '$(Copyright)' == '' ">Copyleft $(Authors) 2023</Copyright>
+		<Copyright Condition=" '$(Copyright)' == '' ">Copyleft $(Authors)</Copyright>
 		<RepositoryUrl Condition=" '$(RepositoryUrl)' == '' ">$(PackageProjectUrl).git</RepositoryUrl>
 		<Platforms Condition=" '$(Platforms)' == '' ">x64</Platforms>
 		<PlatformTarget Condition=" '$(PlatformTarget)' == '' ">x64</PlatformTarget>
 		<TargetFramework Condition=" '$(TargetFramework)' == '' ">net7</TargetFramework>
+		<AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(Version)</AssemblyVersion>
+		<AssemblyFileVersion Condition=" '$(AssemblyFileVersion)' == '' ">$(AssemblyVersion)</AssemblyFileVersion>
 	</PropertyGroup>
 
 	<Choose>
 		<When Condition=" '$(OutputType.ToLower())' == 'library' ">
 			<PropertyGroup>
-				<AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(Version)</AssemblyVersion>
 				<Deterministic Condition=" '$(Deterministic)' == '' ">true</Deterministic>
 				<CopyLocalLockFileAssemblies Condition=" '$(CopyLocalLockFileAssemblies)' == '' ">false</CopyLocalLockFileAssemblies>
 				<ProduceReferenceAssembly Condition=" '$(ProduceReferenceAssembly)' == '' ">true</ProduceReferenceAssembly>
@@ -61,7 +99,6 @@
 		</When>
 		<Otherwise>
 			<PropertyGroup>
-				<AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(Version).*</AssemblyVersion>
 				<Deterministic Condition=" '$(Deterministic)' == '' ">false</Deterministic>
 				<CopyLocalLockFileAssemblies Condition=" '$(CopyLocalLockFileAssemblies)' == '' ">true</CopyLocalLockFileAssemblies>
 				<ProduceReferenceAssembly Condition=" '$(ProduceReferenceAssembly)' == '' ">false</ProduceReferenceAssembly>
