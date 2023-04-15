@@ -41,7 +41,7 @@ jobs:
         name: PluginRepoZip
         path: ${{ env.INTERNAL_NAME }}/bin/${{ env.CONFIGURATION }}/${{ env.INTERNAL_NAME }}
         if-no-files-found: error
-        retention-days: 1
+        retention-days: 14
     - name: Tag
       run: |
         buildVersion=$(jq -j .AssemblyVersion "${{ env.INTERNAL_NAME }}/bin/${{ env.CONFIGURATION }}/${{ env.INTERNAL_NAME }}/${{ env.INTERNAL_NAME }}.json")
