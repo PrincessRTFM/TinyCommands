@@ -89,7 +89,7 @@ public class LocateBestFATECommand: PluginCommand {
 		bool adjusted = false;
 		while (!found.Any()) { // nothing was found that matches, so we need to gradually relax the limits until SOMETHING comes up
 			adjusted = true;
-			minTime = Math.Max(minTime - 30, 0);
+			minTime = minTime >= 30 ? minTime - 30 : 0;
 			maxProgress = (byte)Math.Min(maxProgress + 5, 100);
 			found = filtered.Where(f => f.TimeRemaining >= minTime && f.Progress <= maxProgress);
 			if (minTime == 0 && maxProgress == 100) // just in case, to avoid infinite thrash loops
