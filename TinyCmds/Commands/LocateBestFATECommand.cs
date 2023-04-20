@@ -122,21 +122,36 @@ public class LocateBestFATECommand: PluginCommand {
 			});
 		}
 		foreach (Fate fate in accepted) {
-			payloads.AddRange(new object[] {
-				"\n- ",
-				ChatColour.HIGHLIGHT,
-				fate.Name,
-				ChatColour.RESET,
-				" (",
-				(fate.State is FateState.Preparation ? uint.MaxValue : fate.TimeRemaining) <= originalTime ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
-				fate.State is FateState.Preparation ? "--:--" : TimeSpec.ClockDisplay(0, 0, (uint)Math.Min(fate.TimeRemaining, uint.MaxValue)),
-				ChatColour.RESET,
-				", ",
-				(fate.State is FateState.Preparation ? 0 : fate.Progress) >= originalProgress ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
-				$"{fate.Progress}%",
-				ChatColour.RESET,
-				")",
-			});
+			if (fate.State is FateState.Preparation) {
+				payloads.AddRange(new object[] {
+					"\n- ",
+					ChatColour.HIGHLIGHT,
+					fate.Name,
+					ChatColour.RESET,
+					" (",
+					ChatColour.CONDITION_PASSED,
+					"not yet triggered",
+					ChatColour.RESET,
+					")",
+				});
+			}
+			else {
+				payloads.AddRange(new object[] {
+					"\n- ",
+					ChatColour.HIGHLIGHT,
+					fate.Name,
+					ChatColour.RESET,
+					" (",
+					fate.TimeRemaining <= originalTime ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
+					TimeSpec.ClockDisplay(0, 0, (uint)Math.Min(fate.TimeRemaining, uint.MaxValue)),
+					ChatColour.RESET,
+					", ",
+					fate.Progress >= originalProgress ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
+					$"{fate.Progress}%",
+					ChatColour.RESET,
+					")",
+				});
+			}
 		}
 		ChatUtil.ShowPrefixedMessage(payloads.ToArray());
 		if (flags['f']) {
