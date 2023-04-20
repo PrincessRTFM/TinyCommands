@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
+using Dalamud.Game.ClientState.Fates;
+
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
 using Lumina.Excel;
@@ -44,6 +46,7 @@ public class LocateBestFATECommand: PluginCommand {
 				"There are no FATEs in your current zone.",
 				ChatColour.RESET
 			);
+			Plugin.toast.ShowError("No FATEs are available.");
 			return;
 		}
 		Vector3 here = Plugin.client.LocalPlayer!.Position;
@@ -85,13 +88,13 @@ public class LocateBestFATECommand: PluginCommand {
 			? fates.OrderByDescending(f => f.Level).First().Level
 			: fates.OrderBy(f => f.Level).First().Level;
 		Fate[] filtered = fates.Where(f => f.Level == fateLevel).ToArray();
-		IEnumerable<Fate> found = filtered.Where(f => f.TimeRemaining >= minTime && f.Progress <= maxProgress);
+		IEnumerable<Fate> found = filtered.Where(f => f.State is FateState.Preparation || (f.TimeRemaining >= minTime && f.Progress <= maxProgress));
 		bool adjusted = false;
 		while (!found.Any()) { // nothing was found that matches, so we need to gradually relax the limits until SOMETHING comes up
 			adjusted = true;
 			minTime = minTime >= 30 ? minTime - 30 : 0;
 			maxProgress = (byte)Math.Min(maxProgress + 5, 100);
-			found = filtered.Where(f => f.TimeRemaining >= minTime && f.Progress <= maxProgress);
+			found = filtered.Where(f => f.State is FateState.Preparation || (f.TimeRemaining >= minTime && f.Progress <= maxProgress));
 			if (minTime == 0 && maxProgress == 100) // just in case, to avoid infinite thrash loops
 				break;
 		}
@@ -125,11 +128,11 @@ public class LocateBestFATECommand: PluginCommand {
 				fate.Name,
 				ChatColour.RESET,
 				" (",
-				fate.TimeRemaining <= originalTime ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
-				TimeSpec.ClockDisplay(0, 0, (uint)Math.Min(fate.TimeRemaining, uint.MaxValue)),
+				(fate.State is FateState.Preparation ? uint.MaxValue : fate.TimeRemaining) <= originalTime ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
+				fate.State is FateState.Preparation ? "--:--" : TimeSpec.ClockDisplay(0, 0, (uint)Math.Min(fate.TimeRemaining, uint.MaxValue)),
 				ChatColour.RESET,
 				", ",
-				fate.Progress >= originalProgress ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
+				(fate.State is FateState.Preparation ? 0 : fate.Progress) >= originalProgress ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
 				$"{fate.Progress}%",
 				ChatColour.RESET,
 				")",
