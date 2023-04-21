@@ -144,7 +144,7 @@
 	</Choose>
 
 	<ItemGroup>
-		<None Remove="framework.targets" />
+		<None Remove="framework.props" />
 		<None Remove=".gitignore" />
 		<None Remove="README.md" />
 		<None Remove="LICENSE" />

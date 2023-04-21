@@ -8,7 +8,7 @@
 		<Copyright>Copyleft VariableVixen 2021</Copyright>
 	</PropertyGroup>
 
-	<Import Project="dalamud.targets" />
+	<Import Project="dalamud.props" />
 
 	<ItemGroup>
 		<PackageReference Include="XivCommon" Version="7.0.0-alpha.1" />

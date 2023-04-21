@@ -12,7 +12,7 @@
 		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	</PropertyGroup>
 
-	<Import Project="framework.targets" />
+	<Import Project="framework.props" />
 
 	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -51,7 +51,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="dalamud.targets" />
+		<None Remove="dalamud.props" />
 		<None Remove="dalamud-plugin-ui-colours.png" />
 	</ItemGroup>
 
