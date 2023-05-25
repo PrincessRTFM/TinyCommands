@@ -10,9 +10,9 @@
       },
       "XivCommon": {
         "type": "Direct",
-        "requested": "[7.0.0-alpha.1, )",
-        "resolved": "7.0.0-alpha.1",
-        "contentHash": "4Yy4Wg3bnI/g9BSEYAqOZALmVMJZS0wcP847VlUIThBqIS/47O6tw2BI84he4KuPSTfIsYOzrcz3vAia8+Pn3g=="
+        "requested": "[7.0.1, )",
+        "resolved": "7.0.1",
+        "contentHash": "7R/EFciup8CY/NYPO8xt2zKJ7bjWM2Hi/SxO8tUEvJg0iONisYFryMmDK7NnMsmTRZfUYT0ZHS2sU/DrlOtYMg=="
       }
     },
     "net7.0-windows7.0/win": {}
