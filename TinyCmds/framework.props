@@ -6,6 +6,8 @@
 		<Product>NAME</Product>
 		<Version>MAJOR.MINOR.PATCH</Version>
 		<Description>SUMMARY</Description>
+		<Description>SUMMARY</Description>
+		<OutputType>{Library|Exe}</OutputType>
 
 	- RECOMMENDED
 		<Copyright>COPYRIGHT</Copyright>
@@ -38,8 +40,15 @@
 		<SourceRevisionId>(MODIFIED DEPENDENT ON BUILD CONFIGURATION)</SourceRevisionId>
 	-->
 
+	<PropertyGroup Condition=" '$(Product)' != '' ">
+		<AssemblyName Condition=" '$(AssemblyName)' == '' ">$(Product)</AssemblyName>
+		<PackageId Condition=" '$(PackageId)' == '' ">$(Product)</PackageId>
+		<Title Condition=" '$(Title)' == '' ">$(Product)</Title>
+		<PackageProjectUrl Condition=" '$(PackageProjectUrl)' == '' ">https://github.com/PrincessRTFM/$(Product)</PackageProjectUrl>
+	</PropertyGroup>
+
 	<PropertyGroup><!-- these properties are LOCKED and applied UNCONDITIONALLY -->
-		<RootNamespace>PrincessRTFM.$(Product)</RootNamespace>
+		<RootNamespace>PrincessRTFM.$(PackageId)</RootNamespace>
 		<Nullable>enable</Nullable>
 		<NullableContextOptions>enable</NullableContextOptions>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -57,13 +66,6 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<ImplicitUsings>false</ImplicitUsings>
 		<NoWarn>CA1805,CA1852,CA1707,$(NoWarn)</NoWarn>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Product)' != '' ">
-		<AssemblyName Condition=" '$(AssemblyName)' == '' ">$(Product)</AssemblyName>
-		<PackageId Condition=" '$(PackageId)' == '' ">$(Product)</PackageId>
-		<Title Condition=" '$(Title)' == '' ">$(Product)</Title>
-		<PackageProjectUrl Condition=" '$(PackageProjectUrl)' == '' ">https://github.com/PrincessRTFM/$(Product)</PackageProjectUrl>
 	</PropertyGroup>
 
 	<Choose>
