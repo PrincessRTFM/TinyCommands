@@ -99,10 +99,8 @@ public class LocateBestFATECommand: PluginCommand {
 				break;
 		}
 		Fate[] accepted = found.OrderBy(f => Vector3.Distance(f.Position, here)).ToArray();
-#pragma warning disable CA2201 // Do not raise reserved exception types
 		if (accepted.Length == 0)
 			throw new Exception("There exist FATEs in this zone, but none could be filtered, even permissively");
-#pragma warning restore CA2201 // Do not raise reserved exception types
 		string noun = "FATE" + (accepted.Length > 1 ? "s" : "");
 		string verb = accepted.Length > 1 ? "were" : "was";
 		List<object> payloads = new() {
@@ -156,9 +154,7 @@ public class LocateBestFATECommand: PluginCommand {
 		ChatUtil.ShowPrefixedMessage(payloads.ToArray());
 		if (flags['f']) {
 			uint zone = Plugin.client.TerritoryType;
-#pragma warning disable CA2201 // Do not raise reserved exception types
 			Map map = Plugin.data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
-#pragma warning restore CA2201 // Do not raise reserved exception types
 			ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.data.Excel.GetSheet<TerritoryTypeTransient>();
 			uint mapId = map.RowId;
 			AgentMap* agentMap = AgentMap.Instance();

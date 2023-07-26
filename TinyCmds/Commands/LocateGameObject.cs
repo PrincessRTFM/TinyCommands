@@ -76,9 +76,7 @@ public class LocateGameObjectCommand: PluginCommand {
 			found = found.Reverse();
 
 		uint zone = Plugin.client.TerritoryType;
-#pragma warning disable CA2201 // Do not raise reserved exception types
 		Map map = Plugin.data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
-#pragma warning restore CA2201 // Do not raise reserved exception types
 		ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.data.Excel.GetSheet<TerritoryTypeTransient>();
 		uint mapId = map.RowId;
 		int count = found.Count();
