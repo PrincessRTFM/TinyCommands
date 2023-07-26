@@ -66,6 +66,18 @@ public class LocateBestFATECommand: PluginCommand {
 		}
 		ChatUtil.ShowPrefixedError($"Can't find any FATE named {wanted} - it may have been completed or timed out.");
 	}
+	internal static string fateTypeByIcon(uint icon) {
+		return icon switch {
+			60721 => "Horde",
+			60722 => "Miniboss",
+			60723 => "Collection",
+			60724 => "Defence",
+			60725 => "Escort",
+			60726 => "QUEST!",
+			60727 => "Chase",
+			_ => string.Empty,
+		};
+	}
 	protected override unsafe void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		if (Plugin.fates.Length == 0) {
 			ChatUtil.ShowPrefixedMessage(
@@ -156,6 +168,21 @@ public class LocateBestFATECommand: PluginCommand {
 					ChatColour.RESET,
 					" (",
 			});
+			string kind = fateTypeByIcon(fate.GameData.IconObjective);
+			if (string.IsNullOrEmpty(kind)) {
+				payloads.AddRange(new object[] {
+					ChatColour.ERROR,
+					"Unknown",
+				});
+			}
+			else {
+				payloads.AddRange(new object[] {
+					ChatColour.HELP_TEXT,
+					kind,
+				});
+			}
+			payloads.Add(ChatColour.RESET);
+			payloads.Add(", ");
 			if (fate.State is FateState.Preparation) {
 				payloads.AddRange(new object[] {
 					ChatColour.CONDITION_PASSED,
@@ -187,3 +214,4 @@ public class LocateBestFATECommand: PluginCommand {
 		}
 	}
 }
+
