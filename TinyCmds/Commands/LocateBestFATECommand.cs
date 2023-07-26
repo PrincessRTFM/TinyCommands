@@ -147,8 +147,7 @@ public class LocateBestFATECommand: PluginCommand {
 			});
 		}
 		foreach (Fate fate in accepted) {
-			if (fate.State is FateState.Preparation) {
-				payloads.AddRange(new object[] {
+			payloads.AddRange(new object[] {
 					"\n- ",
 					ChatColour.HIGHLIGHT,
 					findFateByNamePayload,
@@ -156,31 +155,25 @@ public class LocateBestFATECommand: PluginCommand {
 					RawPayload.LinkTerminator,
 					ChatColour.RESET,
 					" (",
+			});
+			if (fate.State is FateState.Preparation) {
+				payloads.AddRange(new object[] {
 					ChatColour.CONDITION_PASSED,
 					"not yet triggered",
-					ChatColour.RESET,
-					")",
 				});
 			}
 			else {
 				payloads.AddRange(new object[] {
-					"\n- ",
-					ChatColour.HIGHLIGHT,
-					findFateByNamePayload,
-					fate.Name,
-					RawPayload.LinkTerminator,
-					ChatColour.RESET,
-					" (",
 					fate.TimeRemaining <= originalTime ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
 					TimeSpec.ClockDisplay(0, 0, (uint)Math.Min(fate.TimeRemaining, uint.MaxValue)),
 					ChatColour.RESET,
 					", ",
 					fate.Progress >= originalProgress ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
 					$"{fate.Progress}%",
-					ChatColour.RESET,
-					")",
 				});
 			}
+			payloads.Add(ChatColour.RESET);
+			payloads.Add(")");
 		}
 		ChatUtil.ShowPrefixedMessage(payloads.ToArray());
 		if (flags['f']) {
