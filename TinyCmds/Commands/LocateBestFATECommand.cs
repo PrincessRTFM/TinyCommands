@@ -77,7 +77,7 @@ public class LocateBestFATECommand: PluginCommand {
 			return;
 		}
 		Vector3 here = Plugin.client.LocalPlayer!.Position;
-		byte maxLevel = (new byte[] { Plugin.client.LocalPlayer!.Level }).Concat(Plugin.party.Select(p => p.Level)).Min();
+		byte maxLevel = (new byte[] { Plugin.client.LocalPlayer!.Level }).Concat(Plugin.party.Select(p => GameObject.IsValid(p.GameObject) ? p.Level : byte.MaxValue)).Min();
 		uint minTime = 0;
 		byte maxProgress = 100;
 		string[] args = rawArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
