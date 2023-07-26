@@ -6,6 +6,9 @@ using System.Linq;
 using System.Numerics;
 
 using Dalamud.Game.ClientState.Fates;
+using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
@@ -17,6 +20,7 @@ using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
 using Fate = Dalamud.Game.ClientState.Fates.Fate;
+using Map = Lumina.Excel.GeneratedSheets.Map;
 
 [Command("/findfate", "/fate")]
 [Summary("Find nearby objects, players, and NPCs by name")]
@@ -39,6 +43,29 @@ using Fate = Dalamud.Game.ClientState.Fates.Fate;
 	"If the -f flag is provided, the first FATE on the list returned will be marked on your map for ease of travelling."
 )]
 public class LocateBestFATECommand: PluginCommand {
+	internal static DalamudLinkPayload findFateByNamePayload = null!;
+	protected override void Initialise() {
+		base.Initialise();
+		findFateByNamePayload ??= Plugin.pluginInterface.AddChatLinkHandler(Plugin.findFateByNamePayloadId, this.findFateByName);
+	}
+	private unsafe void findFateByName(uint linkId, SeString linkText) {
+		if (linkId is not Plugin.findFateByNamePayloadId) { // ...how?
+			ChatUtil.ShowPrefixedError($"Internal error: payload ID mismatch ({linkId} != {Plugin.findFateByNamePayloadId})");
+			return;
+		}
+		string wanted = linkText.TextValue;
+		foreach (Fate? fate in Plugin.fates) {
+			if (fate?.Name.TextValue == wanted) {
+				uint zone = Plugin.client.TerritoryType;
+				Map map = Plugin.data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+				Vector2 mapped = Plugin.worldToMap(fate.Position, map);
+				MapLinkPayload pl = new(zone, map.RowId, mapped.X, mapped.Y);
+				Plugin.gui.OpenMapWithMapLink(pl);
+				return;
+			}
+		}
+		ChatUtil.ShowPrefixedError($"Can't find any FATE named {wanted} - it may have been completed or timed out.");
+	}
 	protected override unsafe void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		if (Plugin.fates.Length == 0) {
 			ChatUtil.ShowPrefixedMessage(
@@ -124,7 +151,9 @@ public class LocateBestFATECommand: PluginCommand {
 				payloads.AddRange(new object[] {
 					"\n- ",
 					ChatColour.HIGHLIGHT,
+					findFateByNamePayload,
 					fate.Name,
+					RawPayload.LinkTerminator,
 					ChatColour.RESET,
 					" (",
 					ChatColour.CONDITION_PASSED,
@@ -137,7 +166,9 @@ public class LocateBestFATECommand: PluginCommand {
 				payloads.AddRange(new object[] {
 					"\n- ",
 					ChatColour.HIGHLIGHT,
+					findFateByNamePayload,
 					fate.Name,
+					RawPayload.LinkTerminator,
 					ChatColour.RESET,
 					" (",
 					fate.TimeRemaining <= originalTime ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,

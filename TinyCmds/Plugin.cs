@@ -29,6 +29,7 @@ using PrincessRTFM.TinyCmds.Ui;
 using XivCommon;
 
 public class Plugin: IDalamudPlugin {
+	internal const uint findFateByNamePayloadId = 1;
 
 	public const string PluginName = "TinyCommands";
 	public const string Prefix = "TinyCmds";
