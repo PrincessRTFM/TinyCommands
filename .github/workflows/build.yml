@@ -1,24 +1,64 @@
 name: Build
 
 # Put your personal access token in a repository secret named PAT for cross-repository access
+permissions:
+  contents: write
 
 on:
   workflow_dispatch:
   push:
+    paths-ignore:
+      - '*.md'
     branches:
-    - master
-    # Just in case I ever change the branch name or something
-    - main
-    - release
+      - master
+      - main
+      - release
+  pull_request:
+    paths-ignore:
+      - '*.md'
+    branches:
+      - master
+      - main
+      - release
 
 env:
   INTERNAL_NAME: TinyCmds
   CONFIGURATION: Release
   PERSONAL_PLUGIN_REPO: PrincessRTFM/MyDalamudPlugins
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
 
 jobs:
+  precheck:
+    runs-on: ubuntu-latest
+    outputs:
+      buildVersion: ${{ steps.data.outputs.buildVersion }}
+      tagName: ${{ steps.data.outputs.tagName }}
+      tagExists: ${{ steps.check-version-tag.outputs.tagExists }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Load values
+        id: data
+        run: |
+          buildVersion=$(grep -Ei '<version>[^<]+</version>' "${{ env.INTERNAL_NAME }}/${{ env.INTERNAL_NAME }}.csproj" | sed -e 's/.\+<version>\([^<]\+\)<.\+/\1/i' -)
+          echo "buildVersion=$buildVersion" >> "$GITHUB_OUTPUT"
+          echo "tagName=v$buildVersion" >> "$GITHUB_OUTPUT"
+        shell: bash
+      - name: Check if version exists
+        id: check-version-tag
+        run: |
+          if git show-ref --quiet --tags "${{ steps.data.outputs.tagName }}"; then echo "tagExists=true" >> "$GITHUB_OUTPUT"; else echo "tagExists=false" >> "$GITHUB_OUTPUT"; fi
+        shell: bash
+      - name: Debug
+        run: |
+          echo "Current version is ${{ steps.data.outputs.buildVersion }} for tag ${{ steps.data.outputs.tagName }} (exists = ${{ steps.check-version-tag.outputs.tagExists }})"
+        shell: bash
   build:
+    needs: precheck
+    if: needs.precheck.outputs.tagExists == 'false'
     runs-on: windows-2022
     steps:
     - name: Checkout
