@@ -5,19 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-using Dalamud.Data;
 using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.ClientState.Party;
-using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 
 using Lumina.Excel.GeneratedSheets;
@@ -38,18 +34,18 @@ public class Plugin: IDalamudPlugin {
 	private bool disposed = false;
 
 	[PluginService] internal static ChatGui chat { get; private set; } = null!;
-	[PluginService] internal static GameGui gui { get; private set; } = null!;
+	[PluginService] internal static IGameGui gui { get; private set; } = null!;
 	[PluginService] internal static ToastGui toast { get; private set; } = null!;
 	[PluginService] internal static DalamudPluginInterface pluginInterface { get; private set; } = null!;
-	[PluginService] internal static SigScanner scanner { get; private set; } = null!;
-	[PluginService] internal static CommandManager cmdManager { get; private set; } = null!;
-	[PluginService] internal static ClientState client { get; private set; } = null!;
+	[PluginService] internal static ISigScanner scanner { get; private set; } = null!;
+	[PluginService] internal static ICommandManager cmdManager { get; private set; } = null!;
+	[PluginService] internal static IClientState client { get; private set; } = null!;
 	[PluginService] internal static Dalamud.Game.ClientState.Conditions.Condition conditions { get; private set; } = null!;
-	[PluginService] internal static TargetManager targets { get; private set; } = null!;
-	[PluginService] internal static DataManager data { get; private set; } = null!;
-	[PluginService] internal static PartyList party { get; private set; } = null!;
-	[PluginService] internal static ObjectTable objects { get; private set; } = null!;
-	[PluginService] internal static FateTable fates { get; private set; } = null!;
+	[PluginService] internal static ITargetManager targets { get; private set; } = null!;
+	[PluginService] internal static IDataManager data { get; private set; } = null!;
+	[PluginService] internal static IPartyList party { get; private set; } = null!;
+	[PluginService] internal static IObjectTable objects { get; private set; } = null!;
+	[PluginService] internal static IFateTable fates { get; private set; } = null!;
 	[PluginService] internal static Framework framework { get; private set; } = null!;
 	internal static XivCommonBase common { get; private set; } = null!;
 	internal static PluginCommandManager commandManager { get; private set; } = null!;
