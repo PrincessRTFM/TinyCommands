@@ -14,10 +14,6 @@
 
 	<Import Project="framework.props" />
 
-	<PropertyGroup>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="DalamudPackager" Version="2.1.11" />
 		<Reference Include="Newtonsoft.Json">
