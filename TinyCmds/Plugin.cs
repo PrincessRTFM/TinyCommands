@@ -54,7 +54,7 @@ public class Plugin: IDalamudPlugin {
 	internal readonly Dictionary<string, Window> helpWindows;
 
 	public Plugin() {
-		common = new(); // just need the chat feature to send commands
+		common = new(pluginInterface); // just need the chat feature to send commands
 		sfx = new();
 		commandManager = new(this) {
 			ErrorHandler = ChatUtil.ShowPrefixedError
