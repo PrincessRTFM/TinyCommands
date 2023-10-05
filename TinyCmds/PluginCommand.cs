@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 
 using Dalamud.Game.Command;
-using Dalamud.Logging;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
@@ -63,7 +62,7 @@ public abstract class PluginCommand: IDisposable {
 		this.InternalName = t.Name;
 
 		if (this.Plugin is null)
-			PluginLog.Warning($"{this.InternalName}.Plugin is null in constructor - this should not happen!");
+			Plugin.log.Warning($"{this.InternalName}.Plugin is null in constructor - this should not happen!");
 	}
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -71,7 +70,7 @@ public abstract class PluginCommand: IDisposable {
 	protected virtual string ModifyHelpMessage(string original) => original;
 	protected virtual void Initialise() { }
 	internal void setup() {
-		PluginLog.Information($"Initialising {this.InternalName}");
+		Plugin.log.Information($"Initialising {this.InternalName}");
 		this.Initialise();
 	}
 
@@ -84,11 +83,11 @@ public abstract class PluginCommand: IDisposable {
 		if (this.Disposed)
 			throw new ObjectDisposedException(this.InternalName, "Plugin command has already been disposed");
 
-		PluginLog.Information($"Command invocation: [{command}] [{argline}]");
+		Plugin.log.Information($"Command invocation: [{command}] [{argline}]");
 		try {
 			(FlagMap flags, string rawArguments) = ArgumentParser.ExtractFlags(argline);
-			PluginLog.Information($"Parsed flags: {flags}");
-			PluginLog.Information($"Remaining argument line: [{rawArguments}]");
+			Plugin.log.Information($"Parsed flags: {flags}");
+			Plugin.log.Information($"Remaining argument line: [{rawArguments}]");
 			bool showHelp = false;
 			bool verbose = flags['?'];
 			bool dryRun = flags['!'];
@@ -101,11 +100,11 @@ public abstract class PluginCommand: IDisposable {
 				Plugin.commandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
 		}
 		catch (CommandAssertionFailureException e) {
-			PluginLog.Error(e, $"Command assert failed: {this.Command}: {e.Message}");
+			Plugin.log.Error(e, $"Command assert failed: {this.Command}: {e.Message}");
 			Plugin.commandManager.ErrorHandler?.Invoke($"Internal assertion check failed:\n{e.Message}");
 		}
 		catch (Exception e) {
-			PluginLog.Error(e, "Command invocation failed");
+			Plugin.log.Error(e, "Command invocation failed");
 			if (Plugin.commandManager.ErrorHandler is not null) {
 				while (e is not null) {
 					Plugin.commandManager.ErrorHandler.Invoke(

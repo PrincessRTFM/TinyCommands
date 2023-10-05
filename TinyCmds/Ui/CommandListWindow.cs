@@ -2,14 +2,13 @@ namespace PrincessRTFM.TinyCmds.Ui;
 
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
 
 using ImGuiNET;
 
 internal class CommandListWindow: HelpWindow {
 	private readonly Plugin plugin;
 
-	public CommandListWindow(Plugin core) : base(core, "Command List", core.Name, "command listing", "A list of all commands in the plugin", "") {
+	public CommandListWindow(Plugin core) : base("Command List", Plugin.PluginName, "command listing", "A list of all commands in the plugin", "") {
 		this.RespectCloseHotkey = true;
 		this.IsOpen = false;
 		this.SizeConstraints = new() {
@@ -32,7 +31,7 @@ internal class CommandListWindow: HelpWindow {
 				bool getHelp = ImGui.Button($"{FontAwesomeIcon.Question.ToIconString()}###OpenHelp_{cmd.InternalName}");
 				ImGui.PopFont();
 				if (getHelp) {
-					PluginLog.Information($"Opening help window for {cmd.InternalName}");
+					Plugin.log.Information($"Opening help window for {cmd.InternalName}");
 					wnd.IsOpen = true;
 				}
 				ImGui.SameLine();

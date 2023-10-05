@@ -17,7 +17,7 @@ internal class HelpWindow: Window, IDisposable {
 		Summary,
 		Text;
 
-	public HelpWindow(Plugin core, string title, string header, string subheader, string summary, string text) : base($"{core.Name} Help: {title}", flags) {
+	public HelpWindow(string title, string header, string subheader, string summary, string text) : base($"{Plugin.PluginName} Help: {title}", flags) {
 		this.RespectCloseHotkey = true;
 		this.IsOpen = false;
 		this.SizeConstraints = new() {
@@ -30,8 +30,7 @@ internal class HelpWindow: Window, IDisposable {
 		this.Summary = summary;
 		this.Text = text;
 	}
-	public HelpWindow(Plugin core, PluginCommand cmd)
-		: this(core, cmd.Command, cmd.Usage, string.Join(", ", cmd.Aliases), cmd.Summary, cmd.Help) { }
+	public HelpWindow(PluginCommand cmd) : this(cmd.Command, cmd.Usage, string.Join(", ", cmd.Aliases), cmd.Summary, cmd.Help) { }
 
 	protected void DrawHeader() {
 

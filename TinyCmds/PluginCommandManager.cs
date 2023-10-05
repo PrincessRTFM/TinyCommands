@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 
 using Dalamud.Game.Command;
-using Dalamud.Logging;
 
 using PrincessRTFM.TinyCmds.Attributes;
 
@@ -37,16 +36,16 @@ public class PluginCommandManager: IDisposable {
 						.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
 						.Where(prop => prop.PropertyType == p)
 						.First();
-					PluginLog.Information($"Injecting {p.Name} object to {t.Name}.{prop.Name}");
+					Plugin.log.Information($"Injecting {p.Name} object to {t.Name}.{prop.Name}");
 					prop.SetValue(instance, core);
-					PluginLog.Information($"Invoking {t.Name}.<ctor>()");
+					Plugin.log.Information($"Invoking {t.Name}.<ctor>()");
 					ctor.Invoke(instance, null);
 					PluginCommand? cmd = instance as PluginCommand;
 					cmd?.setup();
 					return cmd;
 				}
 				catch (Exception e) {
-					PluginLog.Error(e, $"Failed to instantiate {t.Name}");
+					Plugin.log.Error(e, $"Failed to instantiate {t.Name}");
 					return null;
 				}
 			})
@@ -58,7 +57,7 @@ public class PluginCommandManager: IDisposable {
 
 	internal void addCommandHandlers() {
 		foreach (PluginCommand cmd in this.commands) {
-			PluginLog.Information($"Registering command {cmd.InternalName} as {string.Join(", ", cmd.InvocationNames)}");
+			Plugin.log.Information($"Registering command {cmd.InternalName} as {string.Join(", ", cmd.InvocationNames)}");
 			Plugin.cmdManager.AddHandler(cmd.Command, cmd.MainCommandInfo);
 			CommandInfo hidden = cmd.AliasCommandInfo;
 			foreach (string alt in cmd.Aliases) {
@@ -69,7 +68,7 @@ public class PluginCommandManager: IDisposable {
 
 	internal void removeCommandHandlers() {
 		foreach (PluginCommand cmd in this.commands) {
-			PluginLog.Information($"Unregistering command {string.Join(", ", cmd.InvocationNames)} for {cmd.InternalName}");
+			Plugin.log.Information($"Unregistering command {string.Join(", ", cmd.InvocationNames)} for {cmd.InternalName}");
 			Plugin.cmdManager.RemoveHandler(cmd.Command);
 			foreach (string alt in cmd.Aliases) {
 				Plugin.cmdManager.RemoveHandler(alt);

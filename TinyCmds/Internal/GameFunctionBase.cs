@@ -43,6 +43,5 @@ internal abstract class GameFunctionBase<T> where T : Delegate {
 	public dynamic? Invoke(params dynamic[] parameters)
 		=> this.Delegate?.DynamicInvoke(parameters);
 
-	public Hook<T> Hook(T handler)
-		=> Hook<T>.FromAddress(this.Address, handler);
+	public Hook<T> Hook(T handler) => Plugin.interop.HookFromAddress<T>(this.Address, handler);
 }

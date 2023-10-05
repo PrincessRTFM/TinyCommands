@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 
 using Dalamud.Interface.Windowing;
-using Dalamud.Logging;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
@@ -27,7 +26,7 @@ public class DisplayCommandHelp: PluginCommand {
 				wnd.IsOpen = false;
 		}
 		string[] args = rawArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-		PluginLog.Information($"args: #{args.Length}, {string.Join(" ", args.Select(s => $"[{s}]"))}");
+		Plugin.log.Information($"args: #{args.Length}, {string.Join(" ", args.Select(s => $"[{s}]"))}");
 		if (args.Length < 1) {
 			Assert(this.Plugin is not null, "Plugin is null, everything is broken");
 			Assert(this.Plugin!.helpWindows["<PLUGIN>"] is not null, "plugin information window doesn't exist");

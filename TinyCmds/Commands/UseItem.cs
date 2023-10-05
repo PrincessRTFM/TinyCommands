@@ -3,9 +3,8 @@ namespace PrincessRTFM.TinyCmds.Commands;
 using System.Collections.Generic;
 using System.Linq;
 
-using Dalamud.Game;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Logging;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -33,10 +32,10 @@ public unsafe class UseItem: PluginCommand {
 
 #pragma warning disable IDE0044 // Add readonly modifier
 #pragma warning disable CS0649 // Member is never assigned to
-	[Signature("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 89 7C 24 38")]
+	[Signature("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 89 7C 24 38", Fallibility = Fallibility.Fallible)]
 	private static delegate* unmanaged<nint, uint, uint, uint, short, void> useItem;
 
-	[Signature("E8 ?? ?? ?? ?? 44 8B 4B 2C")]
+	[Signature("E8 ?? ?? ?? ?? 44 8B 4B 2C", Fallibility = Fallibility.Fallible)]
 	private static delegate* unmanaged<uint, uint, uint> getActionID;
 #pragma warning restore CS0649 // Member is never assigned to
 #pragma warning restore IDE0044 // Add readonly modifier
@@ -53,7 +52,7 @@ public unsafe class UseItem: PluginCommand {
 	}
 
 	protected override void Initialise() {
-		SignatureHelper.Initialise(this);
+		Plugin.interop.InitializeFromAttributes(this);
 		Plugin.framework.Update += this.attemptReuse;
 	}
 
@@ -86,12 +85,12 @@ public unsafe class UseItem: PluginCommand {
 
 	private void use(uint id) {
 		if (useItem is null) {
-			PluginLog.Error($"{this.GetType().Name}.use(uint) called without useItem delegate");
+			Plugin.log.Error($"{this.GetType().Name}.use(uint) called without useItem delegate");
 			return;
 		}
 
 		if (getActionID is null) {
-			PluginLog.Error($"{this.GetType().Name}.use(uint) called without getActionID delegate");
+			Plugin.log.Error($"{this.GetType().Name}.use(uint) called without getActionID delegate");
 			return;
 		}
 
@@ -127,7 +126,7 @@ public unsafe class UseItem: PluginCommand {
 
 		useItem((nint)itemContextMenuAgent, id, 9999, 0, 0);
 	}
-	private void attemptReuse(Framework framework) {
+	private void attemptReuse(IFramework framework) {
 		if (this.retryItem > 0) {
 			this.use(this.retryItem);
 			this.retryItem = 0;

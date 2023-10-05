@@ -7,8 +7,6 @@ using System.Numerics;
 
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
@@ -29,24 +27,25 @@ public class Plugin: IDalamudPlugin {
 
 	public const string PluginName = "TinyCommands";
 	public const string Prefix = "TinyCmds";
-	public string Name => PluginName;
 
 	private bool disposed = false;
 
-	[PluginService] internal static ChatGui chat { get; private set; } = null!;
+	[PluginService] internal static IChatGui chat { get; private set; } = null!;
 	[PluginService] internal static IGameGui gui { get; private set; } = null!;
-	[PluginService] internal static ToastGui toast { get; private set; } = null!;
+	[PluginService] internal static IToastGui toast { get; private set; } = null!;
 	[PluginService] internal static DalamudPluginInterface pluginInterface { get; private set; } = null!;
 	[PluginService] internal static ISigScanner scanner { get; private set; } = null!;
 	[PluginService] internal static ICommandManager cmdManager { get; private set; } = null!;
 	[PluginService] internal static IClientState client { get; private set; } = null!;
-	[PluginService] internal static Dalamud.Game.ClientState.Conditions.Condition conditions { get; private set; } = null!;
+	[PluginService] internal static ICondition conditions { get; private set; } = null!;
 	[PluginService] internal static ITargetManager targets { get; private set; } = null!;
 	[PluginService] internal static IDataManager data { get; private set; } = null!;
 	[PluginService] internal static IPartyList party { get; private set; } = null!;
 	[PluginService] internal static IObjectTable objects { get; private set; } = null!;
 	[PluginService] internal static IFateTable fates { get; private set; } = null!;
-	[PluginService] internal static Framework framework { get; private set; } = null!;
+	[PluginService] internal static IFramework framework { get; private set; } = null!;
+	[PluginService] internal static IPluginLog log { get; private set; } = null!;
+	[PluginService] internal static IGameInteropProvider interop { get; private set; } = null!;
 	internal static XivCommonBase common { get; private set; } = null!;
 	internal static PluginCommandManager commandManager { get; private set; } = null!;
 	internal static PlaySound sfx { get; private set; } = null!;
@@ -63,14 +62,13 @@ public class Plugin: IDalamudPlugin {
 		commandManager.addCommandHandlers();
 
 		this.windowSystem = new(this.GetType().Namespace!);
-		this.helpWindows = commandManager.commands.ToDictionary(cmd => cmd.CommandComparable, cmd => new HelpWindow(this, cmd) as Window);
+		this.helpWindows = commandManager.commands.ToDictionary(cmd => cmd.CommandComparable, cmd => new HelpWindow(cmd) as Window);
 		this.helpWindows.Add("<PLUGIN>", new HelpWindow(
-			this,
 			"Basics",
-			this.Name,
+			PluginName,
 			"the plugin itself",
 			"Basic information about how commands work",
-			$"{this.Name} uses a custom command parser that accepts single-character boolean flags starting with a hyphen."
+			$"{PluginName} uses a custom command parser that accepts single-character boolean flags starting with a hyphen."
 			+ "These flags can be bundled into one argument, such that \"-va\" will set both the \"v\" and \"a\" flags, just like \"-av\" will.\n"
 			+ "\n"
 			+ "All commands accept \"-h\" to display their built-in help.\n"

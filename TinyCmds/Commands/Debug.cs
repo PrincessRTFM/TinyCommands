@@ -1,4 +1,4 @@
-﻿#if DEBUG
+#if DEBUG
 namespace PrincessRTFM.TinyCmds.Commands;
 
 using PrincessRTFM.TinyCmds.Attributes;

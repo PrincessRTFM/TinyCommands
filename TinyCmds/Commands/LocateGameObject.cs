@@ -9,7 +9,6 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Logging;
 
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
@@ -88,8 +87,8 @@ public class LocateGameObjectCommand: PluginCommand {
 				agentMap->SetFlagMapMarker(zone, mapId, pos);
 			}
 			catch (Exception e) {
-				PluginLog.Error($"Failed to set map marker quietly: {e}");
-				PluginLog.Information("Falling back to loud mode! [excessive screaming]");
+				Plugin.log.Error($"Failed to set map marker quietly: {e}");
+				Plugin.log.Information("Falling back to loud mode! [excessive screaming]");
 				Vector2 mapped = Plugin.worldToMap(found.First().position, map);
 				MapLinkPayload pl = new(zone, mapId, mapped.X, mapped.Y);
 				Plugin.gui.OpenMapWithMapLink(pl);
@@ -148,7 +147,7 @@ public class LocateGameObjectCommand: PluginCommand {
 
 		SeString built = msg.AddUiForegroundOff().BuiltString;
 #if DEBUG
-		PluginLog.Information($"{built.Encode().LongLength} bytes:\n{built.TextValue}");
+		Plugin.log.Information($"{built.Encode().LongLength} bytes:\n{built.TextValue}");
 #endif
 		Plugin.chat.Print(built);
 	}
