@@ -132,6 +132,7 @@
 				<DebugType>none</DebugType>
 				<Optimize>true</Optimize>
 				<CopyDebugSymbolFilesFromPackages>false</CopyDebugSymbolFilesFromPackages>
+				<DefineConstants>RELEASE;STRIPPED</DefineConstants>
 			</PropertyGroup>
 		</When>
 		<Otherwise>
@@ -140,7 +141,7 @@
 				<DebugType>portable</DebugType>
 				<Optimize>true</Optimize>
 				<CopyDebugSymbolFilesFromPackages>false</CopyDebugSymbolFilesFromPackages>
-				<DefineConstants>TRACE</DefineConstants>
+				<DefineConstants>RELEASE;TRACE</DefineConstants>
 			</PropertyGroup>
 		</Otherwise>
 	</Choose>
