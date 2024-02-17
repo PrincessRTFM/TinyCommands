@@ -1,7 +1,7 @@
-namespace PrincessRTFM.TinyCmds.Utils;
-
 using System.Collections.Generic;
 using System.Linq;
+
+namespace PrincessRTFM.TinyCmds.Utils;
 
 public class FlagMap: Dictionary<string, bool> {
 	public new bool this[string key] {

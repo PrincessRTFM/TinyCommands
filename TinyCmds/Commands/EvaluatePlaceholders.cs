@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +13,8 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Internal;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/execute", "/exec", "/eval", "/evaluate")]
 [Summary("Evaluate placeholders in the given command, then run that new command")]
@@ -97,15 +97,15 @@ public class EvaluatePlaceholders: PluginCommand {
 				=> (mods.Contains("utc") ? DateTime.UtcNow : DateTime.Now).Hour < 12 ? "am" : "pm",
 			// Custom placeholders - personal stats
 			"classname" or "jobname"
-				=> Plugin.client.LocalPlayer is null
+				=> Plugin.Client.LocalPlayer is null
 					? ""
 					: mods.Contains("short")
-						? Plugin.client.LocalPlayer.ClassJob.GameData!.Abbreviation.ToString()
-						: Plugin.client.LocalPlayer.ClassJob.GameData!.Name.ToString(),
+						? Plugin.Client.LocalPlayer.ClassJob.GameData!.Abbreviation.ToString()
+						: Plugin.Client.LocalPlayer.ClassJob.GameData!.Name.ToString(),
 			"level" or "lvl"
-				=> Plugin.client.LocalPlayer is null
+				=> Plugin.Client.LocalPlayer is null
 					? ""
-					: Plugin.client.LocalPlayer.Level.ToString(mods.Contains("short") ? "D" : "D2"),
+					: Plugin.Client.LocalPlayer.Level.ToString(mods.Contains("short") ? "D" : "D2"),
 			// Vanilla placeholders - targets
 			"t" or "target"
 			or "tt" or "t2t"
@@ -127,7 +127,7 @@ public class EvaluatePlaceholders: PluginCommand {
 				=> readObjName(Framework.Instance()->UIModule->GetPronounModule()->ResolvePlaceholder($"<{p}>", 1, 0)),
 			// Vanilla placeholders - other
 			"class" or "job"
-				=> Plugin.client.LocalPlayer is null ? "" : Plugin.client.LocalPlayer.ClassJob.GameData!.Name.ToString() + "(" + Plugin.client.LocalPlayer.Level + ")",
+				=> Plugin.Client.LocalPlayer is null ? "" : Plugin.Client.LocalPlayer.ClassJob.GameData!.Name.ToString() + "(" + Plugin.Client.LocalPlayer.Level + ")",
 			// Not a placeholder
 			_ => p,
 		};
@@ -169,7 +169,7 @@ public class EvaluatePlaceholders: PluginCommand {
 					input = input[0..pos1] + r + input[(pos2 + 1)..];
 
 				pos2 = pos1 + r.Length;
-				Logger.info($"\"{p}\" -> \"{r}\": ({pos1}, {pos2}) {input}");
+				Logger.Info($"\"{p}\" -> \"{r}\": ({pos1}, {pos2}) {input}");
 			}
 
 			if (pos2 + 3 > input.Length)
@@ -177,7 +177,7 @@ public class EvaluatePlaceholders: PluginCommand {
 
 			pos1 = input.IndexOf('<', pos2);
 			pos2 = input.IndexOf('>', pos1 + 1);
-			Logger.info($"Next scan resolved ({pos1}, {pos2})");
+			Logger.Info($"Next scan resolved ({pos1}, {pos2})");
 		}
 
 		ChatUtil.SendChatlineToServer(input, verbose || dryRun, dryRun);

@@ -1,10 +1,11 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
+namespace PrincessRTFM.TinyCmds.Commands;
+
 [Command("/echoerr", "/echoerror", "/error", "/eerr", "/err", "/ee")]
+[Arguments("text to echo...")]
 [Summary("Like /echo, but to the error channel")]
 [HelpText(
 	"This command is functionally identical to the built-in /echo command, except that the output text is sent to the \"error\" chat channel instead.",

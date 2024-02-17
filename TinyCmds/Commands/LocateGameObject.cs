@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +17,9 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
-// Client Structs Game Object, not Counter Strike Global Offensive :P
-using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
+using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject; // Client Structs Game Object, not Counter Strike Global Offensive :P
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/whereis", "/locate", "/find")]
 [Summary("Find nearby objects, players, and NPCs by name")]
@@ -53,8 +52,8 @@ public class LocateGameObjectCommand: PluginCommand {
 			| (1 << 11); // hide nameplate
 
 		string needle = rawArguments.Trim();
-		Vector3 here = Plugin.client.LocalPlayer!.Position;
-		IEnumerable<(string name, Vector3 position, float distance)> found = Plugin.objects
+		Vector3 here = Plugin.Client.LocalPlayer!.Position;
+		IEnumerable<(string name, Vector3 position, float distance)> found = Plugin.Objects
 			.Where(o =>
 				(flags['A'] || o.ObjectKind is ObjectKind.BattleNpc or ObjectKind.Player or ObjectKind.EventNpc or ObjectKind.EventObj or ObjectKind.Companion)
 				&& (flags['a'] || ((CSGO*)o.Address)->GetIsTargetable() || (((CSGO*)o.Address)->RenderFlags & invisibleFlags) != invisibleFlags || (((CSGO*)o.Address)->DrawObject is not null))
@@ -74,9 +73,9 @@ public class LocateGameObjectCommand: PluginCommand {
 		if (flags['i'])
 			found = found.Reverse();
 
-		uint zone = Plugin.client.TerritoryType;
-		Map map = Plugin.data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
-		ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.data.Excel.GetSheet<TerritoryTypeTransient>();
+		uint zone = Plugin.Client.TerritoryType;
+		Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+		ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.Data.Excel.GetSheet<TerritoryTypeTransient>();
 		uint mapId = map.RowId;
 		int count = found.Count();
 
@@ -87,11 +86,11 @@ public class LocateGameObjectCommand: PluginCommand {
 				agentMap->SetFlagMapMarker(zone, mapId, pos);
 			}
 			catch (Exception e) {
-				Plugin.log.Error($"Failed to set map marker quietly: {e}");
-				Plugin.log.Information("Falling back to loud mode! [excessive screaming]");
-				Vector2 mapped = Plugin.worldToMap(found.First().position, map);
+				Plugin.Log.Error($"Failed to set map marker quietly: {e}");
+				Plugin.Log.Information("Falling back to loud mode! [excessive screaming]");
+				Vector2 mapped = Plugin.WorldToMap(found.First().position, map);
 				MapLinkPayload pl = new(zone, mapId, mapped.X, mapped.Y);
-				Plugin.gui.OpenMapWithMapLink(pl);
+				Plugin.Gui.OpenMapWithMapLink(pl);
 			}
 			if (flags['s'])
 				return;
@@ -115,7 +114,7 @@ public class LocateGameObjectCommand: PluginCommand {
 			.AddUiForegroundOff();
 
 		foreach ((string name, Vector3 position, float distance) in found) {
-			Vector2 mapped = Plugin.worldToMap(position, map);
+			Vector2 mapped = Plugin.WorldToMap(position, map);
 			msg = msg
 				.AddText("\n")
 				.AddUiForeground((ushort)ChatColour.HIGHLIGHT_PASSED)
@@ -147,8 +146,8 @@ public class LocateGameObjectCommand: PluginCommand {
 
 		SeString built = msg.AddUiForegroundOff().BuiltString;
 #if DEBUG
-		Plugin.log.Information($"{built.Encode().LongLength} bytes:\n{built.TextValue}");
+		Plugin.Log.Information($"{built.Encode().LongLength} bytes:\n{built.TextValue}");
 #endif
-		Plugin.chat.Print(built);
+		Plugin.Chat.Print(built);
 	}
 }

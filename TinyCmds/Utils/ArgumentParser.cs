@@ -1,8 +1,8 @@
-namespace PrincessRTFM.TinyCmds.Utils;
-
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+namespace PrincessRTFM.TinyCmds.Utils;
 
 public class ArgumentParser {
 

@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
-
 using System;
 using System.Linq;
 
@@ -10,6 +8,8 @@ using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
 using PC = FFXIVClientStructs.FFXIV.Client.Game.Character.Character;
+
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 [Command("/ifmount")]
 [Arguments("'-n'?", "mount IDs to match against", "command to run...?")]
@@ -24,16 +24,16 @@ using PC = FFXIVClientStructs.FFXIV.Client.Game.Character.Character;
 )]
 
 public class ConditionalMount: BaseConditionalCommand {
-	private const string currentMountLabel = "Your current mount ID is ";
+	private const string CurrentMountLabel = "Your current mount ID is ";
 	protected override unsafe bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = rawArguments ?? string.Empty;
-		PC* player = (PC*)Plugin.client.LocalPlayer!.Address; // LocalPlayer is guaranteed to be non-null by BaseConditionalCommand
+		PC* player = (PC*)Plugin.Client.LocalPlayer!.Address; // LocalPlayer is guaranteed to be non-null by BaseConditionalCommand
 		Assert(player is not null, "failed to acquire CS LocalPlayer");
-		PC.MountContainer? mount = Plugin.conditions[ConditionFlag.Mounted] || Plugin.conditions[ConditionFlag.Mounted2] ? player->Mount : null;
+		PC.MountContainer? mount = Plugin.Conditions[ConditionFlag.Mounted] || Plugin.Conditions[ConditionFlag.Mounted2] ? player->Mount : null;
 		ushort mountId = mount?.MountId ?? 0;
 
 		if (flags['g']) {
-			ChatUtil.ShowPrefixedMessage($"{currentMountLabel} {mountId}");
+			ChatUtil.ShowPrefixedMessage($"{CurrentMountLabel} {mountId}");
 			return false;
 		}
 
@@ -58,7 +58,7 @@ public class ConditionalMount: BaseConditionalCommand {
 			else {
 				ChatUtil.ShowPrefixedMessage(
 					ChatColour.CONDITION_PASSED,
-					currentMountLabel,
+					CurrentMountLabel,
 					ChatGlow.CONDITION_PASSED,
 					mountId,
 					ChatGlow.RESET,
@@ -72,7 +72,7 @@ public class ConditionalMount: BaseConditionalCommand {
 		if (cmd.Length < 1) {
 			ChatUtil.ShowPrefixedMessage(
 				ChatColour.CONDITION_FAILED,
-				currentMountLabel,
+				CurrentMountLabel,
 				ChatGlow.CONDITION_FAILED,
 				mountId,
 				ChatGlow.RESET,

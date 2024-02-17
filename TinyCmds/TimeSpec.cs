@@ -1,8 +1,8 @@
-namespace PrincessRTFM.TinyCmds;
-
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+
+namespace PrincessRTFM.TinyCmds;
 
 public static class TimeSpec {
 	/// <summary>

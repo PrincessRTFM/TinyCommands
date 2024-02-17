@@ -1,8 +1,8 @@
-namespace PrincessRTFM.TinyCmds.Internal;
-
 using System;
 using System.Diagnostics;
 using System.Threading;
+
+namespace PrincessRTFM.TinyCmds.Internal;
 
 internal static class Logger {
 	private static string msgPrefix {
@@ -14,19 +14,19 @@ internal static class Logger {
 		}
 	}
 	[Conditional("DEBUG")]
-	internal static void debug(string tmpl, params object[] args) => Plugin.log.Debug($"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Debug(string tmpl, params object[] args) => Plugin.Log.Debug($"{msgPrefix} {string.Format(tmpl, args)}");
 	[Conditional("DEBUG")]
-	internal static void verbose(string tmpl, params object[] args) => Plugin.log.Verbose($"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void info(string tmpl, params object[] args) => Plugin.log.Information($"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void warning(string tmpl, params object[] args) => Plugin.log.Warning($"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void error(string tmpl, params object[] args) => Plugin.log.Error($"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void fatal(string tmpl, params object[] args) => Plugin.log.Fatal($"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Verbose(string tmpl, params object[] args) => Plugin.Log.Verbose($"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Info(string tmpl, params object[] args) => Plugin.Log.Information($"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Warning(string tmpl, params object[] args) => Plugin.Log.Warning($"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Error(string tmpl, params object[] args) => Plugin.Log.Error($"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Fatal(string tmpl, params object[] args) => Plugin.Log.Fatal($"{msgPrefix} {string.Format(tmpl, args)}");
 	[Conditional("DEBUG")]
-	internal static void debug(Exception ex, string tmpl, params object[] args) => Plugin.log.Debug(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Debug(Exception ex, string tmpl, params object[] args) => Plugin.Log.Debug(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
 	[Conditional("DEBUG")]
-	internal static void verbose(Exception ex, string tmpl, params object[] args) => Plugin.log.Verbose(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void info(Exception ex, string tmpl, params object[] args) => Plugin.log.Information(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void warning(Exception ex, string tmpl, params object[] args) => Plugin.log.Warning(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void error(Exception ex, string tmpl, params object[] args) => Plugin.log.Error(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
-	internal static void fatal(Exception ex, string tmpl, params object[] args) => Plugin.log.Fatal(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Verbose(Exception ex, string tmpl, params object[] args) => Plugin.Log.Verbose(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Info(Exception ex, string tmpl, params object[] args) => Plugin.Log.Information(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Warning(Exception ex, string tmpl, params object[] args) => Plugin.Log.Warning(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Error(Exception ex, string tmpl, params object[] args) => Plugin.Log.Error(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
+	internal static void Fatal(Exception ex, string tmpl, params object[] args) => Plugin.Log.Fatal(ex, $"{msgPrefix} {string.Format(tmpl, args)}");
 }

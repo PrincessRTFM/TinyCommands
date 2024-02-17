@@ -1,11 +1,11 @@
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
-
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 [Command("/ifcmd", "/ifthen", "/ifcondition", "/ifcond", "/ifstate")]
 [Arguments("condition flags", "command to run...?")]
@@ -35,69 +35,69 @@ public class ConditionalGameFlags: BaseConditionalCommand {
 		ChatColour msgCol = ChatColour.CONDITION_FAILED;
 		string msg = "Test passed but no command given";
 
-		if (flags["t"] && Plugin.targets.Target is null)
+		if (flags["t"] && Plugin.Targets.Target is null)
 			msg = "No target";
-		else if (flags["T"] && Plugin.targets.Target is not null)
+		else if (flags["T"] && Plugin.Targets.Target is not null)
 			msg = "Target present";
-		else if (flags["p"] && Plugin.targets.Target?.ObjectKind is not ObjectKind.Player)
+		else if (flags["p"] && Plugin.Targets.Target?.ObjectKind is not ObjectKind.Player)
 			msg = "Target is not player";
-		else if (flags["P"] && Plugin.targets.Target?.ObjectKind is ObjectKind.Player)
+		else if (flags["P"] && Plugin.Targets.Target?.ObjectKind is ObjectKind.Player)
 			msg = "Target is player";
-		else if (flags["n"] && Plugin.targets.Target?.ObjectKind is not (ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer))
+		else if (flags["n"] && Plugin.Targets.Target?.ObjectKind is not (ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer))
 			msg = "Target is not NPC";
-		else if (flags["N"] && Plugin.targets.Target?.ObjectKind is ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
+		else if (flags["N"] && Plugin.Targets.Target?.ObjectKind is ObjectKind.BattleNpc or ObjectKind.EventNpc or ObjectKind.Retainer)
 			msg = "Target is NPC";
-		else if (flags["m"] && Plugin.targets.Target?.ObjectKind is not ObjectKind.Companion)
+		else if (flags["m"] && Plugin.Targets.Target?.ObjectKind is not ObjectKind.Companion)
 			msg = "Target is not minion";
-		else if (flags["M"] && Plugin.targets.Target?.ObjectKind is ObjectKind.Companion)
+		else if (flags["M"] && Plugin.Targets.Target?.ObjectKind is ObjectKind.Companion)
 			msg = "Target is minion";
-		else if (flags["f"] && Plugin.targets.FocusTarget is null)
+		else if (flags["f"] && Plugin.Targets.FocusTarget is null)
 			msg = "No focus target";
-		else if (flags["F"] && Plugin.targets.FocusTarget is not null)
+		else if (flags["F"] && Plugin.Targets.FocusTarget is not null)
 			msg = "Focus target present";
-		else if (flags["o"] && Plugin.targets.MouseOverTarget is null)
+		else if (flags["o"] && Plugin.Targets.MouseOverTarget is null)
 			msg = "No mouseover target";
-		else if (flags["O"] && Plugin.targets.MouseOverTarget is not null)
+		else if (flags["O"] && Plugin.Targets.MouseOverTarget is not null)
 			msg = "Mouseover target present";
-		else if (flags["c"] && !Plugin.conditions[ConditionFlag.InCombat])
+		else if (flags["c"] && !Plugin.Conditions[ConditionFlag.InCombat])
 			msg = "Not in combat";
-		else if (flags["C"] && Plugin.conditions[ConditionFlag.InCombat])
+		else if (flags["C"] && Plugin.Conditions[ConditionFlag.InCombat])
 			msg = "In combat";
-		else if (flags["w"] && Plugin.conditions[ConditionFlag.Mounted])
+		else if (flags["w"] && Plugin.Conditions[ConditionFlag.Mounted])
 			msg = "Not unmounted";
-		else if (flags["W"] && !Plugin.conditions[ConditionFlag.Mounted])
+		else if (flags["W"] && !Plugin.Conditions[ConditionFlag.Mounted])
 			msg = "Unmounted";
-		else if (flags["s"] && !Plugin.conditions[ConditionFlag.Swimming])
+		else if (flags["s"] && !Plugin.Conditions[ConditionFlag.Swimming])
 			msg = "Not swimming";
-		else if (flags["S"] && Plugin.conditions[ConditionFlag.Swimming])
+		else if (flags["S"] && Plugin.Conditions[ConditionFlag.Swimming])
 			msg = "Swimming";
-		else if (flags["d"] && !Plugin.conditions[ConditionFlag.Diving])
+		else if (flags["d"] && !Plugin.Conditions[ConditionFlag.Diving])
 			msg = "Not diving";
-		else if (flags["D"] && Plugin.conditions[ConditionFlag.Diving])
+		else if (flags["D"] && Plugin.Conditions[ConditionFlag.Diving])
 			msg = "Diving";
-		else if (flags["u"] && !Plugin.conditions[ConditionFlag.InFlight])
+		else if (flags["u"] && !Plugin.Conditions[ConditionFlag.InFlight])
 			msg = "Not flying";
-		else if (flags["U"] && Plugin.conditions[ConditionFlag.InFlight])
+		else if (flags["U"] && Plugin.Conditions[ConditionFlag.InFlight])
 			msg = "Flying";
-		else if (flags["i"] && !Plugin.conditions[ConditionFlag.BoundByDuty])
+		else if (flags["i"] && !Plugin.Conditions[ConditionFlag.BoundByDuty])
 			msg = "Not in duty";
-		else if (flags["I"] && Plugin.conditions[ConditionFlag.BoundByDuty])
+		else if (flags["I"] && Plugin.Conditions[ConditionFlag.BoundByDuty])
 			msg = "In duty";
-		else if (flags["l"] && !Plugin.conditions[ConditionFlag.UsingParasol])
+		else if (flags["l"] && !Plugin.Conditions[ConditionFlag.UsingParasol])
 			msg = "Not using fashion accessory";
-		else if (flags["L"] && Plugin.conditions[ConditionFlag.UsingParasol])
+		else if (flags["L"] && Plugin.Conditions[ConditionFlag.UsingParasol])
 			msg = "Using fashion accessory";
-		else if (flags["r"] && !Plugin.client.LocalPlayer!.StatusFlags.HasFlag(StatusFlags.WeaponOut))
+		else if (flags["r"] && !Plugin.Client.LocalPlayer!.StatusFlags.HasFlag(StatusFlags.WeaponOut))
 			msg = "No weapon drawn";
-		else if (flags["R"] && Plugin.client.LocalPlayer!.StatusFlags.HasFlag(StatusFlags.WeaponOut))
+		else if (flags["R"] && Plugin.Client.LocalPlayer!.StatusFlags.HasFlag(StatusFlags.WeaponOut))
 			msg = "Weapon drawn";
-		else if (flags["a"] && !Plugin.party.IsAlliance)
+		else if (flags["a"] && !Plugin.Party.IsAlliance)
 			msg = "Not in an alliance";
-		else if (flags["A"] && Plugin.party.IsAlliance)
+		else if (flags["A"] && Plugin.Party.IsAlliance)
 			msg = "In an alliance";
-		else if (flags['g'] && Plugin.party.Length < 1)
+		else if (flags['g'] && Plugin.Party.Length < 1)
 			msg = "No party members present";
-		else if (flags['G'] && Plugin.party.Length > 0)
+		else if (flags['G'] && Plugin.Party.Length > 0)
 			msg = "Party members present";
 		else
 			msgCol = ChatColour.CONDITION_PASSED;

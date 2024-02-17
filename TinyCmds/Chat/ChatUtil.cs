@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds.Chat;
-
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,9 +5,11 @@ using System.Linq;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 
+namespace PrincessRTFM.TinyCmds.Chat;
+
 public static class ChatUtil {
 
-	internal static List<Payload> generateMessagePayloads(params object[] payloads) {
+	internal static List<Payload> GenerateMessagePayloads(params object[] payloads) {
 		return new List<Payload>(payloads
 			.Where(e => e is not null)
 			.SelectMany(e => {
@@ -35,7 +35,7 @@ public static class ChatUtil {
 	public static void ShowMessage(params object[] payloads) {
 		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
 			return;
-		Plugin.chat.Print(new SeString(generateMessagePayloads(payloads)));
+		Plugin.Chat.Print(new SeString(GenerateMessagePayloads(payloads)));
 	}
 	public static void ShowPrefixedMessage(params object[] payloads) {
 		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
@@ -51,7 +51,7 @@ public static class ChatUtil {
 	public static void ShowError(params object[] payloads) {
 		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
 			return;
-		Plugin.chat.PrintError(new SeString(generateMessagePayloads(payloads)));
+		Plugin.Chat.PrintError(new SeString(GenerateMessagePayloads(payloads)));
 	}
 	public static void ShowPrefixedError(params object[] payloads) {
 		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
@@ -75,13 +75,14 @@ public static class ChatUtil {
 	#endregion
 
 	public static void SendChatlineToServer(string line, bool displayInChatlog = false, bool dryRun = false) {
-		Plugin.log.Information("{0} [{1}]",
+		string content = Plugin.Common.Functions.Chat.SanitiseText(line);
+		Plugin.Log.Information("{0} [{1}]",
 			dryRun ? "!>" : ">>",
-			line);
+			content);
 
 		if (displayInChatlog || dryRun)
-			ShowPrefixedMessage(ChatColour.DEBUG, line, ChatColour.RESET);
+			ShowPrefixedMessage(ChatColour.DEBUG, content, ChatColour.RESET);
 		if (!dryRun)
-			Plugin.common.Functions.Chat.SendMessage(line);
+			Plugin.Common.Functions.Chat.SendMessage(content);
 	}
 }

@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using System;
 using System.Linq;
 
@@ -9,6 +7,7 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/tinyhelp", "/thelp", "/tinycmd", "/tcmd")]
 [Arguments("command...?")]
@@ -26,7 +25,7 @@ public class DisplayCommandHelp: PluginCommand {
 				wnd.IsOpen = false;
 		}
 		string[] args = rawArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-		Plugin.log.Information($"args: #{args.Length}, {string.Join(" ", args.Select(s => $"[{s}]"))}");
+		Plugin.Log.Information($"args: #{args.Length}, {string.Join(" ", args.Select(s => $"[{s}]"))}");
 		if (args.Length < 1) {
 			Assert(this.Plugin is not null, "Plugin is null, everything is broken");
 			Assert(this.Plugin!.helpWindows["<PLUGIN>"] is not null, "plugin information window doesn't exist");
@@ -35,7 +34,7 @@ public class DisplayCommandHelp: PluginCommand {
 		}
 		foreach (string listing in args) {
 			string wanted = listing.TrimStart('/').ToLower();
-			foreach (PluginCommand cmd in Plugin.commandManager.commands) {
+			foreach (PluginCommand cmd in Plugin.CommandManager.Commands) {
 				if (cmd.CommandComparable.Equals(wanted) || cmd.AliasesComparable.Contains(wanted)) {
 					if (this.Plugin.helpWindows.TryGetValue(cmd.CommandComparable, out Window? wnd)) {
 						wnd.IsOpen = true;

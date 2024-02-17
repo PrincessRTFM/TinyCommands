@@ -1,11 +1,10 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using System;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/timer", "/delay")]
 [Arguments("delay", "name")]

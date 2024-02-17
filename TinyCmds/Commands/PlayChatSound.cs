@@ -1,8 +1,8 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/playsound", "/playsfx")]
 [Summary("Plays one of the sixteen <se.##> sound effects")]
@@ -11,7 +11,7 @@ using PrincessRTFM.TinyCmds.Utils;
 )]
 public class PlayChatSound: PluginCommand {
 	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		if (!Plugin.sfx.Valid) {
+		if (!Plugin.Sfx.Valid) {
 			ChatUtil.ShowPrefixedError("Unable to play sounds, the relevant game function couldn't be located");
 			return;
 		}
@@ -23,6 +23,6 @@ public class PlayChatSound: PluginCommand {
 			ChatUtil.ShowPrefixedError("Invalid sound ID, must be 1-16 inclusive");
 			return;
 		}
-		Plugin.sfx.play(SoundsExtensions.FromGameIndex(idx));
+		Plugin.Sfx.Play(SoundsExtensions.FromGameIndex(idx));
 	}
 }

@@ -1,10 +1,10 @@
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
-
 using Dalamud.Game.ClientState.Objects.SubKinds;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 [Command("/ifgp", "/gp", "/whengp")]
 [Arguments("condition flag", "GP to compare?", "command to run...?")]
@@ -17,7 +17,7 @@ using PrincessRTFM.TinyCmds.Utils;
 public class ConditionalGatherPoints: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = rawArguments ?? string.Empty;
-		PlayerCharacter player = Plugin.client.LocalPlayer!;
+		PlayerCharacter player = Plugin.Client.LocalPlayer!;
 		uint gp = player.CurrentGp;
 		if (player.MaxGp < 1) { // presumably not a gathering job, or maybe they have none unlocked - is MaxGp >0 when DoL is unlocked but current job is different?
 			ChatUtil.Debug("You have no GP");

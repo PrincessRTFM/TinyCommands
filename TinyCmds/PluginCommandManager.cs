@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +8,15 @@ using Dalamud.Game.Command;
 
 using PrincessRTFM.TinyCmds.Attributes;
 
+namespace PrincessRTFM.TinyCmds;
+
 public delegate void PluginCommandInvocationErrorHandler(params object[] payloads);
 
 public class PluginCommandManager: IDisposable {
 
 	private readonly List<PluginCommand> commandList;
 
-	internal PluginCommand[] commands => this.commandList.ToArray();
+	internal PluginCommand[] Commands => this.commandList.ToArray();
 
 	private readonly bool disposed = false;
 
@@ -36,16 +36,16 @@ public class PluginCommandManager: IDisposable {
 						.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
 						.Where(prop => prop.PropertyType == p)
 						.First();
-					Plugin.log.Information($"Injecting {p.Name} object to {t.Name}.{prop.Name}");
+					Plugin.Log.Information($"Injecting {p.Name} object to {t.Name}.{prop.Name}");
 					prop.SetValue(instance, core);
-					Plugin.log.Information($"Invoking {t.Name}.<ctor>()");
+					Plugin.Log.Information($"Invoking {t.Name}.<ctor>()");
 					ctor.Invoke(instance, null);
 					PluginCommand? cmd = instance as PluginCommand;
-					cmd?.setup();
+					cmd?.Setup();
 					return cmd;
 				}
 				catch (Exception e) {
-					Plugin.log.Error(e, $"Failed to instantiate {t.Name}");
+					Plugin.Log.Error(e, $"Failed to instantiate {t.Name}");
 					return null;
 				}
 			})
@@ -55,23 +55,23 @@ public class PluginCommandManager: IDisposable {
 		this.HelpHandler = this.commandList.Where(c => c.GetType().GetCustomAttribute<PluginCommandHelpHandlerAttribute>() is not null).FirstOrDefault();
 	}
 
-	internal void addCommandHandlers() {
-		foreach (PluginCommand cmd in this.commands) {
-			Plugin.log.Information($"Registering command {cmd.InternalName} as {string.Join(", ", cmd.InvocationNames)}");
-			Plugin.cmdManager.AddHandler(cmd.Command, cmd.MainCommandInfo);
+	internal void AddCommandHandlers() {
+		foreach (PluginCommand cmd in this.Commands) {
+			Plugin.Log.Information($"Registering command {cmd.InternalName} as {string.Join(", ", cmd.InvocationNames)}");
+			Plugin.CmdManager.AddHandler(cmd.Command, cmd.MainCommandInfo);
 			CommandInfo hidden = cmd.AliasCommandInfo;
 			foreach (string alt in cmd.Aliases) {
-				Plugin.cmdManager.AddHandler(alt, hidden);
+				Plugin.CmdManager.AddHandler(alt, hidden);
 			}
 		}
 	}
 
-	internal void removeCommandHandlers() {
-		foreach (PluginCommand cmd in this.commands) {
-			Plugin.log.Information($"Unregistering command {string.Join(", ", cmd.InvocationNames)} for {cmd.InternalName}");
-			Plugin.cmdManager.RemoveHandler(cmd.Command);
+	internal void RemoveCommandHandlers() {
+		foreach (PluginCommand cmd in this.Commands) {
+			Plugin.Log.Information($"Unregistering command {string.Join(", ", cmd.InvocationNames)} for {cmd.InternalName}");
+			Plugin.CmdManager.RemoveHandler(cmd.Command);
 			foreach (string alt in cmd.Aliases) {
-				Plugin.cmdManager.RemoveHandler(alt);
+				Plugin.CmdManager.RemoveHandler(alt);
 			}
 		}
 	}
@@ -82,7 +82,7 @@ public class PluginCommandManager: IDisposable {
 			return;
 
 		if (disposing) {
-			this.removeCommandHandlers();
+			this.RemoveCommandHandlers();
 
 			foreach (PluginCommand cmd in this.commandList)
 				cmd.Dispose();

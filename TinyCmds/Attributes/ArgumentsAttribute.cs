@@ -1,8 +1,7 @@
-namespace PrincessRTFM.TinyCmds.Attributes;
-
 using System;
 using System.Linq;
 
+namespace PrincessRTFM.TinyCmds.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 internal class ArgumentsAttribute: Attribute {
@@ -11,7 +10,5 @@ internal class ArgumentsAttribute: Attribute {
 	public int RequiredArguments => this.Arguments.Where(a => !a.EndsWith("?")).Count();
 	public int MaxArguments => this.Arguments.Length;
 
-	public ArgumentsAttribute(params string[] args) {
-		this.Arguments = args;
-	}
+	public ArgumentsAttribute(params string[] args) => this.Arguments = args;
 }

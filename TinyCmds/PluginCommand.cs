@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds;
-
 using System;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +7,8 @@ using Dalamud.Game.Command;
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds;
 
 public abstract class PluginCommand: IDisposable {
 	protected bool Disposed { get; set; } = false;
@@ -62,15 +62,15 @@ public abstract class PluginCommand: IDisposable {
 		this.InternalName = t.Name;
 
 		if (this.Plugin is null)
-			Plugin.log.Warning($"{this.InternalName}.Plugin is null in constructor - this should not happen!");
+			Plugin.Log.Warning($"{this.InternalName}.Plugin is null in constructor - this should not happen!");
 	}
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	protected abstract void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp);
 	protected virtual string ModifyHelpMessage(string original) => original;
 	protected virtual void Initialise() { }
-	internal void setup() {
-		Plugin.log.Information($"Initialising {this.InternalName}");
+	internal void Setup() {
+		Plugin.Log.Information($"Initialising {this.InternalName}");
 		this.Initialise();
 	}
 
@@ -83,31 +83,31 @@ public abstract class PluginCommand: IDisposable {
 		if (this.Disposed)
 			throw new ObjectDisposedException(this.InternalName, "Plugin command has already been disposed");
 
-		Plugin.log.Information($"Command invocation: [{command}] [{argline}]");
+		Plugin.Log.Information($"Command invocation: [{command}] [{argline}]");
 		try {
 			(FlagMap flags, string rawArguments) = ArgumentParser.ExtractFlags(argline);
-			Plugin.log.Information($"Parsed flags: {flags}");
-			Plugin.log.Information($"Remaining argument line: [{rawArguments}]");
+			Plugin.Log.Information($"Parsed flags: {flags}");
+			Plugin.Log.Information($"Remaining argument line: [{rawArguments}]");
 			bool showHelp = false;
 			bool verbose = flags['?'];
 			bool dryRun = flags['!'];
 			if (flags["h"]) {
-				Plugin.commandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
+				Plugin.CommandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
 				return;
 			}
 			this.Execute(command, rawArguments, flags, verbose, dryRun, ref showHelp);
 			if (showHelp)
-				Plugin.commandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
+				Plugin.CommandManager.HelpHandler?.Execute(null, command, flags, verbose, dryRun, ref showHelp);
 		}
 		catch (CommandAssertionFailureException e) {
-			Plugin.log.Error(e, $"Command assert failed: {this.Command}: {e.Message}");
-			Plugin.commandManager.ErrorHandler?.Invoke($"Internal assertion check failed:\n{e.Message}");
+			Plugin.Log.Error(e, $"Command assert failed: {this.Command}: {e.Message}");
+			Plugin.CommandManager.ErrorHandler?.Invoke($"Internal assertion check failed:\n{e.Message}");
 		}
 		catch (Exception e) {
-			Plugin.log.Error(e, "Command invocation failed");
-			if (Plugin.commandManager.ErrorHandler is not null) {
+			Plugin.Log.Error(e, "Command invocation failed");
+			if (Plugin.CommandManager.ErrorHandler is not null) {
 				while (e is not null) {
-					Plugin.commandManager.ErrorHandler.Invoke(
+					Plugin.CommandManager.ErrorHandler.Invoke(
 						$"{e.GetType().Name}: {e.Message}\n",
 						ChatColour.QUIET,
 						e.TargetSite?.DeclaringType is not null ? $"at {e.TargetSite.DeclaringType.FullName} in {e.TargetSite.DeclaringType.Assembly.GetName().Name}" : "at unknown location",

@@ -1,8 +1,9 @@
 #if DEBUG
-namespace PrincessRTFM.TinyCmds.Commands;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/tinydebug")]
 [Summary("Do not touch")]

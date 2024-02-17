@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +19,8 @@ using PrincessRTFM.TinyCmds.Utils;
 
 using Fate = Dalamud.Game.ClientState.Fates.Fate;
 using Map = Lumina.Excel.GeneratedSheets.Map;
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/findfate", "/fate")]
 [Summary("Find nearby objects, players, and NPCs by name")]
@@ -46,27 +46,27 @@ public class LocateBestFATECommand: PluginCommand {
 	internal static DalamudLinkPayload findFateByNamePayload = null!;
 	protected override void Initialise() {
 		base.Initialise();
-		findFateByNamePayload ??= Plugin.pluginInterface.AddChatLinkHandler(Plugin.findFateByNamePayloadId, this.findFateByName);
+		findFateByNamePayload ??= Plugin.PluginInterface.AddChatLinkHandler(Plugin.FindFateByNamePayloadId, this.findFateByName);
 	}
 	private unsafe void findFateByName(uint linkId, SeString linkText) {
-		if (linkId is not Plugin.findFateByNamePayloadId) { // ...how?
-			ChatUtil.ShowPrefixedError($"Internal error: payload ID mismatch ({linkId} != {Plugin.findFateByNamePayloadId})");
+		if (linkId is not Plugin.FindFateByNamePayloadId) { // ...how?
+			ChatUtil.ShowPrefixedError($"Internal error: payload ID mismatch ({linkId} != {Plugin.FindFateByNamePayloadId})");
 			return;
 		}
 		string wanted = linkText.TextValue;
-		foreach (Fate? fate in Plugin.fates) {
+		foreach (Fate? fate in Plugin.Fates) {
 			if (fate?.Name.TextValue == wanted) {
-				uint zone = Plugin.client.TerritoryType;
-				Map map = Plugin.data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
-				Vector2 mapped = Plugin.worldToMap(fate.Position, map);
+				uint zone = Plugin.Client.TerritoryType;
+				Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+				Vector2 mapped = Plugin.WorldToMap(fate.Position, map);
 				MapLinkPayload pl = new(zone, map.RowId, mapped.X, mapped.Y);
-				Plugin.gui.OpenMapWithMapLink(pl);
+				Plugin.Gui.OpenMapWithMapLink(pl);
 				return;
 			}
 		}
 		ChatUtil.ShowPrefixedError($"Can't find any FATE named {wanted} - it may have been completed or timed out.");
 	}
-	internal static string fateTypeByIcon(uint icon) {
+	internal static string FateTypeByIcon(uint icon) {
 		return icon switch {
 			60721 => "Horde",
 			60722 => "Miniboss",
@@ -79,17 +79,17 @@ public class LocateBestFATECommand: PluginCommand {
 		};
 	}
 	protected override unsafe void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		if (Plugin.fates.Length == 0) {
+		if (Plugin.Fates.Length == 0) {
 			ChatUtil.ShowPrefixedMessage(
 				ChatColour.CONDITION_FAILED,
 				"There are no FATEs in your current zone.",
 				ChatColour.RESET
 			);
-			Plugin.toast.ShowError("No FATEs are available.");
+			Plugin.Toast.ShowError("No FATEs are available.");
 			return;
 		}
-		Vector3 here = Plugin.client.LocalPlayer!.Position;
-		byte maxLevel = (new byte[] { Plugin.client.LocalPlayer!.Level }).Concat(Plugin.party.Select(p => GameObject.IsValid(p.GameObject) ? p.Level : byte.MaxValue)).Min();
+		Vector3 here = Plugin.Client.LocalPlayer!.Position;
+		byte maxLevel = (new byte[] { Plugin.Client.LocalPlayer!.Level }).Concat(Plugin.Party.Select(p => GameObject.IsValid(p.GameObject) ? p.Level : byte.MaxValue)).Min();
 		uint minTime = 0;
 		byte maxProgress = 100;
 		string[] args = rawArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -118,8 +118,8 @@ public class LocateBestFATECommand: PluginCommand {
 		}
 		uint originalTime = minTime;
 		uint originalProgress = maxProgress;
-		List<Fate> fates = new(Plugin.fates.Length);
-		foreach (Fate? fate in Plugin.fates) {
+		List<Fate> fates = new(Plugin.Fates.Length);
+		foreach (Fate? fate in Plugin.Fates) {
 			if (fate is not null)
 				fates.Add(fate);
 		}
@@ -168,7 +168,7 @@ public class LocateBestFATECommand: PluginCommand {
 					ChatColour.RESET,
 					" (",
 			});
-			string kind = fateTypeByIcon(fate.GameData.IconObjective);
+			string kind = FateTypeByIcon(fate.GameData.IconObjective);
 			if (string.IsNullOrEmpty(kind)) {
 				payloads.AddRange(new object[] {
 					ChatColour.ERROR,
@@ -204,9 +204,9 @@ public class LocateBestFATECommand: PluginCommand {
 		}
 		ChatUtil.ShowPrefixedMessage(payloads.ToArray());
 		if (flags['f']) {
-			uint zone = Plugin.client.TerritoryType;
-			Map map = Plugin.data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
-			ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.data.Excel.GetSheet<TerritoryTypeTransient>();
+			uint zone = Plugin.Client.TerritoryType;
+			Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+			ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.Data.Excel.GetSheet<TerritoryTypeTransient>();
 			uint mapId = map.RowId;
 			AgentMap* agentMap = AgentMap.Instance();
 			Vector3 pos = accepted[0].Position;

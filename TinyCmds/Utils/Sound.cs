@@ -22,16 +22,8 @@ public enum Sound: byte {
 }
 
 public static class SoundsExtensions {
-	public static string? ToGameString(this Sound value) {
-		if (value > Sound.Unknown)
-			return $"<se.{value.ToGameIndex()}>";
-		return null;
-	}
-	public static string? ToSoundName(this Sound value) {
-		if (value > Sound.Unknown)
-			return $"SFX#{value.ToGameIndex()}";
-		return null;
-	}
+	public static string? ToGameString(this Sound value) => value > Sound.Unknown ? $"<se.{value.ToGameIndex()}>" : null;
+	public static string? ToSoundName(this Sound value) => value > Sound.Unknown ? $"SFX#{value.ToGameIndex()}" : null;
 	public static bool IsValid(this Sound value) => value.ToGameIndex() >= 0;
 	public static bool IsSound(this Sound value) => value.ToGameIndex() > 0;
 	public static int ToGameIndex(this Sound value) {

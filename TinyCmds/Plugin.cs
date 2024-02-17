@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,47 +20,49 @@ using PrincessRTFM.TinyCmds.Ui;
 
 using XivCommon;
 
+namespace PrincessRTFM.TinyCmds;
+
 public class Plugin: IDalamudPlugin {
-	internal const uint findFateByNamePayloadId = 1;
+	internal const uint FindFateByNamePayloadId = 1;
 
 	public const string PluginName = "TinyCommands";
 	public const string Prefix = "TinyCmds";
 
 	private bool disposed = false;
 
-	[PluginService] internal static IChatGui chat { get; private set; } = null!;
-	[PluginService] internal static IGameGui gui { get; private set; } = null!;
-	[PluginService] internal static IToastGui toast { get; private set; } = null!;
-	[PluginService] internal static DalamudPluginInterface pluginInterface { get; private set; } = null!;
-	[PluginService] internal static ISigScanner scanner { get; private set; } = null!;
-	[PluginService] internal static ICommandManager cmdManager { get; private set; } = null!;
-	[PluginService] internal static IClientState client { get; private set; } = null!;
-	[PluginService] internal static ICondition conditions { get; private set; } = null!;
-	[PluginService] internal static ITargetManager targets { get; private set; } = null!;
-	[PluginService] internal static IDataManager data { get; private set; } = null!;
-	[PluginService] internal static IPartyList party { get; private set; } = null!;
-	[PluginService] internal static IObjectTable objects { get; private set; } = null!;
-	[PluginService] internal static IFateTable fates { get; private set; } = null!;
-	[PluginService] internal static IFramework framework { get; private set; } = null!;
-	[PluginService] internal static IPluginLog log { get; private set; } = null!;
-	[PluginService] internal static IGameInteropProvider interop { get; private set; } = null!;
-	internal static XivCommonBase common { get; private set; } = null!;
-	internal static PluginCommandManager commandManager { get; private set; } = null!;
-	internal static PlaySound sfx { get; private set; } = null!;
+	[PluginService] internal static IChatGui Chat { get; private set; } = null!;
+	[PluginService] internal static IGameGui Gui { get; private set; } = null!;
+	[PluginService] internal static IToastGui Toast { get; private set; } = null!;
+	[PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+	[PluginService] internal static ISigScanner Scanner { get; private set; } = null!;
+	[PluginService] internal static ICommandManager CmdManager { get; private set; } = null!;
+	[PluginService] internal static IClientState Client { get; private set; } = null!;
+	[PluginService] internal static ICondition Conditions { get; private set; } = null!;
+	[PluginService] internal static ITargetManager Targets { get; private set; } = null!;
+	[PluginService] internal static IDataManager Data { get; private set; } = null!;
+	[PluginService] internal static IPartyList Party { get; private set; } = null!;
+	[PluginService] internal static IObjectTable Objects { get; private set; } = null!;
+	[PluginService] internal static IFateTable Fates { get; private set; } = null!;
+	[PluginService] internal static IFramework Framework { get; private set; } = null!;
+	[PluginService] internal static IPluginLog Log { get; private set; } = null!;
+	[PluginService] internal static IGameInteropProvider Interop { get; private set; } = null!;
+	internal static XivCommonBase Common { get; private set; } = null!;
+	internal static PluginCommandManager CommandManager { get; private set; } = null!;
+	internal static PlaySound Sfx { get; private set; } = null!;
 
 	private readonly WindowSystem windowSystem;
 	internal readonly Dictionary<string, Window> helpWindows;
 
 	public Plugin() {
-		common = new(pluginInterface); // just need the chat feature to send commands
-		sfx = new();
-		commandManager = new(this) {
+		Common = new(PluginInterface); // just need the chat feature to send commands
+		Sfx = new();
+		CommandManager = new(this) {
 			ErrorHandler = ChatUtil.ShowPrefixedError
 		};
-		commandManager.addCommandHandlers();
+		CommandManager.AddCommandHandlers();
 
 		this.windowSystem = new(this.GetType().Namespace!);
-		this.helpWindows = commandManager.commands.ToDictionary(cmd => cmd.CommandComparable, cmd => new HelpWindow(cmd) as Window);
+		this.helpWindows = CommandManager.Commands.ToDictionary(cmd => cmd.CommandComparable, cmd => new HelpWindow(cmd) as Window);
 		this.helpWindows.Add("<PLUGIN>", new HelpWindow(
 			"Basics",
 			PluginName,
@@ -81,15 +81,15 @@ public class Plugin: IDalamudPlugin {
 		foreach (Window wnd in this.helpWindows.Values)
 			this.windowSystem.AddWindow(wnd);
 
-		pluginInterface.UiBuilder.Draw += this.windowSystem.Draw;
+		PluginInterface.UiBuilder.Draw += this.windowSystem.Draw;
 	}
 
-	internal static Vector2 worldToMap(Vector3 pos, Map zone) => worldToMap(new Vector2(pos.X, pos.Z), zone);
-	internal static Vector2 worldToMap(Vector2 pos, Map zone) {
+	internal static Vector2 WorldToMap(Vector3 pos, Map zone) => WorldToMap(new Vector2(pos.X, pos.Z), zone);
+	internal static Vector2 WorldToMap(Vector2 pos, Map zone) {
 		Vector2 raw = MapUtil.WorldToMap(pos, zone);
 		return new((int)MathF.Round(raw.X * 10, 1) / 10f, (int)MathF.Round(raw.Y * 10, 1) / 10f);
 	}
-	internal static Vector2 mapToWorld(Vector2 pos, Map zone) {
+	internal static Vector2 MapToWorld(Vector2 pos, Map zone) {
 		MapLinkPayload maplink = new(zone.TerritoryType.Value!.RowId, zone.RowId, pos.X, pos.Y);
 		return new(maplink.RawX / 1000f, maplink.RawY / 1000f);
 	}
@@ -101,9 +101,9 @@ public class Plugin: IDalamudPlugin {
 		this.disposed = true;
 
 		if (disposing) {
-			common.Dispose();
-			commandManager.Dispose();
-			pluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
+			Common.Dispose();
+			CommandManager.Dispose();
+			PluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
 			this.windowSystem.RemoveAllWindows();
 			foreach (HelpWindow wnd in this.helpWindows.Values.Cast<HelpWindow>())
 				wnd.Dispose();

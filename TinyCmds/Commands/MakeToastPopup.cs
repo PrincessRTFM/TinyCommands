@@ -1,9 +1,9 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using Dalamud.Game.Gui.Toast;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/popup", "/toastmsg")]
 [Arguments("type flag", "content")]
@@ -20,17 +20,17 @@ using PrincessRTFM.TinyCmds.Utils;
 public class MakeToastPopup: PluginCommand {
 	protected override unsafe void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		if (flags['n'])
-			Plugin.toast.ShowNormal(rawArguments, flags['f'] || flags['s'] ? new ToastOptions() { Speed = flags['f'] ? ToastSpeed.Fast : ToastSpeed.Slow } : null!);
+			Plugin.Toast.ShowNormal(rawArguments, flags['f'] || flags['s'] ? new ToastOptions() { Speed = flags['f'] ? ToastSpeed.Fast : ToastSpeed.Slow } : null!);
 
 		if (flags['e'])
-			Plugin.toast.ShowError(rawArguments);
+			Plugin.Toast.ShowError(rawArguments);
 
 		if (flags['q']) {
 			if (flags['i'] && rawArguments.Contains(' ') && uint.TryParse(rawArguments.Split(" ", 2)[0], out uint icon)) { // undocumented cause it's iffy at best
-				Plugin.toast.ShowQuest(rawArguments.Split(" ", 2)[1], new QuestToastOptions() { IconId = icon, PlaySound = flags['p'] });
+				Plugin.Toast.ShowQuest(rawArguments.Split(" ", 2)[1], new QuestToastOptions() { IconId = icon, PlaySound = flags['p'] });
 			}
 			else {
-				Plugin.toast.ShowQuest(rawArguments, new QuestToastOptions() { DisplayCheckmark = flags['c'], PlaySound = flags['p'] });
+				Plugin.Toast.ShowQuest(rawArguments, new QuestToastOptions() { DisplayCheckmark = flags['c'], PlaySound = flags['p'] });
 			}
 		}
 

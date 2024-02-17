@@ -1,7 +1,7 @@
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
-
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 public abstract class BaseConditionalCommand: PluginCommand {
 	protected override string ModifyHelpMessage(string original)
@@ -16,7 +16,7 @@ public abstract class BaseConditionalCommand: PluginCommand {
 	protected abstract bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp);
 
 	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
-		Assert(Plugin.client.LocalPlayer is not null, "can't find LocalPlayer");
+		Assert(Plugin.Client.LocalPlayer is not null, "can't find LocalPlayer");
 
 		bool didConditionsPass = this.TryExecute(command, rawArguments, flags, verbose, dryRun, ref showHelp);
 

@@ -1,5 +1,3 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +17,8 @@ using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
 using CSFW = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/useitem", "/use", "/item")]
 [Summary("Use an item from your inventory by numeric ID or by name (case-insensitive full match)")]
@@ -41,10 +41,10 @@ public unsafe class UseItem: PluginCommand {
 #pragma warning restore IDE0044 // Add readonly modifier
 
 	static UseItem() {
-		usables = Plugin.data.GetExcelSheet<Item>()!
+		usables = Plugin.Data.GetExcelSheet<Item>()!
 			.Where(i => i.ItemAction.Row > 0)
 			.ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())
-			.Concat(Plugin.data.GetExcelSheet<EventItem>()!
+			.Concat(Plugin.Data.GetExcelSheet<EventItem>()!
 				.Where(i => i.Action.Row > 0)
 				.ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())
 			)
@@ -52,8 +52,8 @@ public unsafe class UseItem: PluginCommand {
 	}
 
 	protected override void Initialise() {
-		Plugin.interop.InitializeFromAttributes(this);
-		Plugin.framework.Update += this.attemptReuse;
+		Plugin.Interop.InitializeFromAttributes(this);
+		Plugin.Framework.Update += this.attemptReuse;
 	}
 
 	protected override void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
@@ -85,12 +85,12 @@ public unsafe class UseItem: PluginCommand {
 
 	private void use(uint id) {
 		if (useItem is null) {
-			Plugin.log.Error($"{this.GetType().Name}.use(uint) called without useItem delegate");
+			Plugin.Log.Error($"{this.GetType().Name}.use(uint) called without useItem delegate");
 			return;
 		}
 
 		if (getActionID is null) {
-			Plugin.log.Error($"{this.GetType().Name}.use(uint) called without getActionID delegate");
+			Plugin.Log.Error($"{this.GetType().Name}.use(uint) called without getActionID delegate");
 			return;
 		}
 
@@ -138,7 +138,7 @@ public unsafe class UseItem: PluginCommand {
 		this.Disposed = true;
 
 		if (disposing)
-			Plugin.framework.Update -= this.attemptReuse;
+			Plugin.Framework.Update -= this.attemptReuse;
 
 		base.Dispose(disposing);
 	}

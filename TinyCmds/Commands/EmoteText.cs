@@ -1,8 +1,8 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/emotetext", "/emotion", "/customemote", "/cemote", "/cem", "/ce")]
 [Summary("Perform an emote without text, and simultaneously perform a custom-text emote to go with it")]
@@ -22,9 +22,7 @@ public class EmoteText: PluginCommand {
 			showHelp = true;
 			return;
 		}
-		string emote = Plugin.common.Functions.Chat.SanitiseText($"/{emoteName} motion");
-		string action = Plugin.common.Functions.Chat.SanitiseText($"/em {actionText}");
-		ChatUtil.SendChatlineToServer(emote, verbose, dryRun);
-		ChatUtil.SendChatlineToServer(action, verbose, dryRun);
+		ChatUtil.SendChatlineToServer($"/{emoteName} motion", verbose, dryRun);
+		ChatUtil.SendChatlineToServer($"/em {actionText}", verbose, dryRun);
 	}
 }

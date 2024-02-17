@@ -1,11 +1,11 @@
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
-
 using System;
 using System.Linq;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
+
+namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 
 [Command("/ifzone", "/ifmap", "/ifmapzone")]
 [Arguments("'-n'?", "zone IDs to match against", "command to run...?")]
@@ -20,7 +20,7 @@ using PrincessRTFM.TinyCmds.Utils;
 public class ConditionalMapZone: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = rawArguments ?? string.Empty;
-		ushort territory = Plugin.client.TerritoryType;
+		ushort territory = Plugin.Client.TerritoryType;
 		Assert(territory is not 0, "cannot identify current area");
 
 		if (flags['g']) {

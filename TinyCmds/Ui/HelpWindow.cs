@@ -1,13 +1,13 @@
-namespace PrincessRTFM.TinyCmds.Ui;
-
 using System;
 
 using Dalamud.Interface.Windowing;
 
 using ImGuiNET;
 
+namespace PrincessRTFM.TinyCmds.Ui;
+
 internal class HelpWindow: Window, IDisposable {
-	private const ImGuiWindowFlags flags = ImGuiWindowFlags.AlwaysAutoResize;
+	private const ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.AlwaysAutoResize;
 
 	private bool disposed;
 
@@ -17,7 +17,7 @@ internal class HelpWindow: Window, IDisposable {
 		Summary,
 		Text;
 
-	public HelpWindow(string title, string header, string subheader, string summary, string text) : base($"{Plugin.PluginName} Help: {title}", flags) {
+	public HelpWindow(string title, string header, string subheader, string summary, string text) : base($"{Plugin.PluginName} Help: {title}", WindowFlags) {
 		this.RespectCloseHotkey = true;
 		this.IsOpen = false;
 		this.SizeConstraints = new() {

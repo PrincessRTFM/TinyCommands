@@ -165,38 +165,51 @@ csharp_preserve_single_line_statements = false
 
 #### Naming styles ####
 
+# Style Definitions
+dotnet_naming_style.pascal_case_style.capitalization                     = pascal_case
+dotnet_naming_style.I_prefix_style.required_prefix                       = I
+dotnet_naming_style.I_prefix_style.capitalization                        = pascal_case
+dotnet_naming_style.camel_case_style.capitalization                      = camel_case
+
 # Use PascalCase for constant fields
-dotnet_naming_rule.constant_fields_should_be_pascal_case.severity  = warning
-dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols   = constant_fields
-dotnet_naming_rule.constant_fields_should_be_pascal_case.style     = pascal_case_style
-dotnet_naming_symbols.constant_fields.applicable_kinds             = field
-dotnet_naming_symbols.constant_fields.applicable_accessibilities   = *
-dotnet_naming_symbols.constant_fields.required_modifiers           = const
+dotnet_naming_rule.constant_fields_should_be_pascal_case.severity        = warning
+dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols         = constant_fields
+dotnet_naming_rule.constant_fields_should_be_pascal_case.style           = pascal_case_style
+dotnet_naming_symbols.constant_fields.applicable_kinds                   = field
+dotnet_naming_symbols.constant_fields.applicable_accessibilities         = *
+dotnet_naming_symbols.constant_fields.required_modifiers                 = const
 
 # Use PascalCase for public fields
-dotnet_naming_rule.pascal_case_for_public_fields.severity          = warning
-dotnet_naming_rule.pascal_case_for_public_fields.symbols           = public_fields
-dotnet_naming_rule.pascal_case_for_public_fields.style             = pascal_case_style
-dotnet_naming_symbols.public_fields.applicable_kinds               = field
-dotnet_naming_symbols.public_fields.applicable_accessibilities     = public
+dotnet_naming_rule.pascal_case_for_public_fields.severity                = warning
+dotnet_naming_rule.pascal_case_for_public_fields.symbols                 = public_fields
+dotnet_naming_rule.pascal_case_for_public_fields.style                   = pascal_case_style
+dotnet_naming_symbols.public_fields.applicable_kinds                     = field
+dotnet_naming_symbols.public_fields.applicable_accessibilities           = public
 
 # Interfaces must be PascalCase and have an I prefix
-dotnet_naming_rule.interfaces_start_with_I.severity                = warning
-dotnet_naming_rule.interfaces_start_with_I.symbols                 = any_interface
-dotnet_naming_rule.interfaces_start_with_I.style                   = I_prefix_style
-dotnet_naming_symbols.any_interface.applicable_kinds               = interface
-dotnet_naming_symbols.any_interface.applicable_accessibilities     = *
+dotnet_naming_rule.interfaces_start_with_I.severity                      = warning
+dotnet_naming_rule.interfaces_start_with_I.symbols                       = any_interface
+dotnet_naming_rule.interfaces_start_with_I.style                         = I_prefix_style
+dotnet_naming_symbols.any_interface.applicable_kinds                     = interface
+dotnet_naming_symbols.any_interface.applicable_accessibilities           = *
 
-# Classes, structs, methods, enums, events, properties, namespaces, delegates must be PascalCase
-dotnet_naming_rule.general_naming.severity                         = warning
-dotnet_naming_rule.general_naming.symbols                          = general
-dotnet_naming_rule.general_naming.style                            = pascal_case_style
-dotnet_naming_symbols.general.applicable_kinds                     = class,struct,enum,property,method,event,namespace,delegate
-dotnet_naming_symbols.general.applicable_accessibilities           = *
+# Private properties, methods must be cascalCase
+dotnet_naming_rule.privates_naming.severity                              = warning
+dotnet_naming_rule.privates_naming.symbols                               = privates
+dotnet_naming_rule.privates_naming.style                                 = camel_case_style
+dotnet_naming_symbols.privates.applicable_kinds                          = property,method
+dotnet_naming_symbols.privates.applicable_accessibilities                = private
+
+# Types, namespaces, delegates, events, non-private properties/methods, type parameters must be PascalCase
+dotnet_naming_rule.general_naming.severity                               = warning
+dotnet_naming_rule.general_naming.symbols                                = general
+dotnet_naming_rule.general_naming.style                                  = pascal_case_style
+dotnet_naming_symbols.general.applicable_kinds                           = class,struct,enum,namespace,delegate,event,property,method,type_parameter
+dotnet_naming_symbols.general.applicable_accessibilities                 = *
 
 # Everything else is camelCase
-dotnet_naming_rule.everything_else_naming.severity                 = warning
-dotnet_naming_rule.everything_else_naming.symbols                  = everything_else
-dotnet_naming_rule.everything_else_naming.style                    = camel_case_style
-dotnet_naming_symbols.everything_else.applicable_kinds             = *
-dotnet_naming_symbols.everything_else.applicable_accessibilities   = *
+dotnet_naming_rule.everything_else_naming.severity                       = warning
+dotnet_naming_rule.everything_else_naming.symbols                        = everything_else
+dotnet_naming_rule.everything_else_naming.style                          = camel_case_style
+dotnet_naming_symbols.everything_else.applicable_kinds                   = *
+dotnet_naming_symbols.everything_else.applicable_accessibilities         = *

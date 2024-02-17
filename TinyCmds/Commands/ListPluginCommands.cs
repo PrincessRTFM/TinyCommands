@@ -1,10 +1,9 @@
-namespace PrincessRTFM.TinyCmds.Commands;
-
 using Dalamud.Interface.Windowing;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Utils;
 
+namespace PrincessRTFM.TinyCmds.Commands;
 
 [Command("/tinycmds", "/tcmds")]
 [Arguments()]
