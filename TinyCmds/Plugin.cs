@@ -105,8 +105,6 @@ public class Plugin: IDalamudPlugin {
 			CommandManager.Dispose();
 			PluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
 			this.windowSystem.RemoveAllWindows();
-			foreach (HelpWindow wnd in this.helpWindows.Values.Cast<HelpWindow>())
-				wnd.Dispose();
 		}
 
 	}

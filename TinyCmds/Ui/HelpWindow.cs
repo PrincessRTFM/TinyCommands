@@ -6,20 +6,14 @@ using ImGuiNET;
 
 namespace PrincessRTFM.TinyCmds.Ui;
 
-internal class HelpWindow: Window, IDisposable {
-	private const ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.AlwaysAutoResize;
-
-	private bool disposed;
-
+internal class HelpWindow: BaseWindow {
 	public readonly string
 		Header,
 		Subheader,
 		Summary,
 		Text;
 
-	public HelpWindow(string title, string header, string subheader, string summary, string text) : base($"{Plugin.PluginName} Help: {title}", WindowFlags) {
-		this.RespectCloseHotkey = true;
-		this.IsOpen = false;
+	public HelpWindow(string title, string header, string subheader, string summary, string text) : base($"{Plugin.PluginName} Help: {title}") {
 		this.SizeConstraints = new() {
 			MinimumSize = new(250, 100),
 			MaximumSize = new(400, 500),
@@ -79,25 +73,4 @@ internal class HelpWindow: Window, IDisposable {
 		ImGui.PopTextWrapPos();
 	}
 
-	#region Disposable
-	protected virtual void Dispose(bool disposing) {
-		if (this.disposed)
-			return;
-		this.disposed = true;
-
-		if (disposing) {
-			// nop
-		}
-
-	}
-
-	~HelpWindow() {
-		this.Dispose(false);
-	}
-
-	public void Dispose() {
-		this.Dispose(true);
-		GC.SuppressFinalize(this);
-	}
-	#endregion
 }

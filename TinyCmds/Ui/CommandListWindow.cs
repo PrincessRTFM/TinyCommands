@@ -9,8 +9,6 @@ internal class CommandListWindow: HelpWindow {
 	private readonly Plugin plugin;
 
 	public CommandListWindow(Plugin core) : base("Command List", Plugin.PluginName, "command listing", "A list of all commands in the plugin", "") {
-		this.RespectCloseHotkey = true;
-		this.IsOpen = false;
 		this.SizeConstraints = new() {
 			MinimumSize = new(300, 100),
 			MaximumSize = new(450, 550),
