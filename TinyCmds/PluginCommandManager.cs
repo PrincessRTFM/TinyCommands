@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 using Dalamud.Game.Command;
@@ -31,7 +32,7 @@ public class PluginCommandManager: IDisposable {
 			.Select(t => {
 				try {
 					ConstructorInfo ctor = t.GetConstructor(Array.Empty<Type>())!;
-					object instance = FormatterServices.GetUninitializedObject(t);
+					object instance = RuntimeHelpers.GetUninitializedObject(t);
 					PropertyInfo prop = b
 						.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
 						.Where(prop => prop.PropertyType == p)
