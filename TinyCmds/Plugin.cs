@@ -47,7 +47,6 @@ public class Plugin: IDalamudPlugin {
 	[PluginService] internal static IPluginLog Log { get; private set; } = null!;
 	[PluginService] internal static IGameInteropProvider Interop { get; private set; } = null!;
 	internal static PluginCommandManager CommandManager { get; private set; } = null!;
-	internal static PlaySound Sfx { get; private set; } = null!;
 	internal static XivCommonBase Common { get; private set; } = null!;
 	internal static ServerChat ServerChat { get; private set; } = null!;
 
@@ -59,7 +58,6 @@ public class Plugin: IDalamudPlugin {
 		//ServerChat = Common.Functions.Chat;
 		// XivCommon isn't updated yet, so we're ripping the chat functionality locally
 		ServerChat = new(Scanner);
-		Sfx = new();
 		CommandManager = new(this) {
 			ErrorHandler = ChatUtil.ShowPrefixedError
 		};
