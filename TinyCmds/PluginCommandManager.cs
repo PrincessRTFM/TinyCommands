@@ -28,10 +28,10 @@ public class PluginCommandManager: IDisposable {
 		Type b = typeof(PluginCommand);
 		Type p = core.GetType();
 		this.commandList = this.GetType().Assembly.GetTypes()
-			.Where(t => t.IsSubclassOf(b) && !t.IsAbstract && t.GetConstructor(Array.Empty<Type>()) is not null)
+			.Where(t => t.IsSubclassOf(b) && !t.IsAbstract && t.GetConstructor([]) is not null)
 			.Select(t => {
 				try {
-					ConstructorInfo ctor = t.GetConstructor(Array.Empty<Type>())!;
+					ConstructorInfo ctor = t.GetConstructor([])!;
 					object instance = RuntimeHelpers.GetUninitializedObject(t);
 					PropertyInfo prop = b
 						.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)

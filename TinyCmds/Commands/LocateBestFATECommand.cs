@@ -17,7 +17,7 @@ using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
-using Fate = Dalamud.Game.ClientState.Fates.Fate;
+using Fate = Dalamud.Game.ClientState.Fates.IFate;
 using Map = Lumina.Excel.GeneratedSheets.Map;
 
 namespace PrincessRTFM.TinyCmds.Commands;
@@ -89,7 +89,7 @@ public class LocateBestFATECommand: PluginCommand {
 			return;
 		}
 		Vector3 here = Plugin.Client.LocalPlayer!.Position;
-		byte maxLevel = (new byte[] { Plugin.Client.LocalPlayer!.Level }).Concat(Plugin.Party.Select(p => GameObject.IsValid(p.GameObject) ? p.Level : byte.MaxValue)).Min();
+		byte maxLevel = (new byte[] { Plugin.Client.LocalPlayer!.Level }).Concat(Plugin.Party.Select(p => p.GameObject is not null && p.GameObject.IsValid() ? p.Level : byte.MaxValue)).Min();
 		uint minTime = 0;
 		byte maxProgress = 100;
 		string[] args = rawArguments.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -142,7 +142,7 @@ public class LocateBestFATECommand: PluginCommand {
 			throw new Exception("There exist FATEs in this zone, but none could be filtered, even permissively");
 		string noun = "FATE" + (accepted.Length > 1 ? "s" : "");
 		string verb = accepted.Length > 1 ? "were" : "was";
-		List<object> payloads = new() {
+		List<object> payloads = [
 			ChatColour.HIGHLIGHT,
 			$"{accepted.Length} {noun}",
 			ChatColour.RESET,
@@ -150,16 +150,16 @@ public class LocateBestFATECommand: PluginCommand {
 			fateLevel <= maxLevel ? ChatColour.CONDITION_PASSED : ChatColour.CONDITION_FAILED,
 			$"level {fateLevel}",
 			ChatColour.RESET,
-		};
+		];
 		if (adjusted) {
-			payloads.AddRange(new object[] {
+			payloads.AddRange([
 				ChatColour.HIGHLIGHT_FAILED,
 				" outside your criteria",
 				ChatColour.RESET,
-			});
+			]);
 		}
 		foreach (Fate fate in accepted) {
-			payloads.AddRange(new object[] {
+			payloads.AddRange([
 					"\n- ",
 					ChatColour.HIGHLIGHT,
 					findFateByNamePayload,
@@ -167,37 +167,37 @@ public class LocateBestFATECommand: PluginCommand {
 					RawPayload.LinkTerminator,
 					ChatColour.RESET,
 					" (",
-			});
+			]);
 			string kind = FateTypeByIcon(fate.GameData.IconObjective);
 			if (string.IsNullOrEmpty(kind)) {
-				payloads.AddRange(new object[] {
+				payloads.AddRange([
 					ChatColour.ERROR,
 					"Unknown",
-				});
+				]);
 			}
 			else {
-				payloads.AddRange(new object[] {
+				payloads.AddRange([
 					ChatColour.HELP_TEXT,
 					kind,
-				});
+				]);
 			}
 			payloads.Add(ChatColour.RESET);
 			payloads.Add(", ");
 			if (fate.State is FateState.Preparation) {
-				payloads.AddRange(new object[] {
+				payloads.AddRange([
 					ChatColour.CONDITION_PASSED,
 					"not yet triggered",
-				});
+				]);
 			}
 			else {
-				payloads.AddRange(new object[] {
+				payloads.AddRange([
 					fate.TimeRemaining <= originalTime ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
 					TimeSpec.ClockDisplay(0, 0, (uint)Math.Min(fate.TimeRemaining, uint.MaxValue)),
 					ChatColour.RESET,
 					", ",
 					fate.Progress >= originalProgress ? ChatColour.HIGHLIGHT_FAILED : ChatColour.HIGHLIGHT_PASSED,
 					$"{fate.Progress}%",
-				});
+				]);
 			}
 			payloads.Add(ChatColour.RESET);
 			payloads.Add(")");

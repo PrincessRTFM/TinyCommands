@@ -41,8 +41,8 @@
 	-->
 
 	<PropertyGroup Condition=" '$(Product)' != '' ">
-		<AssemblyName Condition=" '$(AssemblyName)' == '' ">$(Product)</AssemblyName>
-		<PackageId Condition=" '$(PackageId)' == '' ">$(Product)</PackageId>
+		<AssemblyName Condition=" '$(AssemblyName)' == '' ">$(Product.Replace("-", "."))</AssemblyName>
+		<PackageId Condition=" '$(PackageId)' == '' ">$(Product.Replace("-", "."))</PackageId>
 		<Title Condition=" '$(Title)' == '' ">$(Product)</Title>
 		<PackageProjectUrl Condition=" '$(PackageProjectUrl)' == '' ">https://github.com/PrincessRTFM/$(Product)</PackageProjectUrl>
 	</PropertyGroup>
@@ -53,7 +53,7 @@
 		<NullableContextOptions>enable</NullableContextOptions>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-		<LangVersion>11</LangVersion>
+		<LangVersion>12</LangVersion>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>

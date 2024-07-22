@@ -3,6 +3,8 @@ using System.Linq;
 
 using Dalamud.Game.ClientState.Conditions;
 
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
@@ -29,7 +31,7 @@ public class ConditionalMount: BaseConditionalCommand {
 		string arg = rawArguments ?? string.Empty;
 		PC* player = (PC*)Plugin.Client.LocalPlayer!.Address; // LocalPlayer is guaranteed to be non-null by BaseConditionalCommand
 		Assert(player is not null, "failed to acquire CS LocalPlayer");
-		PC.MountContainer? mount = Plugin.Conditions[ConditionFlag.Mounted] || Plugin.Conditions[ConditionFlag.Mounted2] ? player->Mount : null;
+		MountContainer? mount = Plugin.Conditions[ConditionFlag.Mounted] || Plugin.Conditions[ConditionFlag.Mounted2] ? player->Mount : null;
 		ushort mountId = mount?.MountId ?? 0;
 
 		if (flags['g']) {

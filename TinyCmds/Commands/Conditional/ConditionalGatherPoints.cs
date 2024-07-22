@@ -17,7 +17,7 @@ namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 public class ConditionalGatherPoints: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = rawArguments ?? string.Empty;
-		PlayerCharacter player = Plugin.Client.LocalPlayer!;
+		IPlayerCharacter player = Plugin.Client.LocalPlayer!;
 		uint gp = player.CurrentGp;
 		if (player.MaxGp < 1) { // presumably not a gathering job, or maybe they have none unlocked - is MaxGp >0 when DoL is unlocked but current job is different?
 			ChatUtil.Debug("You have no GP");

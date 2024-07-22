@@ -14,18 +14,18 @@ public static class ChatUtil {
 			.Where(e => e is not null)
 			.SelectMany(e => {
 				return e switch {
-					Payload pl => new Payload[] { pl },
-					string st => new Payload[] { new TextPayload(st) },
-					ChatColour ck => new Payload[] { new UIForegroundPayload((ushort)ck) },
-					ChatGlow ck => new Payload[] { new UIGlowPayload((ushort)ck) },
+					Payload pl => [pl],
+					string st => [new TextPayload(st)],
+					ChatColour ck => [new UIForegroundPayload((ushort)ck)],
+					ChatGlow ck => [new UIGlowPayload((ushort)ck)],
 					SeString se => se.Payloads.ToArray(),
 					IEnumerable<Payload> en => en.ToArray(),
-					object o => new Payload[] { new TextPayload(o.ToString() ?? "") },
-					_ => new Payload[] {
+					object o => [new TextPayload(o.ToString() ?? "")],
+					_ => [
 						new UIForegroundPayload((ushort)ChatColour.ERROR),
 						new TextPayload($"[internal error in {Plugin.PluginName}]"),
 						new UIForegroundPayload((ushort)ChatColour.RESET),
-					},
+					],
 				};
 			})
 		);
@@ -40,12 +40,12 @@ public static class ChatUtil {
 	public static void ShowPrefixedMessage(params object[] payloads) {
 		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
 			return;
-		List<object> plList = new() {
+		List<object> plList = [
 			ChatColour.PREFIX,
 			$"[{Plugin.Prefix}] ",
 			ChatColour.RESET,
-		};
-		plList.AddRange(payloads);
+			.. payloads,
+		];
 		ShowMessage(plList.ToArray());
 	}
 	public static void ShowError(params object[] payloads) {
@@ -56,12 +56,12 @@ public static class ChatUtil {
 	public static void ShowPrefixedError(params object[] payloads) {
 		if (payloads.Length < 1 || !payloads.Where(e => e is not null).Any())
 			return;
-		List<object> plList = new() {
+		List<object> plList = [
 			ChatColour.PREFIX,
 			$"[{Plugin.Prefix}] ",
 			ChatColour.RESET,
-		};
-		plList.AddRange(payloads);
+			.. payloads,
+		];
 		ShowError(plList.ToArray());
 	}
 
@@ -75,7 +75,7 @@ public static class ChatUtil {
 	#endregion
 
 	public static void SendChatlineToServer(string line, bool displayInChatlog = false, bool dryRun = false) {
-		string content = Plugin.Common.Functions.Chat.SanitiseText(line);
+		string content = Plugin.ServerChat.SanitiseText(line);
 		Plugin.Log.Information("{0} [{1}]",
 			dryRun ? "!>" : ">>",
 			content);
@@ -83,6 +83,6 @@ public static class ChatUtil {
 		if (displayInChatlog || dryRun)
 			ShowPrefixedMessage(ChatColour.DEBUG, content, ChatColour.RESET);
 		if (!dryRun)
-			Plugin.Common.Functions.Chat.SendMessage(content);
+			Plugin.ServerChat.SendMessage(content);
 	}
 }

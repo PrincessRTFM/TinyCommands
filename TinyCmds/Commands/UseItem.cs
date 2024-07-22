@@ -8,7 +8,6 @@ using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 
 using Lumina.Excel.GeneratedSheets;
 
@@ -32,7 +31,7 @@ public unsafe class UseItem: PluginCommand {
 
 #pragma warning disable IDE0044 // Add readonly modifier
 #pragma warning disable CS0649 // Member is never assigned to
-	[Signature("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 89 7C 24 38", Fallibility = Fallibility.Fallible)]
+	[Signature("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 4C 89 74 24 ??", Fallibility = Fallibility.Fallible)]
 	private static delegate* unmanaged<nint, uint, uint, uint, short, void> useItem;
 
 	[Signature("E8 ?? ?? ?? ?? 44 8B 4B 2C", Fallibility = Fallibility.Fallible)]
@@ -89,11 +88,6 @@ public unsafe class UseItem: PluginCommand {
 			return;
 		}
 
-		if (getActionID is null) {
-			Plugin.Log.Error($"{this.GetType().Name}.use(uint) called without getActionID delegate");
-			return;
-		}
-
 		if (id == 0 || !usables.ContainsKey(id is >= 1_000_000 and < 2_000_000 ? id - 1_000_000 : id)) // yeah, HQ items are different IDs
 			return;
 
@@ -101,7 +95,7 @@ public unsafe class UseItem: PluginCommand {
 		if (framework is null)
 			return;
 
-		UIModule* uiModule = framework->GetUiModule();
+		UIModule* uiModule = framework->GetUIModule();
 		if (uiModule is null)
 			return;
 
@@ -116,7 +110,7 @@ public unsafe class UseItem: PluginCommand {
 
 		// For some reason, items occasionally fail to actually be used, and this is how we can detect that
 		// The ""fix"" is a horrible hack in which we basically just keep trying to use it every framework update :v
-		if (this.retryItem == 0 && id < 2_000_000) {
+		if (getActionID is not null && this.retryItem == 0 && id < 2_000_000) {
 			uint actionID = getActionID((uint)ActionType.Item, id);
 			if (actionID == 0) {
 				this.retryItem = id;
@@ -124,7 +118,7 @@ public unsafe class UseItem: PluginCommand {
 			}
 		}
 
-		useItem((nint)itemContextMenuAgent, id, 9999, 0, 0);
+		useItem((nint)itemContextMenuAgent, id, 999, 0, 0);
 	}
 	private void attemptReuse(IFramework framework) {
 		if (this.retryItem > 0) {

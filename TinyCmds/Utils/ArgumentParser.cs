@@ -32,7 +32,7 @@ public class ArgumentParser {
 	public static string[] ShellParse(string input) {
 		if (input.Contains('"')) {
 			// gotta do it the hard way :/
-			List<string> words = new();
+			List<string> words = [];
 			Match match = wordparser.Match(input);
 			while (match.Success && match.Value.Length > 0) {
 				string word = match.Groups[2].Length > 0 ? match.Groups[2].Value.Replace("\\\"", "\"").Replace("\\\\", "\\") : match.Groups[1].Value;
@@ -44,10 +44,10 @@ public class ArgumentParser {
 			return words.ToArray();
 		}
 		// No quotes, easy out
-		return string.IsNullOrWhiteSpace(input) ? Array.Empty<string>() : input.Split();
+		return string.IsNullOrWhiteSpace(input) ? [] : input.Split();
 	}
 	public static (FlagMap, string) ExtractFlags(in string argline) {
-		FlagMap flags = new();
+		FlagMap flags = [];
 		char[] chars = argline.ToCharArray();
 		bool inFlag = false;
 		int idx;

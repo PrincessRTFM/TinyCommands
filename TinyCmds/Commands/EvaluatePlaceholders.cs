@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 using Dalamud.Memory;
 
@@ -39,7 +40,7 @@ namespace PrincessRTFM.TinyCmds.Commands;
 	"As with all commands that send an input line to the server, the -? flag will display the input line before it's run, and the -! flag will display the input line without running it."
 )]
 public class EvaluatePlaceholders: PluginCommand {
-	private readonly string[] leaders = new string[] {
+	private readonly string[] leaders = [
 		":",
 		"@",
 		"#",
@@ -49,10 +50,10 @@ public class EvaluatePlaceholders: PluginCommand {
 		"&",
 		"*",
 		"+",
-	};
+	];
 
 	private static unsafe string readObjName(GameObject* obj)
-		=> obj is null ? "" : MemoryHelper.ReadSeStringNullTerminated((IntPtr)obj->Name).TextValue;
+		=> obj is null ? "" : obj->NameString;
 
 	private static unsafe string replace(string p) {
 		string[] parts = p.ToLower().Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);

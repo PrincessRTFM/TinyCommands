@@ -33,7 +33,7 @@ public class Plugin: IDalamudPlugin {
 	[PluginService] internal static IChatGui Chat { get; private set; } = null!;
 	[PluginService] internal static IGameGui Gui { get; private set; } = null!;
 	[PluginService] internal static IToastGui Toast { get; private set; } = null!;
-	[PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+	[PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
 	[PluginService] internal static ISigScanner Scanner { get; private set; } = null!;
 	[PluginService] internal static ICommandManager CmdManager { get; private set; } = null!;
 	[PluginService] internal static IClientState Client { get; private set; } = null!;
@@ -46,15 +46,19 @@ public class Plugin: IDalamudPlugin {
 	[PluginService] internal static IFramework Framework { get; private set; } = null!;
 	[PluginService] internal static IPluginLog Log { get; private set; } = null!;
 	[PluginService] internal static IGameInteropProvider Interop { get; private set; } = null!;
-	internal static XivCommonBase Common { get; private set; } = null!;
 	internal static PluginCommandManager CommandManager { get; private set; } = null!;
 	internal static PlaySound Sfx { get; private set; } = null!;
+	internal static XivCommonBase Common { get; private set; } = null!;
+	internal static ServerChat ServerChat { get; private set; } = null!;
 
 	private readonly WindowSystem windowSystem;
 	internal readonly Dictionary<string, Window> helpWindows;
 
 	public Plugin() {
-		Common = new(PluginInterface); // just need the chat feature to send commands
+		//Common = new(Interface);
+		//ServerChat = Common.Functions.Chat;
+		// XivCommon isn't updated yet, so we're ripping the chat functionality locally
+		ServerChat = new(Scanner);
 		Sfx = new();
 		CommandManager = new(this) {
 			ErrorHandler = ChatUtil.ShowPrefixedError
@@ -101,7 +105,7 @@ public class Plugin: IDalamudPlugin {
 		this.disposed = true;
 
 		if (disposing) {
-			Common.Dispose();
+			Common?.Dispose();
 			CommandManager.Dispose();
 			PluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
 			this.windowSystem.RemoveAllWindows();
