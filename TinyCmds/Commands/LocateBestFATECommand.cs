@@ -4,21 +4,20 @@ using System.Linq;
 using System.Numerics;
 
 using Dalamud.Game.ClientState.Fates;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Utils;
 
 using Fate = Dalamud.Game.ClientState.Fates.IFate;
-using Map = Lumina.Excel.GeneratedSheets.Map;
+using Map = Lumina.Excel.Sheets.Map;
 
 namespace PrincessRTFM.TinyCmds.Commands;
 
@@ -57,7 +56,7 @@ public class LocateBestFATECommand: PluginCommand {
 		foreach (Fate? fate in Plugin.Fates) {
 			if (fate?.Name.TextValue == wanted) {
 				uint zone = Plugin.Client.TerritoryType;
-				Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+				Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRowOrDefault(zone)?.Map.Value ?? throw new NullReferenceException("Cannot find map ID");
 				Vector2 mapped = Plugin.WorldToMap(fate.Position, map);
 				MapLinkPayload pl = new(zone, map.RowId, mapped.X, mapped.Y);
 				Plugin.Gui.OpenMapWithMapLink(pl);
@@ -168,7 +167,7 @@ public class LocateBestFATECommand: PluginCommand {
 					ChatColour.RESET,
 					" (",
 			]);
-			string kind = FateTypeByIcon(fate.GameData.IconObjective);
+			string kind = FateTypeByIcon(fate.IconId);
 			if (string.IsNullOrEmpty(kind)) {
 				payloads.AddRange([
 					ChatColour.ERROR,
@@ -205,7 +204,7 @@ public class LocateBestFATECommand: PluginCommand {
 		ChatUtil.ShowPrefixedMessage(payloads.ToArray());
 		if (flags['f']) {
 			uint zone = Plugin.Client.TerritoryType;
-			Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+			Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRowOrDefault(zone)?.Map.Value ?? throw new NullReferenceException("Cannot find map ID");
 			ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.Data.Excel.GetSheet<TerritoryTypeTransient>();
 			uint mapId = map.RowId;
 			AgentMap* agentMap = AgentMap.Instance();

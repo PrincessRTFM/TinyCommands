@@ -21,6 +21,6 @@ public class PlayChatSound: PluginCommand {
 			ChatUtil.ShowPrefixedError("Invalid sound ID, must be 1-16 inclusive");
 			return;
 		}
-		UIModule.PlayChatSoundEffect(idx);
+		UIGlobals.PlayChatSoundEffect(idx);
 	}
 }

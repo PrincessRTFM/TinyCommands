@@ -12,7 +12,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Internal;
@@ -92,7 +92,7 @@ public class Plugin: IDalamudPlugin {
 		return new((int)MathF.Round(raw.X * 10, 1) / 10f, (int)MathF.Round(raw.Y * 10, 1) / 10f);
 	}
 	internal static Vector2 MapToWorld(Vector2 pos, Map zone) {
-		MapLinkPayload maplink = new(zone.TerritoryType.Value!.RowId, zone.RowId, pos.X, pos.Y);
+		MapLinkPayload maplink = new(zone.TerritoryType.Value.RowId, zone.RowId, pos.X, pos.Y);
 		return new(maplink.RawX / 1000f, maplink.RawY / 1000f);
 	}
 

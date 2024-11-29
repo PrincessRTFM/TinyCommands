@@ -9,7 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
@@ -41,10 +41,10 @@ public unsafe class UseItem: PluginCommand {
 
 	static UseItem() {
 		usables = Plugin.Data.GetExcelSheet<Item>()!
-			.Where(i => i.ItemAction.Row > 0)
+			.Where(i => i.ItemAction.RowId > 0)
 			.ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())
 			.Concat(Plugin.Data.GetExcelSheet<EventItem>()!
-				.Where(i => i.Action.Row > 0)
+				.Where(i => i.Action.RowId > 0)
 				.ToDictionary(i => i.RowId, i => i.Name.ToString().ToLower())
 			)
 			.ToDictionary(kv => kv.Key, kv => kv.Value);
