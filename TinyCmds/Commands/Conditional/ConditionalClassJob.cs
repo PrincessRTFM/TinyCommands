@@ -20,7 +20,7 @@ public class ConditionalClassJob: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = rawArguments ?? string.Empty;
 		ClassJob? job = Plugin.Client.LocalPlayer!.ClassJob.ValueNullable;
-		Assert(job is not null, "cannot load current class/job game data");
+		Assert(job.HasValue, "cannot load current class/job game data");
 		string currentJobName = job!.Value.Abbreviation.ToString().ToUpper();
 		string wantedJobNames = arg.Split()[0].ToUpper();
 
