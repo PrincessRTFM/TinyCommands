@@ -101,8 +101,8 @@ public class EvaluatePlaceholders: PluginCommand {
 				=> Plugin.Client.LocalPlayer is null
 					? ""
 					: mods.Contains("short")
-						? Plugin.Client.LocalPlayer.ClassJob.Value!.Abbreviation.ToString()
-						: Plugin.Client.LocalPlayer.ClassJob.Value!.Name.ToString(),
+						? Plugin.Client.LocalPlayer.ClassJob.Value.Abbreviation.ToString()
+						: Plugin.Client.LocalPlayer.ClassJob.Value.Name.ToString(),
 			"level" or "lvl"
 				=> Plugin.Client.LocalPlayer is null
 					? ""
