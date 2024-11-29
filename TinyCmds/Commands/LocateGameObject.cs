@@ -11,7 +11,7 @@ using Dalamud.Game.Text.SeStringHandling.Payloads;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
@@ -74,7 +74,7 @@ public class LocateGameObjectCommand: PluginCommand {
 			found = found.Reverse();
 
 		uint zone = Plugin.Client.TerritoryType;
-		Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRow(zone)?.Map?.Value ?? throw new NullReferenceException("Cannot find map ID");
+		Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRowOrDefault(zone)?.Map.Value ?? throw new NullReferenceException("Cannot find map ID");
 		ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.Data.Excel.GetSheet<TerritoryTypeTransient>();
 		uint mapId = map.RowId;
 		int count = found.Count();

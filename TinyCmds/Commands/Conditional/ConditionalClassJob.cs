@@ -1,6 +1,6 @@
 using System.Linq;
 
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 using PrincessRTFM.TinyCmds.Attributes;
 using PrincessRTFM.TinyCmds.Chat;
@@ -19,9 +19,9 @@ namespace PrincessRTFM.TinyCmds.Commands.Conditional;
 public class ConditionalClassJob: BaseConditionalCommand {
 	protected override bool TryExecute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		string arg = rawArguments ?? string.Empty;
-		ClassJob? job = Plugin.Client.LocalPlayer!.ClassJob.GameData;
+		ClassJob? job = Plugin.Client.LocalPlayer!.ClassJob.ValueNullable;
 		Assert(job is not null, "cannot load current class/job game data");
-		string currentJobName = job!.Abbreviation.ToString().ToUpper();
+		string currentJobName = job!.Value.Abbreviation.ToString().ToUpper();
 		string wantedJobNames = arg.Split()[0].ToUpper();
 
 		if (string.IsNullOrEmpty(wantedJobNames)) {

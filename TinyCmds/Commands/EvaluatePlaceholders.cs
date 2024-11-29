@@ -101,8 +101,8 @@ public class EvaluatePlaceholders: PluginCommand {
 				=> Plugin.Client.LocalPlayer is null
 					? ""
 					: mods.Contains("short")
-						? Plugin.Client.LocalPlayer.ClassJob.GameData!.Abbreviation.ToString()
-						: Plugin.Client.LocalPlayer.ClassJob.GameData!.Name.ToString(),
+						? Plugin.Client.LocalPlayer.ClassJob.Value!.Abbreviation.ToString()
+						: Plugin.Client.LocalPlayer.ClassJob.Value!.Name.ToString(),
 			"level" or "lvl"
 				=> Plugin.Client.LocalPlayer is null
 					? ""
@@ -128,7 +128,7 @@ public class EvaluatePlaceholders: PluginCommand {
 				=> readObjName(Framework.Instance()->UIModule->GetPronounModule()->ResolvePlaceholder($"<{p}>", 1, 0)),
 			// Vanilla placeholders - other
 			"class" or "job"
-				=> Plugin.Client.LocalPlayer is null ? "" : Plugin.Client.LocalPlayer.ClassJob.GameData!.Name.ToString() + "(" + Plugin.Client.LocalPlayer.Level + ")",
+				=> Plugin.Client.LocalPlayer is null ? "" : Plugin.Client.LocalPlayer.ClassJob.Value.Name.ToString() + "(" + Plugin.Client.LocalPlayer.Level + ")",
 			// Not a placeholder
 			_ => p,
 		};

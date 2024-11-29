@@ -12,7 +12,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 using PrincessRTFM.TinyCmds.Chat;
 using PrincessRTFM.TinyCmds.Internal;
