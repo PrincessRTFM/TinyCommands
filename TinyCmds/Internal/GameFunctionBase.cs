@@ -23,7 +23,7 @@ internal abstract class GameFunctionBase<T> where T : Delegate {
 			return null;
 		}
 	}
-	internal GameFunctionBase(string sig, int offset = 0) {
+	protected GameFunctionBase(string sig, int offset = 0) {
 		if (Plugin.Scanner.TryScanText(sig, out this.addr)) {
 			this.addr += offset;
 			ulong totalOffset = (ulong)this.Address.ToInt64() - (ulong)Plugin.Scanner.Module.BaseAddress.ToInt64();
@@ -34,7 +34,7 @@ internal abstract class GameFunctionBase<T> where T : Delegate {
 		}
 	}
 	[SuppressMessage("Reliability", "CA2020:Prevent from behavioral change", Justification = "If that explodes, we SHOULD be throwing")]
-	internal GameFunctionBase(IntPtr address, int offset = 0) {
+	protected GameFunctionBase(IntPtr address, int offset = 0) {
 		this.addr = address + offset;
 		ulong totalOffset = (ulong)this.Address.ToInt64() - (ulong)Plugin.Scanner.Module.BaseAddress.ToInt64();
 		Logger.Info($"{this.GetType().Name} loaded; address = 0x{this.Address.ToInt64():X16}, base memory offset = 0x{totalOffset:X16}");

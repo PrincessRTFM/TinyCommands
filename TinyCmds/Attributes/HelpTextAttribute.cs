@@ -3,8 +3,6 @@ using System;
 namespace PrincessRTFM.TinyCmds.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-internal class HelpTextAttribute: Attribute {
-	public string HelpMessage { get; }
-
-	public HelpTextAttribute(params string[] helpMessage) => this.HelpMessage = string.Join("\n", helpMessage);
+internal class HelpTextAttribute(params string[] helpMessage): Attribute {
+	public string HelpMessage { get; } = string.Join("\n", helpMessage);
 }

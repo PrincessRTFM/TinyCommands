@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -22,10 +23,10 @@ public abstract class PluginCommand: IDisposable {
 		ShowInHelp = false,
 	};
 	public string CommandComparable => this.Command.TrimStart('/').ToLower();
-	public string[] AliasesComparable => this.Aliases.Select(s => s.TrimStart('/').ToLower()).ToArray();
-	public string[] HelpLines => this.Help.Split('\r', '\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-	public string[] InvocationNames => (new string[] { this.Command }).Concat(this.Aliases).ToArray();
-	public string[] InvocationNamesComparable => (new string[] { this.CommandComparable }).Concat(this.AliasesComparable).ToArray();
+	public IEnumerable<string> AliasesComparable => this.Aliases.Select(s => s.TrimStart('/').ToLower());
+	public IEnumerable<string> HelpLines => this.Help.Split('\r', '\n').Where(s => !string.IsNullOrWhiteSpace(s));
+	public IEnumerable<string> InvocationNames => (new string[] { this.Command }).Concat(this.Aliases);
+	public IEnumerable<string> InvocationNamesComparable => (new string[] { this.CommandComparable }).Concat(this.AliasesComparable);
 	public string Command { get; }
 	public string Summary { get; }
 	public string Help { get; }
@@ -39,7 +40,7 @@ public abstract class PluginCommand: IDisposable {
 	public string InternalName { get; init; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-	public PluginCommand() {
+	protected PluginCommand() {
 		Type t = this.GetType();
 		CommandAttribute attrCommand = t.GetCustomAttribute<CommandAttribute>() ?? throw new InvalidOperationException("Cannot construct PluginCommand from type without CommandAttribute");
 		ArgumentsAttribute? args = t.GetCustomAttribute<ArgumentsAttribute>();

@@ -17,8 +17,7 @@ public static class TimeSpec {
 		try {
 			Match match = Matcher.Match(spec.ToLower());
 			if (match.Success) {
-				foreach (Capture capture in match.Groups[1].Captures.Cast<Capture>()) { // apparently it's `object`s for some reason???
-					string piece = capture.Value;
+				foreach (string piece in match.Groups[1].Captures.Cast<Capture>().Select(c => c.Value)) { // apparently it's `object`s for some reason???
 					switch (piece[^1]) {
 						case 'h':
 							hours += uint.Parse(piece[..^1]);

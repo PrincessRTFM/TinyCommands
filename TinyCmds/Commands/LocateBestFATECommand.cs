@@ -118,11 +118,8 @@ public class LocateBestFATECommand: PluginCommand {
 		uint originalTime = minTime;
 		uint originalProgress = maxProgress;
 		List<Fate> fates = new(Plugin.Fates.Length);
-		foreach (Fate? fate in Plugin.Fates) {
-			if (fate is not null)
-				fates.Add(fate);
-		}
-		byte fateLevel = fates.Where(f => f.Level <= maxLevel).Any()
+		fates.AddRange(Plugin.Fates.Where(f => f is not null));
+		byte fateLevel = fates.Any(f => f.Level <= maxLevel)
 			? fates.OrderByDescending(f => f.Level).First().Level
 			: fates.OrderBy(f => f.Level).First().Level;
 		Fate[] filtered = fates.Where(f => f.Level == fateLevel).ToArray();
@@ -205,7 +202,6 @@ public class LocateBestFATECommand: PluginCommand {
 		if (flags['f']) {
 			uint zone = Plugin.Client.TerritoryType;
 			Map map = Plugin.Data.GetExcelSheet<TerritoryType>()?.GetRowOrDefault(zone)?.Map.Value ?? throw new NullReferenceException("Cannot find map ID");
-			ExcelSheet<TerritoryTypeTransient>? transientSheet = Plugin.Data.Excel.GetSheet<TerritoryTypeTransient>();
 			uint mapId = map.RowId;
 			AgentMap* agentMap = AgentMap.Instance();
 			Vector3 pos = accepted[0].Position;

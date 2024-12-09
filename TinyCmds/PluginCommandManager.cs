@@ -35,8 +35,7 @@ public class PluginCommandManager: IDisposable {
 					object instance = RuntimeHelpers.GetUninitializedObject(t);
 					PropertyInfo prop = b
 						.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-						.Where(prop => prop.PropertyType == p)
-						.First();
+						.First(prop => prop.PropertyType == p);
 					Plugin.Log.Information($"Injecting {p.Name} object to {t.Name}.{prop.Name}");
 					prop.SetValue(instance, core);
 					Plugin.Log.Information($"Invoking {t.Name}.<ctor>()");
@@ -53,7 +52,7 @@ public class PluginCommandManager: IDisposable {
 			.Where(o => o is not null)
 			.Cast<PluginCommand>()
 			.ToList();
-		this.HelpHandler = this.commandList.Where(c => c.GetType().GetCustomAttribute<PluginCommandHelpHandlerAttribute>() is not null).FirstOrDefault();
+		this.HelpHandler = this.commandList.Find(c => c.GetType().GetCustomAttribute<PluginCommandHelpHandlerAttribute>() is not null);
 	}
 
 	internal void AddCommandHandlers() {
