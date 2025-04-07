@@ -1,4 +1,4 @@
-name: Build
+name: Deploy
 
 # Put your personal access token in a repository secret named PAT for cross-repository access
 permissions:
@@ -13,17 +13,10 @@ on:
       - master
       - main
       - release
-  pull_request:
-    paths-ignore:
-      - '*.md'
-    branches:
-      - master
-      - main
-      - release
 
 env:
   INTERNAL_NAME: TinyCmds
-  CONFIGURATION: Release
+  CONFIGURATION: release
   PERSONAL_PLUGIN_REPO: PrincessRTFM/MyDalamudPlugins
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
@@ -79,7 +72,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: PluginRepoZip
-        path: ${{ env.INTERNAL_NAME }}/bin/${{ env.CONFIGURATION }}/${{ env.INTERNAL_NAME }}
+        path: ${{ env.INTERNAL_NAME }}/bin/${{ env.CONFIGURATION }}/portable/${{ env.INTERNAL_NAME }}
         if-no-files-found: error
         retention-days: 14
     - name: Tag
