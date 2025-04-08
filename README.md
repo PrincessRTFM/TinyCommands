@@ -2,16 +2,16 @@
 
 TinyCommands adds a handful of small slash commands, [much as the name would suggest](https://tvtropes.org/pmwiki/pmwiki.php/Main/ExactlywhatItSaysOnTheTin). These commands can be used from the chatbox directly, or from macros, or with other plugins, but the ""intended"" usage is primarily from within macros.
 
-![GitHub build status](https://img.shields.io/github/actions/workflow/status/PrincessRTFM/TinyCommands/build.yml?logo=github)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/PrincessRTFM/TinyCommands?label=version&color=informational)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/PrincessRTFM/TinyCommands/master?label=updated)
-[![GitHub issues](https://img.shields.io/github/issues-raw/PrincessRTFM/TinyCommands?label=known%20issues)](https://github.com/PrincessRTFM/TinyCommands/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+![GitHub build status](https://img.shields.io/github/actions/workflow/status/VariableVixen/TinyCommands/build.yml?logo=github)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/VariableVixen/TinyCommands?label=version&color=informational)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/VariableVixen/TinyCommands/master?label=updated)
+[![GitHub issues](https://img.shields.io/github/issues-raw/VariableVixen/TinyCommands?label=known%20issues)](https://github.com/VariableVixen/TinyCommands/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 
 [![Support me!](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/V7V7IK9UU)
 
 ## Installation
 
-This is a Dalamud plugin, and as such requires you to be using [QuickLauncher](https://github.com/goatcorp/FFXIVQuickLauncher) to start the game. If you are not already doing so, simply follow the instructions on that page to install it. Then, once you've launched FFXIV using QuickLauncher, follow the instructions on [my plugin repo page](https://github.com/PrincessRTFM/MyDalamudPlugins) to add TinyCommands to your plugin installer list. Install it from there, and you're done!
+This is a Dalamud plugin, and as such requires you to be using [QuickLauncher](https://github.com/goatcorp/FFXIVQuickLauncher) to start the game. If you are not already doing so, simply follow the instructions on that page to install it. Then, once you've launched FFXIV using QuickLauncher, follow the instructions on [my plugin repo page](https://github.com/VariableVixen/MyDalamudPlugins) to add TinyCommands to your plugin installer list. Install it from there, and you're done!
 
 ## Commands
 

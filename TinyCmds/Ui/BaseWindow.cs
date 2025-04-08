@@ -29,7 +29,7 @@ internal abstract class BaseWindow: Window {
 				Priority = 1,
 				Icon = FontAwesomeIcon.Code,
 				IconOffset = new(1, 1),
-				Click = _ => Process.Start(new ProcessStartInfo("https://github.com/PrincessRTFM/TinyCommands") { UseShellExecute = true }),
+				Click = _ => Process.Start(new ProcessStartInfo("https://github.com/VariableVixen/TinyCommands") { UseShellExecute = true }),
 				ShowTooltip = () => {
 					ImGui.BeginTooltip();
 					ImGui.TextUnformatted("Browse the github repo");
