@@ -5,13 +5,14 @@ using Dalamud.Game.ClientState.Conditions;
 
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
 using PC = FFXIVClientStructs.FFXIV.Client.Game.Character.Character;
 
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
+namespace VariableVixen.TinyCmds.Commands.Conditional;
 
 [Command("/ifmount")]
 [Arguments("'-n'?", "mount IDs to match against", "command to run...?")]

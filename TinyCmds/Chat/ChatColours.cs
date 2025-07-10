@@ -1,4 +1,4 @@
-namespace PrincessRTFM.TinyCmds.Chat;
+namespace VariableVixen.TinyCmds.Chat;
 
 public enum ChatColourKey: ushort {
 	NONE = 0,

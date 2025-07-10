@@ -5,11 +5,11 @@ using System.Reflection;
 
 using Dalamud.Game.Command;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
-namespace PrincessRTFM.TinyCmds;
+namespace VariableVixen.TinyCmds;
 
 public abstract class PluginCommand: IDisposable {
 	protected bool Disposed { get; set; } = false;

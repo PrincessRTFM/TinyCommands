@@ -10,7 +10,7 @@ using FFXIVClientStructs.FFXIV.Client.System.String;
 
 using FFXIVClientStructs.FFXIV.Client.UI;
 
-namespace PrincessRTFM.TinyCmds.Internal;
+namespace VariableVixen.TinyCmds.Internal;
 
 internal class ServerChat {
 	private static class Signatures {
@@ -19,8 +19,8 @@ internal class ServerChat {
 	}
 
 
-	private delegate void ProcessChatBoxDelegate(IntPtr uiModule, IntPtr message, IntPtr unused, byte a4);
-	private readonly unsafe delegate* unmanaged<Utf8String*, int, IntPtr, void> sanitiseString = null!;
+	private delegate void ProcessChatBoxDelegate(nint uiModule, nint message, nint unused, byte a4);
+	private readonly unsafe delegate* unmanaged<Utf8String*, int, nint, void> sanitiseString = null!;
 
 	private ProcessChatBoxDelegate? processChatBox { get; }
 
@@ -34,7 +34,7 @@ internal class ServerChat {
 		}
 
 		if (scanner.TryScanText(Signatures.SanitiseString, out nint sanitisePtr)) {
-			this.sanitiseString = (delegate* unmanaged<Utf8String*, int, IntPtr, void>)sanitisePtr;
+			this.sanitiseString = (delegate* unmanaged<Utf8String*, int, nint, void>)sanitisePtr;
 			Plugin.Log?.Information("Found signature for chat sanitisation");
 		}
 		else {
@@ -54,7 +54,7 @@ internal class ServerChat {
 		nint mem1 = Marshal.AllocHGlobal(400);
 		Marshal.StructureToPtr(payload, mem1, false);
 
-		this.processChatBox((IntPtr)uiModule, mem1, IntPtr.Zero, 0);
+		this.processChatBox((nint)uiModule, mem1, nint.Zero, 0);
 
 		Marshal.FreeHGlobal(mem1);
 	}
@@ -79,7 +79,7 @@ internal class ServerChat {
 
 		Utf8String* uText = Utf8String.FromString(text);
 
-		this.sanitiseString(uText, 0x27F, IntPtr.Zero);
+		this.sanitiseString(uText, 0x27F, nint.Zero);
 		string sanitised = uText->ToString();
 
 		uText->Dtor();
@@ -93,7 +93,7 @@ internal class ServerChat {
 	[StructLayout(LayoutKind.Explicit)]
 	private readonly struct ChatPayload: IDisposable {
 		[FieldOffset(0)]
-		private readonly IntPtr textPtr;
+		private readonly nint textPtr;
 
 		[FieldOffset(16)]
 		private readonly ulong textLen;

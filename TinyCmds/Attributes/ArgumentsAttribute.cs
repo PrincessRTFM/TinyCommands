@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace PrincessRTFM.TinyCmds.Attributes;
+namespace VariableVixen.TinyCmds.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 internal class ArgumentsAttribute(params string[] args): Attribute {

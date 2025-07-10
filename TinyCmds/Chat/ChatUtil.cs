@@ -5,7 +5,7 @@ using System.Linq;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 
-namespace PrincessRTFM.TinyCmds.Chat;
+namespace VariableVixen.TinyCmds.Chat;
 
 public static class ChatUtil {
 

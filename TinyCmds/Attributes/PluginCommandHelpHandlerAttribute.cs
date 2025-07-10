@@ -1,6 +1,6 @@
 using System;
 
-namespace PrincessRTFM.TinyCmds.Attributes;
+namespace VariableVixen.TinyCmds.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 internal class PluginCommandHelpHandlerAttribute: Attribute {

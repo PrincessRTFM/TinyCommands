@@ -5,7 +5,7 @@ using Dalamud.Interface.Windowing;
 
 using ImGuiNET;
 
-namespace PrincessRTFM.TinyCmds.Ui;
+namespace VariableVixen.TinyCmds.Ui;
 
 internal abstract class BaseWindow: Window {
 	private const ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.AlwaysAutoResize;

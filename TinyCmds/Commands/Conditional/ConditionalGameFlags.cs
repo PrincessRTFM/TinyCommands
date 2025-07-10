@@ -1,11 +1,12 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
 
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
+
+namespace VariableVixen.TinyCmds.Commands.Conditional;
 
 [Command("/ifcmd", "/ifthen", "/ifcondition", "/ifcond", "/ifstate")]
 [Arguments("condition flags", "command to run...?")]
@@ -83,9 +84,9 @@ public class ConditionalGameFlags: BaseConditionalCommand {
 			msg = "Not in duty";
 		else if (flags["I"] && Plugin.Conditions[ConditionFlag.BoundByDuty])
 			msg = "In duty";
-		else if (flags["l"] && !Plugin.Conditions[ConditionFlag.UsingParasol])
+		else if (flags["l"] && !Plugin.Conditions[ConditionFlag.UsingFashionAccessory])
 			msg = "Not using fashion accessory";
-		else if (flags["L"] && Plugin.Conditions[ConditionFlag.UsingParasol])
+		else if (flags["L"] && Plugin.Conditions[ConditionFlag.UsingFashionAccessory])
 			msg = "Using fashion accessory";
 		else if (flags["r"] && !Plugin.Client.LocalPlayer!.StatusFlags.HasFlag(StatusFlags.WeaponOut))
 			msg = "No weapon drawn";

@@ -1,9 +1,9 @@
 using Dalamud.Interface.Windowing;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+using VariableVixen.TinyCmds.Utils;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/tinycmds", "/tcmds")]
 [Arguments()]

@@ -7,9 +7,9 @@ using System.Runtime.Serialization;
 
 using Dalamud.Game.Command;
 
-using PrincessRTFM.TinyCmds.Attributes;
+using VariableVixen.TinyCmds.Attributes;
 
-namespace PrincessRTFM.TinyCmds;
+namespace VariableVixen.TinyCmds;
 
 public delegate void PluginCommandInvocationErrorHandler(params object[] payloads);
 

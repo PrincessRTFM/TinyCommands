@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace PrincessRTFM.TinyCmds.Internal;
+using VariableVixen.TinyCmds;
+
+namespace VariableVixen.TinyCmds.Internal;
 
 internal static class Logger {
 	private static string msgPrefix {

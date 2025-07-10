@@ -1,10 +1,10 @@
 using FFXIVClientStructs.FFXIV.Client.UI;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/playsound", "/playsfx")]
 [Summary("Plays one of the sixteen <se.##> sound effects")]

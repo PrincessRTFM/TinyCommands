@@ -11,13 +11,14 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
 using Lumina.Excel.Sheets;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
 using CSFW = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/useitem", "/use", "/item")]
 [Summary("Use an item from your inventory by numeric ID or by name (case-insensitive full match)")]

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace PrincessRTFM.TinyCmds.Utils;
+namespace VariableVixen.TinyCmds.Utils;
 
 public static class ArgumentParser {
 

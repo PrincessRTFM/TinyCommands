@@ -3,11 +3,12 @@ using System.Linq;
 
 using Dalamud.Interface.Windowing;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
+
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/tinyhelp", "/thelp", "/tinycmd", "/tcmd")]
 [Arguments("command...?")]

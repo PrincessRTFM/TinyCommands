@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace PrincessRTFM.TinyCmds;
+namespace VariableVixen.TinyCmds;
 
 [Serializable]
 public class CommandAssertionFailureException: Exception {

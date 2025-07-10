@@ -1,10 +1,11 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
 
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
+
+namespace VariableVixen.TinyCmds.Commands.Conditional;
 
 [Command("/ifgp", "/gp", "/whengp")]
 [Arguments("condition flag", "GP to compare?", "command to run...?")]

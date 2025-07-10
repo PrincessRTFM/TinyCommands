@@ -1,8 +1,8 @@
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/emotetext", "/emotion", "/customemote", "/cemote", "/cem", "/ce")]
 [Summary("Perform an emote without text, and simultaneously perform a custom-text emote to go with it")]

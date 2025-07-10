@@ -1,9 +1,10 @@
 #if DEBUG
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+using VariableVixen.TinyCmds.Utils;
+
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/tinydebug")]
 [Summary("Do not touch")]

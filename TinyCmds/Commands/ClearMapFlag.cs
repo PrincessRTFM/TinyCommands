@@ -1,9 +1,9 @@
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+using VariableVixen.TinyCmds.Utils;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/clearflag", "/unflag")]
 [Summary("Remove the flag marker from your map")]
@@ -15,6 +15,6 @@ public class ClearMapFlag: PluginCommand {
 	protected override unsafe void Execute(string? command, string rawArguments, FlagMap flags, bool verbose, bool dryRun, ref bool showHelp) {
 		AgentMap* map = AgentMap.Instance();
 		Assert(map is not null, "failed to load AgentMap");
-		map->IsFlagMarkerSet = 0;
+		map->IsFlagMarkerSet = false;
 	}
 }

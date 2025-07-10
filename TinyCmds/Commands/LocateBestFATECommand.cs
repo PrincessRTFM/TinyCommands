@@ -12,14 +12,15 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
 using Fate = Dalamud.Game.ClientState.Fates.IFate;
 using Map = Lumina.Excel.Sheets.Map;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/findfate", "/fate")]
 [Summary("Find nearby objects, players, and NPCs by name")]
@@ -103,9 +104,8 @@ public class LocateBestFATECommand: PluginCommand {
 				ChatUtil.ShowPrefixedError(ChatColour.CONDITION_FAILED, level, ChatColour.RESET, " is not a valid level.");
 			}
 		}
-		if (args.Length >= 2) {
+		if (args.Length >= 2)
 			minTime = TimeSpec.RawSeconds(args[1]);
-		}
 		if (args.Length >= 3) {
 			string progress = args[2].TrimEnd('%');
 			try {
@@ -123,13 +123,13 @@ public class LocateBestFATECommand: PluginCommand {
 			? fates.OrderByDescending(f => f.Level).First().Level
 			: fates.OrderBy(f => f.Level).First().Level;
 		Fate[] filtered = fates.Where(f => f.Level == fateLevel).ToArray();
-		IEnumerable<Fate> found = filtered.Where(f => f.State is FateState.Preparation || (f.TimeRemaining >= minTime && f.Progress <= maxProgress));
+		IEnumerable<Fate> found = filtered.Where(f => f.State is FateState.Preparation || f.TimeRemaining >= minTime && f.Progress <= maxProgress);
 		bool adjusted = false;
 		while (!found.Any()) { // nothing was found that matches, so we need to gradually relax the limits until SOMETHING comes up
 			adjusted = true;
 			minTime = minTime >= 30 ? minTime - 30 : 0;
 			maxProgress = (byte)Math.Min(maxProgress + 5, 100);
-			found = filtered.Where(f => f.State is FateState.Preparation || (f.TimeRemaining >= minTime && f.Progress <= maxProgress));
+			found = filtered.Where(f => f.State is FateState.Preparation || f.TimeRemaining >= minTime && f.Progress <= maxProgress);
 			if (minTime == 0 && maxProgress == 100) // just in case, to avoid infinite thrash loops
 				break;
 		}

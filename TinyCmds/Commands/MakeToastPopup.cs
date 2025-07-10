@@ -1,9 +1,9 @@
 using Dalamud.Game.Gui.Toast;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+using VariableVixen.TinyCmds.Utils;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/popup", "/toastmsg")]
 [Arguments("type flag", "content")]
@@ -26,7 +26,7 @@ public class MakeToastPopup: PluginCommand {
 			Plugin.Toast.ShowError(rawArguments);
 
 		if (flags['q']) {
-			if (flags['i'] && rawArguments.Contains(' ') && uint.TryParse(rawArguments.Split(" ", 2)[0], out uint icon)) { // undocumented cause it's iffy at best
+			if (flags['i'] && rawArguments.Contains(' ') && uint.TryParse(rawArguments.Split(" ", 2)[0], out uint icon)) {
 				Plugin.Toast.ShowQuest(rawArguments.Split(" ", 2)[1], new QuestToastOptions() { IconId = icon, PlaySound = flags['p'] });
 			}
 			else {

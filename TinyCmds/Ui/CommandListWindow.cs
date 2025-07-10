@@ -3,7 +3,9 @@ using Dalamud.Interface.Windowing;
 
 using ImGuiNET;
 
-namespace PrincessRTFM.TinyCmds.Ui;
+using VariableVixen.TinyCmds;
+
+namespace VariableVixen.TinyCmds.Ui;
 
 internal class CommandListWindow: HelpWindow {
 	private readonly Plugin plugin;

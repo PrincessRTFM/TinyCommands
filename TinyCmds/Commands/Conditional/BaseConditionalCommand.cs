@@ -1,7 +1,8 @@
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
+namespace VariableVixen.TinyCmds.Commands.Conditional;
 
 public abstract class BaseConditionalCommand: PluginCommand {
 	protected override string ModifyHelpMessage(string original)
@@ -20,8 +21,7 @@ public abstract class BaseConditionalCommand: PluginCommand {
 
 		bool didConditionsPass = this.TryExecute(command, rawArguments, flags, verbose, dryRun, ref showHelp);
 
-		if (didConditionsPass && !showHelp && flags['$']) {
+		if (didConditionsPass && !showHelp && flags['$'])
 			ChatUtil.SendChatlineToServer("/macrocancel", dryRun || verbose, dryRun);
-		}
 	}
 }

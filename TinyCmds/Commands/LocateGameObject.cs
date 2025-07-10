@@ -13,13 +13,14 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
+
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
 
 using CSGO = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject; // Client Structs Game Object, not Counter Strike Global Offensive :P
 
-namespace PrincessRTFM.TinyCmds.Commands;
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/whereis", "/locate", "/find")]
 [Summary("Find nearby objects, players, and NPCs by name")]
@@ -48,15 +49,15 @@ public class LocateGameObjectCommand: PluginCommand {
 		}
 
 		int invisibleFlags = 0
-			| (1 << 1) // hide model
-			| (1 << 11); // hide nameplate
+			| 1 << 1 // hide model
+			| 1 << 11; // hide nameplate
 
 		string needle = rawArguments.Trim();
 		Vector3 here = Plugin.Client.LocalPlayer!.Position;
 		IEnumerable<(string name, Vector3 position, float distance)> found = Plugin.Objects
 			.Where(o =>
 				(flags['A'] || o.ObjectKind is ObjectKind.BattleNpc or ObjectKind.Player or ObjectKind.EventNpc or ObjectKind.EventObj or ObjectKind.Companion)
-				&& (flags['a'] || ((CSGO*)o.Address)->GetIsTargetable() || (((CSGO*)o.Address)->RenderFlags & invisibleFlags) != invisibleFlags || (((CSGO*)o.Address)->DrawObject is not null))
+				&& (flags['a'] || ((CSGO*)o.Address)->GetIsTargetable() || (((CSGO*)o.Address)->RenderFlags & invisibleFlags) != invisibleFlags || ((CSGO*)o.Address)->DrawObject is not null)
 				&& o.Name.TextValue.Contains(needle, StringComparison.OrdinalIgnoreCase)
 			)
 			.Select(o => (o.Name.TextValue.Trim(), o.Position, Vector3.Distance(o.Position, here)));

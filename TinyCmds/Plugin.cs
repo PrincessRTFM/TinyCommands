@@ -14,13 +14,13 @@ using Dalamud.Utility;
 
 using Lumina.Excel.Sheets;
 
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Internal;
-using PrincessRTFM.TinyCmds.Ui;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Internal;
+using VariableVixen.TinyCmds.Ui;
 
 using XivCommon;
 
-namespace PrincessRTFM.TinyCmds;
+namespace VariableVixen.TinyCmds;
 
 public class Plugin: IDalamudPlugin {
 	internal const uint FindFateByNamePayloadId = 1;

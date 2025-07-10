@@ -2,20 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-
-using Dalamud.Memory;
 
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Internal;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
 
-namespace PrincessRTFM.TinyCmds.Commands;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Internal;
+using VariableVixen.TinyCmds.Utils;
+
+namespace VariableVixen.TinyCmds.Commands;
 
 [Command("/execute", "/exec", "/eval", "/evaluate")]
 [Summary("Evaluate placeholders in the given command, then run that new command")]
@@ -82,10 +80,10 @@ public class EvaluatePlaceholders: PluginCommand {
 				).ToString("D3"),
 			"hour"
 				=> (
-					(
-						(mods.Contains("utc") ? DateTime.UtcNow : DateTime.Now).Hour
-						% (mods.Contains("12") ? 12 : 24)
-					)
+
+						((mods.Contains("utc") ? DateTime.UtcNow : DateTime.Now).Hour
+						% (mods.Contains("12") ? 12 : 24))
+
 					+ (mods.Contains("12") ? 1 : 0)
 				).ToString(mods.Contains("short") ? "D" : "D2"),
 			"min" or "minute"

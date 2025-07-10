@@ -2,11 +2,12 @@ using System.Linq;
 
 using Lumina.Excel.Sheets;
 
-using PrincessRTFM.TinyCmds.Attributes;
-using PrincessRTFM.TinyCmds.Chat;
-using PrincessRTFM.TinyCmds.Utils;
+using VariableVixen.TinyCmds.Attributes;
 
-namespace PrincessRTFM.TinyCmds.Commands.Conditional;
+using VariableVixen.TinyCmds.Chat;
+using VariableVixen.TinyCmds.Utils;
+
+namespace VariableVixen.TinyCmds.Commands.Conditional;
 
 [Command("/ifjob", "/ifclass", "/whenjob", "/whenclass", "/job", "/class")]
 [Arguments("'-n'?", "jobs to match against", "command to run...?")]
